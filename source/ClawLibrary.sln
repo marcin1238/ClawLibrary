@@ -3,7 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClawLibrary.Web", "ClawLibrary.Web\ClawLibrary.Web.csproj", "{99D603C1-370E-4784-B0F2-EC7CA86EC777}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "database", "database", "{1F9399F3-9BB1-49C7-9937-9704D7AFD85D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_tests", "_tests", "{59BD5775-977B-4AEC-A7BC-D4CB815852B0}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ClawLibrary.Database", "ClawLibrary.Database\ClawLibrary.Database.sqlproj", "{F214AD12-17F5-4596-B7EB-64E8E686ACD7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClawLibrary.Web", "ClawLibrary.Web\ClawLibrary.Web.csproj", "{198A252E-5F69-4F94-9645-9475315AAF63}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{3E8A4D34-6C16-4CE8-9A92-ED41C0D3BF17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClawLibrary.Core", "ClawLibrary.Core\ClawLibrary.Core.csproj", "{B0EC541F-6726-4AA9-8232-1C57A1AD92C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClawLibrary.Auth", "ClawLibrary.Auth\ClawLibrary.Auth.csproj", "{AD6E8A8C-16B8-4A4A-A507-C87896CB35E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClawLibrary.Data", "ClawLibrary.Data\ClawLibrary.Data.csproj", "{0E19AA80-3AF8-468F-A15D-5C7DB07032BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +25,36 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{99D603C1-370E-4784-B0F2-EC7CA86EC777}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99D603C1-370E-4784-B0F2-EC7CA86EC777}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99D603C1-370E-4784-B0F2-EC7CA86EC777}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99D603C1-370E-4784-B0F2-EC7CA86EC777}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F214AD12-17F5-4596-B7EB-64E8E686ACD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F214AD12-17F5-4596-B7EB-64E8E686ACD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F214AD12-17F5-4596-B7EB-64E8E686ACD7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F214AD12-17F5-4596-B7EB-64E8E686ACD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F214AD12-17F5-4596-B7EB-64E8E686ACD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F214AD12-17F5-4596-B7EB-64E8E686ACD7}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{198A252E-5F69-4F94-9645-9475315AAF63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{198A252E-5F69-4F94-9645-9475315AAF63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{198A252E-5F69-4F94-9645-9475315AAF63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{198A252E-5F69-4F94-9645-9475315AAF63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0EC541F-6726-4AA9-8232-1C57A1AD92C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0EC541F-6726-4AA9-8232-1C57A1AD92C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0EC541F-6726-4AA9-8232-1C57A1AD92C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0EC541F-6726-4AA9-8232-1C57A1AD92C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD6E8A8C-16B8-4A4A-A507-C87896CB35E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD6E8A8C-16B8-4A4A-A507-C87896CB35E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD6E8A8C-16B8-4A4A-A507-C87896CB35E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD6E8A8C-16B8-4A4A-A507-C87896CB35E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E19AA80-3AF8-468F-A15D-5C7DB07032BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E19AA80-3AF8-468F-A15D-5C7DB07032BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E19AA80-3AF8-468F-A15D-5C7DB07032BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E19AA80-3AF8-468F-A15D-5C7DB07032BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F214AD12-17F5-4596-B7EB-64E8E686ACD7} = {1F9399F3-9BB1-49C7-9937-9704D7AFD85D}
+		{B0EC541F-6726-4AA9-8232-1C57A1AD92C7} = {3E8A4D34-6C16-4CE8-9A92-ED41C0D3BF17}
+		{AD6E8A8C-16B8-4A4A-A507-C87896CB35E3} = {3E8A4D34-6C16-4CE8-9A92-ED41C0D3BF17}
+		{0E19AA80-3AF8-468F-A15D-5C7DB07032BE} = {3E8A4D34-6C16-4CE8-9A92-ED41C0D3BF17}
 	EndGlobalSection
 EndGlobal
