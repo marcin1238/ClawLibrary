@@ -30,10 +30,8 @@ namespace ClawLibrary.Data.DataServices
 
         public async Task<User> GetUser(string email)
         {
-            
                 var user = await _context.User
-                    .FirstAsync(x => x.Email.ToLower()
-                    .Equals(email.ToLower()));
+                    .FirstAsync(x => x.Email.ToLower().Equals(email.ToLower()) && x.Status == Status.Active.ToString());
 
                 return _mapper.Map<ClawLibrary.Data.Models.User, ClawLibrary.Core.Models.User>(user);
         }
@@ -43,7 +41,7 @@ namespace ClawLibrary.Data.DataServices
            
                 var roles = _context.UserRole
                     .Include("Role")
-                    .Where(x => x.UserId == userId)
+                    .Where(x => x.UserId == userId && x.Status == Status.Active.ToString())
                     .Select(x => x.Role.Name)
                     .ToListAsync();
 
@@ -119,7 +117,7 @@ namespace ClawLibrary.Data.DataServices
         public async Task ResetPassword(long userId, string hashedPassword, string salt)
         {
             
-                var user = await _context.User.FirstAsync(x => x.Id == userId);
+                var user = await _context.User.FirstAsync(x => x.Id == userId && x.Status == Status.Active.ToString());
 
                 if (user == null)
                     throw new BusinessException(ErrorCode.UserDoesNotExist);
@@ -140,7 +138,7 @@ namespace ClawLibrary.Data.DataServices
         public async Task CreatePasswordResetKey(long userId, string passwordResetKey)
         {
             
-                var user = await _context.User.FirstAsync(x => x.Id == userId);
+                var user = await _context.User.FirstAsync(x => x.Id == userId && x.Status == Status.Active.ToString());
 
                 if (user == null)
                     throw new BusinessException(ErrorCode.UserDoesNotExist);

@@ -1,0 +1,25 @@
+﻿{
+  "MODULES": {
+    "Auth": {
+      "SignInToStart": "Zaloguj się aby rozpocząć",
+      "EmailPlaceholder": "Email",
+      "PasswordPlaceholder": "Hasło",
+      "EmailEmptyMessage": "Pole 'Email' nie może być puste",
+      "EmailInvalidMessage": "Email jest nieprawidłowy",
+      "PasswordEmptyMessage": "Pole 'Hasło' nie może być puste",
+      "PasswordToShortMessage": "Pole 'Hasło' jest za krótkie",
+      "InvalidLoginMessage": "Wprowadzono niepoprawną nazwę użytkownika lub hasło",
+      "SignIn": "Zaloguj",
+      "SignOut": "Wyloguj"
+    },
+    "Settings": {
+      "Settings": "Ustawienia",
+      "Save": "Zapisz"
+    },
+    "Shell": {
+      "Navigation": "Menu",
+      "Books": "Książki" 
+    }
+  }
+}
+
