@@ -73,6 +73,7 @@ namespace ClawLibrary.Auth
             _logger.LogInformation($"VerifyUser input - request: {request}");
 
             var user = await _dataService.GetUser(request.Email);
+
             var saltedPassword = request.Password + user.Salt;
             var result = _passwordHasher.VerifyHashedPassword(user.Password, saltedPassword);
 
@@ -81,13 +82,13 @@ namespace ClawLibrary.Auth
                 throw new UnauthorizedAccessException();
             }
 
-            if (request.VerificationCode != user.Key)
+            if (!request.VerificationCode.ToLower().Equals(user.Key.ToLower()))
             {
-                throw new UnauthorizedAccessException("Invalid verification code");
+                throw new BusinessException(ErrorCode.InvalidVerificationCode,"Invalid verification code");
             }
-            if (user.Status != Status.Pending)
+            if (!user.Status.ToString().ToLower().Equals(Status.Pending.ToString().ToLower()))
             {
-                throw new BusinessException("Account is already activated or blocked");
+                throw new BusinessException(ErrorCode.AccountAlreadyActivatedOrBlocked, "Account is already activated or blocked");
             }
 
             await _dataService.VerifyUser(user.Id);
@@ -147,6 +148,9 @@ namespace ClawLibrary.Auth
         {
             //Get user
             var user = await GetAuthenticatedUser(request.Email, request.Password);
+
+            if(user.Status != Status.Active)
+                throw new UnauthorizedAccessException();
 
             //Get Identity
             var identity = await GetIdentity(user);

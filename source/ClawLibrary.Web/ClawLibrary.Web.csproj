@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="ClawLibrary\assets\img\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
@@ -37,6 +38,7 @@
     <ProjectReference Include="..\ClawLibrary.Auth\ClawLibrary.Auth.csproj" />
     <ProjectReference Include="..\ClawLibrary.Core\ClawLibrary.Core.csproj" />
     <ProjectReference Include="..\ClawLibrary.Data\ClawLibrary.Data.csproj" />
+    <ProjectReference Include="..\ClawLibrary.Services\ClawLibrary.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AspNet.Identity.Core">

@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClawLibrary.Auth", "ClawLib
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClawLibrary.Data", "ClawLibrary.Data\ClawLibrary.Data.csproj", "{0E19AA80-3AF8-468F-A15D-5C7DB07032BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClawLibrary.Services", "ClawLibrary.Services\ClawLibrary.Services.csproj", "{B17F49EC-B556-4E9A-8E05-57905C33B522}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{0E19AA80-3AF8-468F-A15D-5C7DB07032BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E19AA80-3AF8-468F-A15D-5C7DB07032BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E19AA80-3AF8-468F-A15D-5C7DB07032BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B17F49EC-B556-4E9A-8E05-57905C33B522}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B17F49EC-B556-4E9A-8E05-57905C33B522}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B17F49EC-B556-4E9A-8E05-57905C33B522}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B17F49EC-B556-4E9A-8E05-57905C33B522}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

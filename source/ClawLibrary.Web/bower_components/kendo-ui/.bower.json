@@ -1,0 +1,43 @@
+{
+  "name": "kendo-ui",
+  "version": "2017.1.330",
+  "dependencies": {
+    "jquery": ">=1.9.1 <4"
+  },
+  "authors": [
+    "Telerik"
+  ],
+  "description": "Everything you need to build sites and apps with HTML5 & JavaScript",
+  "main": "js/kendo.all.min.js",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "keywords": [
+    "html5",
+    "javascript",
+    "jquery",
+    "ui",
+    "framework"
+  ],
+  "license": "Commercial",
+  "homepage": "http://www.github.com/telerik/kendo",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/components",
+    "test",
+    "tests"
+  ],
+  "_release": "2017.1.330",
+  "_resolution": {
+    "type": "version",
+    "tag": "2017.1.330",
+    "commit": "416e5126bef5600d583e40ac7ea1e8e4e3f8416e"
+  },
+  "_source": "https://github.com/kendo-labs/bower-kendo-ui.git",
+  "_target": "2017.1.330",
+  "_originalSource": "kendo-ui"
+}

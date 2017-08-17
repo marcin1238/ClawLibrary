@@ -7,6 +7,14 @@
 //            $scope.username = null;
 //            $scope.header = null;
 
+            $rootScope.user = {};
+            $scope.imageUserUrl = shellService.getUserPictureUrl();
+
+            $scope.getUser = function () {
+                shellService.getUser().then(function (data) {
+                    $rootScope.user = data;
+                }, function (error) { });
+            }
 
             $scope.logout = function () {
                 tokenStorage.clear();
@@ -18,7 +26,7 @@
             }
             
             $scope.checkUser = function () {
-                var token = tokenStorage.get();
+              var token = tokenStorage.get();
               if (token === undefined || token === null) {
                   $scope.username = null;
                   $scope.header = null;
@@ -28,7 +36,6 @@
                   $scope.username = token.name;
                   $scope.header = $rootScope.header;
                   return false;
-                  
               }
             }
 
@@ -40,6 +47,8 @@
             }
 
             $scope.checkUser();
+            $scope.getUser();
+            
         });
 
 })();

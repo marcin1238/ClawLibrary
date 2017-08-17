@@ -8,7 +8,7 @@
         /// <summary>
         /// The ID of the currently logged in user. When the user is unauthenticated this property will return 0.
         /// </summary>
-        long UserId { get; }
+        string UserId { get; }
         /// <summary>
         /// Gets the user email.
         /// </summary>

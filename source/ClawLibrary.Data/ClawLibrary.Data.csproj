@@ -138,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataServices\AuthDataService.cs" />
+    <Compile Include="DataServices\UsersDataService.cs" />
     <Compile Include="Mapping\DataMappingProfile.cs" />
     <Compile Include="Models\DatabaseContext.cs" />
     <Compile Include="Models\File.cs" />

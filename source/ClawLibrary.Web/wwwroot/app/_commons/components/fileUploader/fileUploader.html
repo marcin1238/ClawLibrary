@@ -1,0 +1,20 @@
+﻿<!--<div style="max-width: inherit">-->
+<!--  <div ng-hide="hasImage" ng-click="openFileDialog()">{{ 'MODULES.User.ClickToAdd' | translate }}</div>-->
+<!--  <img http-src="{{src}}" ng-show="hasImage" ng-click="openFileDialog()" err-src="{{defaultSrc}}"-->
+<!--       onerror="angular.element(this).scope().imageLoadError(this)" -->
+<!--       onload="angular.element(this).scope().imageLoaded(this)"-->
+<!--       style="width: 100%;"/>-->
+<!--  <input type="file" onchange="angular.element(this).scope().imageChanged(this)" style="visibility: hidden; height: 0">-->
+<!--</div>-->
+
+<div style="max-width: inherit">
+  <img http-src="{{src}}" ng-show="hasImage" err-src="{{defaultSrc}}"
+       onerror="angular.element(this).scope().imageLoadError(this)" 
+       onload="angular.element(this).scope().imageLoaded(this)"
+       style="width: 100%;"/>
+  
+  <div class="form-group">
+    <label for="exampleInputFile">Zmień zdjęcie</label>
+    <input type="file" id="exampleInputFile" onchange="angular.element(this).scope().imageChanged(this)" ng-click="openFileDialog()">
+  </div>
+</div>

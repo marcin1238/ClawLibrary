@@ -8,12 +8,15 @@ using AutoMapper;
 using ClawLibrary.Auth;
 using ClawLibrary.Auth.Validations;
 using ClawLibrary.Core.DataServices;
+using ClawLibrary.Core.MediaStorage;
 using ClawLibrary.Core.Middlewares;
 using ClawLibrary.Core.Models.Auth;
 using ClawLibrary.Core.Services;
 using ClawLibrary.Data.DataServices;
 using ClawLibrary.Data.Mapping;
 using ClawLibrary.Data.Models;
+using ClawLibrary.Services.ApiServices;
+using ClawLibrary.Services.Mapping;
 //using ClawLibrary.Data.Models;
 using ClawLibrary.Web.Filters;
 using FluentValidation.AspNetCore;
@@ -40,7 +43,7 @@ namespace ClawLibrary.Web
     {
         private static readonly string secretKey = "mysupersecret_secretkey!123";
         private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
-
+        private readonly string _appUrl;
 
         /// <summary>
         /// Ctor.
@@ -55,6 +58,7 @@ namespace ClawLibrary.Web
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
             env.ConfigureNLog("nlog.config");
+            _appUrl = Configuration.GetValue<string>("AppUrl");
         }
 
         /// <summary>
@@ -88,14 +92,24 @@ namespace ClawLibrary.Web
             services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new DataMappingProfile());
+                cfg.AddProfile(new MappingProfile());
             })));
 
             services.AddSingleton<IAuthDataService, AuthDataService>();
             services.AddSingleton<IAuthService, AuthService>();
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
+            services.AddSingleton<IUsersDataService, UsersDataService>();
+            services.AddSingleton<IUsersApiService, UsersApiService>();
+
             services.AddSingleton<TokenProviderOptions>(new TokenProviderOptions
             {
+                Audience = _appUrl,
+                Issuer = _appUrl,
                 SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256),
+            });
+            services.AddSingleton<IMediaStorageAppService>(new FileSystemMediaStorageAppService
+            {
+                RootPath = Configuration["MediaStorageRootPath"]
             });
             services.AddSingleton(new AuthConfig());
             services.AddSingleton<ISessionContextProvider, PerRequestSessionContextProvider>();

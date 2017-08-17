@@ -96,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataServices\IAuthDataService.cs" />
+    <Compile Include="DataServices\IUsersDataService.cs" />
     <Compile Include="Enums\ErrorCode.cs" />
     <Compile Include="Enums\Role.cs" />
     <Compile Include="Enums\Status.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Models\Media.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\BaseApiService.cs" />
     <Compile Include="Services\ISessionContext.cs" />
     <Compile Include="Services\ISessionContextProvider.cs" />
     <Compile Include="Services\PerRequestSessionContextProvider.cs" />

@@ -6,7 +6,7 @@
     /// </summary>
     public class SessionContext : ISessionContext
     {
-        public long UserId { get; set; }
+        public string UserId { get; set; }
         public string UserEmail { get; set; }
     }
 }

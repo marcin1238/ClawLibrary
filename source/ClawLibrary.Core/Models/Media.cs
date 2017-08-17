@@ -2,7 +2,7 @@
 {
     public class Media
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
         public string ContentType { get; set; }
         public string FileName { get; set; }
         public int ContentSize { get; set; }

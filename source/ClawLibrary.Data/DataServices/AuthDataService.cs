@@ -31,7 +31,7 @@ namespace ClawLibrary.Data.DataServices
         public async Task<User> GetUser(string email)
         {
                 var user = await _context.User
-                    .FirstAsync(x => x.Email.ToLower().Equals(email.ToLower()) && x.Status == Status.Active.ToString());
+                    .FirstAsync(x => x.Email.ToLower().Equals(email.ToLower()));
 
                 return _mapper.Map<ClawLibrary.Data.Models.User, ClawLibrary.Core.Models.User>(user);
         }
@@ -109,7 +109,7 @@ namespace ClawLibrary.Data.DataServices
                 user.ModifiedDate = DateTimeOffset.Now;
                 user.ModifiedBy = user.Email;
 
-                await _context.User.AddAsync(user);
+                _context.User.Update(user);
                 await _context.SaveChangesAsync();
             
         }
@@ -129,8 +129,8 @@ namespace ClawLibrary.Data.DataServices
                 user.PasswordResetKey = null;
                 user.PasswordResetKeyCreatedDate = null;
 
-                await _context.User.AddAsync(user);
-                await _context.SaveChangesAsync();
+            _context.User.Update(user);
+            await _context.SaveChangesAsync();
 
            
         }
@@ -148,8 +148,8 @@ namespace ClawLibrary.Data.DataServices
                 user.PasswordResetKey = passwordResetKey;
                 user.PasswordResetKeyCreatedDate = DateTimeOffset.Now;
 
-                await _context.User.AddAsync(user);
-                await _context.SaveChangesAsync();
+            _context.User.Update(user);
+            await _context.SaveChangesAsync();
         
         }
     }

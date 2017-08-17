@@ -20,18 +20,25 @@
           <li class="dropdown user user-menu">
             <!-- Menu Toggle Button -->
             <a href="_" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-user" aria-hidden="true"></i>
-
+              <!--<i class="fa fa-user" aria-hidden="true"></i>-->
+              <img http-src="{{ imageUserUrl }}" err-src="/assets/img/default-user.png" class="user-image" alt="User Image">
               <span class="hidden-xs">{{username}}</span>
             </a>
             <ul class="dropdown-menu">
               <li class="user-header">
+                <img http-src="{{ imageUserUrl }}" err-src="/assets/img/default-user.png" class="img-circle" alt="User Image">
                 <p>
-                  Email: {{username}}
+                  {{$root.user.firstName}} {{$root.user.lastName}}
+                  <small>{{username}}</small>
                 </p>
               </li>
 
               <li class="user-footer">
+                <div class="pull-left">
+                  <a class="btn btn-default btn-flat" ui-sref="user">
+                    {{'MODULES.Shell.Profile' | translate }}
+                  </a>
+                </div>
                 <div class="pull-right">
                   <a class="btn btn-default btn-flat" ng-click="logout()">
                     {{'MODULES.Auth.SignOut' | translate }}
@@ -66,15 +73,16 @@
   </section>
 </aside>
 <div class="content-wrapper">
-  <section class="content-header">
-    <h1>
-      &nbsp;
-      <!--<small>Dodatkowy opis</small>-->
-    </h1>
-  </section>
   <section class="content">
     <div ui-view></div>
   </section>
+ 
 </div>
+<footer class="main-footer">
+  <div class="pull-right hidden-xs">
+    <b>Version</b> 1.0.0
+  </div>
+  <strong>Copyright &copy; 2017 Marcin Kabza.</strong> All rights reserved.
+</footer>
 <div class="control-sidebar-bg"></div>
 

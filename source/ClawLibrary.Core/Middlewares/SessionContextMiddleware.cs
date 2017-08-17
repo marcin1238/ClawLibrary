@@ -21,7 +21,7 @@ namespace ClawLibrary.Core.Middlewares
                 PerRequestSessionContextProvider.SetContext(
                     new SessionContext
                     {
-                        UserId = SafeParseToLong(context.User.FindFirst(ClaimTypes.Sid)?.Value),
+                        UserId = context.User.FindFirst(ClaimTypes.Sid)?.Value,
                         UserEmail = context.User.FindFirst(ClaimTypes.Name)?.Value
                     }
                 );

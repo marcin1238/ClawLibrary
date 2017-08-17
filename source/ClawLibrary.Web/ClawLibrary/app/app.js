@@ -13,6 +13,7 @@
         'clawlibrary.modules.auth',
         'clawlibrary.modules.dashboard',
         'clawlibrary.modules.settings',
+        'clawlibrary.modules.user',
 
         //3rd party
         'ui.router',

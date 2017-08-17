@@ -10,7 +10,31 @@
       "PasswordToShortMessage": "Pole 'Hasło' jest za krótkie",
       "InvalidLoginMessage": "Wprowadzono niepoprawną nazwę użytkownika lub hasło",
       "SignIn": "Zaloguj",
-      "SignOut": "Wyloguj"
+      "SignOut": "Wyloguj",
+      "Register": "Zarejestruj",
+      "Reset": "Resetuj",
+      "SetNewPassword": "Ustaw nowe hasło",
+      "SetPassword": "Ustaw",
+      "ResetPassword": "Resetuj hasło",
+      "BackToLogin": "Potrót do ekranu logowania",
+      "ForgotPassword": "Zapomniałem hasła",
+      "RegisterNewAccount": "Zarejestruj nowe konto",
+      "AlredyHaveMembership": "Posiadam już konto",
+      "SignInToVerify": "Zaloguj się aby potwierdzić założenie konta",
+      "FirstNamePlaceholder": "Imię",
+      "LastNamePlaceholder": "Nazwisko",
+      "PhonePlaceholder": "Numer telefonu",
+      "PasswordRetypePlaceholder": "Powtórz hasło",
+      "FirstNameEmptyMessage": "Pole 'Imię' nie może być puste",
+      "LastNameEmptyMessage": "Pole 'Nazwisko' nie może być puste",
+      "PhoneEmptyMessage": "Pole 'Numer telefonu' nie może być puste",
+      "PhoneTooShortMessage": "Pole 'Numer telefonu' jest za krótkie",
+      "PhoneTooLongMessage": "Pole 'Numer telefonu' jest za długie",
+      "PasswordsNotTheSameMessage": "Wprowadzone hasła różnią się",
+      "UserExistMessage": "Email jest już zrejestrowany w systemie",
+      "ConfrimRegistration": "Rejestracja zakończyła się sukcesem. Na Twój adres email został wysłany link aktywacyjny.",
+      "ResetInformation": "Na Twój adres email został wysłany link do zmiany hasła.",
+      "NewPassword": "Twoje hasło zostało zmienione!"
     },
     "Settings": {
       "Settings": "Ustawienia",
@@ -18,8 +42,23 @@
     },
     "Shell": {
       "Navigation": "Menu",
-      "Books": "Książki" 
-    }
+      "Books": "Książki",
+      "Profile": "Profil" 
+    },
+    "User": {
+      "ClickToAdd": "Kliknij aby dodać",
+      "Email": "Email",
+      "FirstName": "Imię",
+      "LastName": "Nazwisko",
+      "PhoneNumber": "Numer telefonu",
+      "Photo": "Avatar",
+      "Save": "Zapisz",
+      "Settings": "Podstawowe informacje",
+      "CreatedDatePlaceholder": "Data stworzenia",
+      "ModifiedDatePlaceholder": "Data aktualizacji",
+      "UserProfile": "Profil użytkownika",
+      "Home": "Strona główna"
+    } 
   }
 }
 

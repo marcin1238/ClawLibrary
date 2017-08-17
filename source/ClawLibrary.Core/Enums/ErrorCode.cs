@@ -19,6 +19,8 @@ namespace ClawLibrary.Core.Enums
         ValidationPasswordDoesNotMatch = 10015,
         ValidationStringLength = 10016,
         UserDoesNotExist = 10017,
-        UserVerified = 10018
+        UserVerified = 10018,
+        InvalidVerificationCode = 10019,
+        AccountAlreadyActivatedOrBlocked = 10020
     }
 }

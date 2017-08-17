@@ -83,5 +83,18 @@ namespace ClawLibrary.Web.Controllers
 
             return new NoContentResult();
         }
+
+        // POST: api/register
+        /// <summary>
+        /// Registers the user.
+        /// </summary>
+        /// <param name="request">User data</param>
+        [HttpPost]
+        [Route("register")]
+        public async Task<IActionResult> Register([FromBody]RegisterUserRequest request)
+        {
+            await _authService.RegisterUser(request);
+            return new NoContentResult();
+        }
     }
 }
