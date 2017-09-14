@@ -13,7 +13,7 @@ using ClawLibrary.Core.Exceptions;
 using ClawLibrary.Core.Models.Auth;
 using ClawLibrary.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using User = ClawLibrary.Core.Models.User;
+using User = ClawLibrary.Core.Models.Users.User;
 
 namespace ClawLibrary.Data.DataServices
 {
@@ -33,7 +33,7 @@ namespace ClawLibrary.Data.DataServices
                 var user = await _context.User
                     .FirstAsync(x => x.Email.ToLower().Equals(email.ToLower()));
 
-                return _mapper.Map<ClawLibrary.Data.Models.User, ClawLibrary.Core.Models.User>(user);
+                return _mapper.Map<ClawLibrary.Data.Models.User, User>(user);
         }
 
         public Task<List<string>> GetUserRoles(long userId)
@@ -90,7 +90,7 @@ namespace ClawLibrary.Data.DataServices
                 await _context.SaveChangesAsync();
                 
 
-                return _mapper.Map<ClawLibrary.Data.Models.User, ClawLibrary.Core.Models.User>(createdUser.Entity);
+                return _mapper.Map<ClawLibrary.Data.Models.User, User>(createdUser.Entity);
 
             
         }

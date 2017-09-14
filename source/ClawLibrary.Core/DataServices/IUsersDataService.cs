@@ -1,5 +1,6 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using ClawLibrary.Core.Models;
+using ClawLibrary.Core.Models.Users;
 
 namespace ClawLibrary.Core.DataServices
 {
@@ -14,6 +15,17 @@ namespace ClawLibrary.Core.DataServices
         /// <param name="userKey">Key of the current user</param>
         /// <returns>User details</returns>
         Task<User> GetByKey(string userKey);
+
+        /// <summary>
+        /// Get a list of the users.
+        /// </summary>
+        /// <param name="userKey">Key of the current user</param>
+        /// <param name="count">Limit the rows returned to a specified range</param>
+        /// <param name="offset">Offset of rows returned</param>
+        /// <param name="orderBy">Order the result set of a query by the specified column</param>
+        /// <param name="searchString">User first name or last name or email</param>
+        /// <returns>List of users</returns>
+        Task<List<User>> GetUsers(string userKey, int? count, int? offset, string orderBy, string searchString);
 
         /// <summary>
         /// Updates authenticated user.

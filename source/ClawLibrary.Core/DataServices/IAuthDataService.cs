@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ClawLibrary.Core.Models;
 using ClawLibrary.Core.Models.Auth;
+using ClawLibrary.Core.Models.Users;
 
 namespace ClawLibrary.Core.DataServices
 {

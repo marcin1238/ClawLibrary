@@ -10,6 +10,7 @@ using ClawLibrary.Core.Enums;
 using ClawLibrary.Core.Exceptions;
 using ClawLibrary.Core.Models;
 using ClawLibrary.Core.Models.Auth;
+using ClawLibrary.Core.Models.Users;
 using Microsoft.Extensions.Logging;
 
 namespace ClawLibrary.Auth

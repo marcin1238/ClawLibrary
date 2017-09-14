@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace ClawLibrary.Data.Models
 {
-    public partial class UserRole
+    public class UserRole
     {
         public long Id { get; set; }
         public Guid Key { get; set; }

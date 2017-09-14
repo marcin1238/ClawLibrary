@@ -3,10 +3,12 @@ using System.Collections.Generic;
 
 namespace ClawLibrary.Data.Models
 {
-    public partial class File
+    public class File
     {
         public File()
         {
+            Author = new HashSet<Author>();
+            Book = new HashSet<Book>();
             User = new HashSet<User>();
         }
 
@@ -19,6 +21,8 @@ namespace ClawLibrary.Data.Models
         public string ModifiedBy { get; set; }
         public string Status { get; set; }
 
+        public virtual ICollection<Author> Author { get; set; }
+        public virtual ICollection<Book> Book { get; set; }
         public virtual ICollection<User> User { get; set; }
     }
 }

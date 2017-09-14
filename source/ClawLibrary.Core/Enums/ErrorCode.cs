@@ -21,6 +21,11 @@ namespace ClawLibrary.Core.Enums
         UserDoesNotExist = 10017,
         UserVerified = 10018,
         InvalidVerificationCode = 10019,
-        AccountAlreadyActivatedOrBlocked = 10020
+        AccountAlreadyActivatedOrBlocked = 10020,
+        WrongImageFile = 10021,
+        AuthorDoesNotExist = 10022,
+        CategoryDoesNotExist = 10023,
+        BookDoesNotExist = 10024,
+        WrongStatus = 10025
     }
 }

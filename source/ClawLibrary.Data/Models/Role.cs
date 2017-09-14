@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ClawLibrary.Data.Models
 {
-    public partial class Role
+    public class Role
     {
         public Role()
         {

@@ -17,8 +17,8 @@
             var baseShellRoute = 'api';
 
             return {
-                getUser: baseShellRoute + '/users',
-                getUserPicture: baseShellRoute + '/users/picture'
+                getUser: baseShellRoute + '/users/user',
+                getUserPicture: baseShellRoute + '/users/user/picture'
             }
         })());
 })();

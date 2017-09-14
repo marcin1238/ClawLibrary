@@ -15,6 +15,7 @@ using ClawLibrary.Core.Services;
 using ClawLibrary.Data.DataServices;
 using ClawLibrary.Data.Mapping;
 using ClawLibrary.Data.Models;
+//using ClawLibrary.Data.Models;
 using ClawLibrary.Services.ApiServices;
 using ClawLibrary.Services.Mapping;
 //using ClawLibrary.Data.Models;
@@ -100,6 +101,8 @@ namespace ClawLibrary.Web
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddSingleton<IUsersDataService, UsersDataService>();
             services.AddSingleton<IUsersApiService, UsersApiService>();
+            services.AddSingleton<IBooksDataService, BooksDataService>();
+            services.AddSingleton<IBooksApiService, BooksApiService>();
 
             services.AddSingleton<TokenProviderOptions>(new TokenProviderOptions
             {

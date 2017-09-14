@@ -1,4 +1,8 @@
 ﻿using AutoMapper;
+using ClawLibrary.Core.Models.Authors;
+using ClawLibrary.Core.Models.Books;
+using ClawLibrary.Core.Models.Categories;
+using ClawLibrary.Core.Models.Users;
 
 namespace ClawLibrary.Data.Mapping
 {
@@ -10,11 +14,14 @@ namespace ClawLibrary.Data.Mapping
         public DataMappingProfile()
         {
             CreateMapUser();
+            CreateMapBook();
+            CreateMapAuthor();
+            CreateMapCategory();
         }
 
         private void CreateMapUser()
         {
-            CreateMap<ClawLibrary.Core.Models.User, ClawLibrary.Data.Models.User>().ReverseMap()
+            CreateMap<User, ClawLibrary.Data.Models.User>().ReverseMap()
                 .ForMember(x => x.Id, opt => opt.MapFrom(x => x.Id))
                 .ForMember(x => x.Key, opt => opt.MapFrom(x => x.Key))
                 .ForMember(x => x.Email, opt => opt.MapFrom(x => x.Email))
@@ -33,6 +40,50 @@ namespace ClawLibrary.Data.Mapping
                 .ForMember(x => x.PhoneNumber, opt => opt.MapFrom(x => x.PhoneNumber))
                 .ForMember(x => x.FirstName, opt => opt.MapFrom(x => x.FirstName))
                 .ForMember(x => x.LastName, opt => opt.MapFrom(x => x.LastName));
+        }
+
+        private void CreateMapBook()
+        {
+            CreateMap<Book, ClawLibrary.Data.Models.Book>().ReverseMap()
+                .ForMember(x => x.Id, opt => opt.MapFrom(x => x.Id))
+                .ForMember(x => x.Key, opt => opt.MapFrom(x => x.Key))
+                .ForMember(x => x.Title, opt => opt.MapFrom(x => x.Title))
+                .ForMember(x => x.Isbn, opt => opt.MapFrom(x => x.Isbn))
+                .ForMember(x => x.Publisher, opt => opt.MapFrom(x => x.Publisher))
+                .ForMember(x => x.Language, opt => opt.MapFrom(x => x.Language))
+                .ForMember(x => x.Description, opt => opt.MapFrom(x => x.Description))
+                .ForMember(x => x.Quantity, opt => opt.MapFrom(x => x.Quantity))
+                .ForMember(x => x.Paperback, opt => opt.MapFrom(x => x.Paperback))
+                .ForMember(x => x.Language, opt => opt.MapFrom(x => x.Language))
+                .ForMember(x => x.Author, opt => opt.MapFrom(x => x.Author))
+                .ForMember(x => x.Category, opt => opt.MapFrom(x => x.Category))
+                .ForMember(x => x.Status, opt => opt.MapFrom(x => x.Status))
+                .ForMember(x => x.CreatedDate, opt => opt.MapFrom(x => x.CreatedDate))
+                .ForMember(x => x.ModifiedDate, opt => opt.MapFrom(x => x.ModifiedDate));
+        }
+
+        private void CreateMapAuthor()
+        {
+            CreateMap<Author, ClawLibrary.Data.Models.Author>().ReverseMap()
+                .ForMember(x => x.Id, opt => opt.MapFrom(x => x.Id))
+                .ForMember(x => x.Key, opt => opt.MapFrom(x => x.Key))
+                .ForMember(x => x.FirstName, opt => opt.MapFrom(x => x.FirstName))
+                .ForMember(x => x.LastName, opt => opt.MapFrom(x => x.LastName))
+                .ForMember(x => x.Description, opt => opt.MapFrom(x => x.Description))
+                .ForMember(x => x.Status, opt => opt.MapFrom(x => x.Status))
+                .ForMember(x => x.CreatedDate, opt => opt.MapFrom(x => x.CreatedDate))
+                .ForMember(x => x.ModifiedDate, opt => opt.MapFrom(x => x.ModifiedDate));
+        }
+
+        private void CreateMapCategory()
+        {
+            CreateMap<Category, ClawLibrary.Data.Models.Category>().ReverseMap()
+                .ForMember(x => x.Id, opt => opt.MapFrom(x => x.Id))
+                .ForMember(x => x.Key, opt => opt.MapFrom(x => x.Key))
+                .ForMember(x => x.Name, opt => opt.MapFrom(x => x.Name))
+                .ForMember(x => x.Status, opt => opt.MapFrom(x => x.Status))
+                .ForMember(x => x.CreatedDate, opt => opt.MapFrom(x => x.CreatedDate))
+                .ForMember(x => x.ModifiedDate, opt => opt.MapFrom(x => x.ModifiedDate));
         }
 
     }

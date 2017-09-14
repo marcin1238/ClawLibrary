@@ -1,12 +1,15 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace ClawLibrary.Data.Models
 {
     public class DatabaseContext : DbContext
     {
+        public virtual DbSet<Author> Author { get; set; }
+        public virtual DbSet<Book> Book { get; set; }
+        public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<File> File { get; set; }
+        public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserRole> UserRole { get; set; }
@@ -14,11 +17,121 @@ namespace ClawLibrary.Data.Models
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
-            
-        }
 
+        }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Author>(entity =>
+            {
+                entity.HasIndex(e => new { e.FirstName, e.LastName })
+                    .HasName("IX_Author_FirstName_LastName")
+                    .IsUnique();
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(256);
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("sysdatetimeoffset()");
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(256);
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(256);
+
+                entity.Property(e => e.ModifiedBy).HasMaxLength(256);
+
+                entity.Property(e => e.ModifiedDate).HasDefaultValueSql("sysdatetimeoffset()");
+
+                entity.Property(e => e.Status)
+                    .IsRequired()
+                    .HasMaxLength(128);
+
+                entity.HasOne(d => d.ImageFile)
+                    .WithMany(p => p.Author)
+                    .HasForeignKey(d => d.ImageFileId)
+                    .HasConstraintName("FK_Author_File");
+            });
+
+            modelBuilder.Entity<Book>(entity =>
+            {
+                entity.HasIndex(e => e.Isbn)
+                    .HasName("IX_Book_ISBN")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Title)
+                    .HasName("IX_Book_Title")
+                    .IsUnique();
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(256);
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("sysdatetimeoffset()");
+
+                entity.Property(e => e.Isbn)
+                    .IsRequired()
+                    .HasColumnName("ISBN")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Language).HasMaxLength(20);
+
+                entity.Property(e => e.ModifiedBy).HasMaxLength(256);
+
+                entity.Property(e => e.ModifiedDate).HasDefaultValueSql("sysdatetimeoffset()");
+
+                entity.Property(e => e.PublishDate).HasColumnType("date");
+
+                entity.Property(e => e.Publisher).HasMaxLength(256);
+
+                entity.Property(e => e.Status)
+                    .IsRequired()
+                    .HasMaxLength(128);
+
+                entity.Property(e => e.Title)
+                    .IsRequired()
+                    .HasMaxLength(256);
+
+                entity.HasOne(d => d.Author)
+                    .WithMany(p => p.Book)
+                    .HasForeignKey(d => d.AuthorId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_Book_Author");
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.Book)
+                    .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_Book_Category");
+
+                entity.HasOne(d => d.ImageFile)
+                    .WithMany(p => p.Book)
+                    .HasForeignKey(d => d.ImageFileId)
+                    .HasConstraintName("FK_Book_File");
+            });
+
+            modelBuilder.Entity<Category>(entity =>
+            {
+                entity.HasIndex(e => e.Name)
+                    .HasName("IX_Book_Title")
+                    .IsUnique();
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(256);
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("sysdatetimeoffset()");
+
+                entity.Property(e => e.ModifiedBy).HasMaxLength(256);
+
+                entity.Property(e => e.ModifiedDate).HasDefaultValueSql("sysdatetimeoffset()");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(256);
+
+                entity.Property(e => e.Status)
+                    .IsRequired()
+                    .HasMaxLength(128);
+            });
+
             modelBuilder.Entity<File>(entity =>
             {
                 entity.HasIndex(e => e.FileName)
@@ -40,6 +153,27 @@ namespace ClawLibrary.Data.Models
                 entity.Property(e => e.Status)
                     .IsRequired()
                     .HasMaxLength(128);
+            });
+
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.Property(e => e.CreatedBy).HasMaxLength(256);
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("sysdatetimeoffset()");
+
+                entity.Property(e => e.ModifiedBy).HasMaxLength(256);
+
+                entity.Property(e => e.ModifiedDate).HasDefaultValueSql("sysdatetimeoffset()");
+
+                entity.Property(e => e.Status)
+                    .IsRequired()
+                    .HasMaxLength(128);
+
+                entity.HasOne(d => d.Book)
+                    .WithMany(p => p.Order)
+                    .HasForeignKey(d => d.BookId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_Order_Book");
             });
 
             modelBuilder.Entity<Role>(entity =>

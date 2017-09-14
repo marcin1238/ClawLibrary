@@ -27,8 +27,8 @@
             return {
                 getUser: baseUsersRoute,
                 updateUser: baseUsersRoute,
-                getUserImage: baseUsersRoute + '/picture',
-                updateUserImage: baseUsersRoute + '/picture'
+                getUserImage: baseUsersRoute + '/user/picture',
+                updateUserImage: baseUsersRoute + '/user/picture'
             }
         })());
 
