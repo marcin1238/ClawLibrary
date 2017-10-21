@@ -1,6 +1,4 @@
 using System;
-using ClawLibrary.Services.Models.Authors;
-using ClawLibrary.Services.Models.Categories;
 
 namespace ClawLibrary.Services.Models.Books
 {

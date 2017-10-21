@@ -33,6 +33,9 @@
     <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="FluentValidation, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.7.2.0\lib\net45\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.1.1.0\lib\netstandard1.1\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
     </Reference>
@@ -69,10 +72,13 @@
     <Compile Include="Models\Users\UserResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ApiServices\UsersApiService.cs" />
+    <Compile Include="Validation\Authors\AuthorRequestValidator.cs" />
+    <Compile Include="Validation\Books\BookRequestValidator.cs" />
+    <Compile Include="Validation\Books\BookUpdateRequestValidator.cs" />
+    <Compile Include="Validation\Categories\CategoryRequestValidator.cs" />
+    <Compile Include="Validation\Users\UserRequestValidator.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Validation\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\ClawLibrary.Core\ClawLibrary.Core.csproj">
       <Project>{B0EC541F-6726-4AA9-8232-1C57A1AD92C7}</Project>

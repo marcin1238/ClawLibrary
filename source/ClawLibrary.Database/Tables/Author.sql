@@ -7,7 +7,7 @@ CREATE TABLE [dbo].[Author]
 	[FirstName] NVARCHAR(256) NOT NULL,
 	[LastName] NVARCHAR(256) NOT NULL,
 
-	[Description] NVARCHAR(MAX) NULL,
+	[Description] NVARCHAR(2000) NULL,
 	
 	[ImageFileId] BIGINT NULL,
 

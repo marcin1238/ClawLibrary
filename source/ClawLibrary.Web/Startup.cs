@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using ClawLibrary.Auth;
 using ClawLibrary.Auth.Validations;
@@ -15,10 +11,9 @@ using ClawLibrary.Core.Services;
 using ClawLibrary.Data.DataServices;
 using ClawLibrary.Data.Mapping;
 using ClawLibrary.Data.Models;
-//using ClawLibrary.Data.Models;
 using ClawLibrary.Services.ApiServices;
 using ClawLibrary.Services.Mapping;
-//using ClawLibrary.Data.Models;
+using ClawLibrary.Services.Validation.Books;
 using ClawLibrary.Web.Filters;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNet.Identity;
@@ -81,6 +76,7 @@ namespace ClawLibrary.Web
                     options.SerializerSettings.Converters.Add(new StringEnumConverter());
                 })
                 .AddFluentValidation(fv => fv
+                    .RegisterValidatorsFromAssemblyContaining<BookRequestValidator>()
                     .RegisterValidatorsFromAssemblyContaining<RegisterUserRequestValidator>());
 
             services.AddAuthorization(options =>

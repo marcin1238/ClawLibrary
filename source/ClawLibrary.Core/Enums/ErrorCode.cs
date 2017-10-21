@@ -26,6 +26,7 @@ namespace ClawLibrary.Core.Enums
         AuthorDoesNotExist = 10022,
         CategoryDoesNotExist = 10023,
         BookDoesNotExist = 10024,
-        WrongStatus = 10025
+        WrongStatus = 10025,
+        InvalidIsbnCode = 10026
     }
 }

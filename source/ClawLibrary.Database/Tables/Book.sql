@@ -6,7 +6,7 @@ CREATE TABLE [dbo].[Book]
 	[Title] NVARCHAR(256) NOT NULL,
 
 	[Publisher] NVARCHAR(256) NULL,
-	[Language] NVARCHAR(20) NULL,
+	[Language] NVARCHAR(2) NOT NULL,
 
 	[ISBN] NVARCHAR(50) NOT NULL,
 	[Description] NVARCHAR(MAX) NULL,
