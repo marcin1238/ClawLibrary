@@ -4,6 +4,7 @@ using ClawLibrary.Core.Models.Authors;
 using ClawLibrary.Core.Models.Books;
 using ClawLibrary.Core.Models.Categories;
 using ClawLibrary.Core.Models.Users;
+using ClawLibrary.Services.Models.Books;
 using ClawLibrary.Services.Models.Users;
 
 namespace ClawLibrary.Services.Mapping
@@ -24,6 +25,7 @@ namespace ClawLibrary.Services.Mapping
         private void CreateMapUser()
         {
             CreateMap<User, UserResponse>().ReverseMap();
+            CreateMap<ListResponse<User>, ListResponse<UserResponse>>().ReverseMap();
             CreateMap<User, UserRequest>().ReverseMap();
         }
 
@@ -63,6 +65,8 @@ namespace ClawLibrary.Services.Mapping
                 .ForMember(x => x.Status, opt => opt.MapFrom(x => x.Status))
                 .ForMember(x => x.CreatedDate, opt => opt.MapFrom(x => x.CreatedDate))
                 .ForMember(x => x.ModifiedDate, opt => opt.MapFrom(x => x.ModifiedDate));
+
+            CreateMap<ListResponse<ClawLibrary.Core.Models.Books.Book>, ListResponse<ClawLibrary.Services.Models.Books.BookResponse>>().ReverseMap();
         }
 
         private void CreateMapAuthor()

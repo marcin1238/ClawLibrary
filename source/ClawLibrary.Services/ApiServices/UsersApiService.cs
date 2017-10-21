@@ -30,6 +30,7 @@ namespace ClawLibrary.Services.ApiServices
             _mapper = mapper;
             _logger = logger;
         }
+
         public async Task<UserResponse> GetAuthenticatedUser()
         {
             var userKey = Session.UserId;
@@ -55,17 +56,17 @@ namespace ClawLibrary.Services.ApiServices
             return _mapper.Map<User, UserResponse>(user);
         }
 
-        public async Task<List<UserResponse>> GetUsers(QueryData query)
+        public async Task<ListResponse<UserResponse>> GetUsers(QueryData query)
         {
             var userKey = Session.UserId;
             _logger.LogInformation(
                 $"GetUsers input - query: {query}");
 
-            List<User> users = await _dataService.GetUsers(userKey, query.Count, query.Offset, query.OrderBy, query.SearchString);
+            ListResponse<User> users = await _dataService.GetUsers(userKey, query.Count, query.Offset, query.OrderBy, query.SearchString);
 
-            _logger.LogInformation($"GetUsers response - users: {users.Count}");
+            _logger.LogInformation($"GetUsers response - users: {users.TotalCount}");
 
-            return _mapper.Map<List<User>, List<UserResponse>>(users);
+            return _mapper.Map<ListResponse<User>, ListResponse<UserResponse>>(users);
         }
         
         public async Task<UserResponse> UpdateUser(UserRequest model)

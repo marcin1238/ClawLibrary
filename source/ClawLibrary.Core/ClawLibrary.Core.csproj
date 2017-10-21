@@ -117,6 +117,7 @@
     <Compile Include="Models\Auth\UserVerificationRequest.cs" />
     <Compile Include="Models\Books\Book.cs" />
     <Compile Include="Models\Categories\Category.cs" />
+    <Compile Include="Models\ListResponse.cs" />
     <Compile Include="Models\Media.cs" />
     <Compile Include="Models\QueryData.cs" />
     <Compile Include="Models\Users\User.cs" />

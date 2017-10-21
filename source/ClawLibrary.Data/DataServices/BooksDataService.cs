@@ -6,6 +6,7 @@ using AutoMapper;
 using ClawLibrary.Core.DataServices;
 using ClawLibrary.Core.Enums;
 using ClawLibrary.Core.Exceptions;
+using ClawLibrary.Core.Models;
 using ClawLibrary.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Book = ClawLibrary.Core.Models.Books.Book;
@@ -54,481 +55,542 @@ namespace ClawLibrary.Data.DataServices
                 if (category == null)
                     throw new BusinessException(ErrorCode.CategoryDoesNotExist);
 
-                var newbook = new Models.Book();
-                newbook.Title = model.Title;
-                newbook.Publisher = model.Publisher;
-                newbook.Language = model.Language;
-                newbook.Isbn = model.Isbn;
-                newbook.Description = model.Description;
-                newbook.Quantity = model.Quantity;
-                newbook.Paperback = model.Paperback;
-                newbook.PublishDate = model.PublishDate;
-                newbook.Status = Status.Active.ToString();
-                newbook.CreatedDate = DateTimeOffset.Now;
-                newbook.CreatedBy = model.CreatedBy;
-                newbook.Key = Guid.NewGuid();
-                newbook.Author = author;
-                newbook.Category = category;
+                book = _mapper.Map<Book, ClawLibrary.Data.Models.Book>(model);
+                book.Key = Guid.NewGuid();
+                book.Status = Status.Active.ToString();
+                book.CreatedDate = DateTimeOffset.Now;
+                book.Author = author;
+                book.Category = category;
 
-                var createdBook = await _context.Book.AddAsync(newbook);
+                var createdBook = await _context.Book.AddAsync(book);
                 await _context.SaveChangesAsync();
                 book = createdBook.Entity;
             }
             return _mapper.Map<ClawLibrary.Data.Models.Book, Book>(book);
         }
 
-        public async Task<List<Book>> GetBooks(int? count, int? offset, string orderBy, string searchString)
+        public async Task<ListResponse<Book>> GetBooks(int? count, int? offset, string orderBy, string searchString)
         {
+            long totalCount = await _context.Book.CountAsync(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()));
+            List<Book> list;
             if (string.IsNullOrWhiteSpace(searchString))
                 switch (orderBy.ToLower())
                 {
                     case "title_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                    {
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Title)
                             .ToListAsync());
+                        break;
+                    }
                     case "publisher_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Publisher)
                             .ToListAsync());
+                        break;
                     case "language_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Language)
                             .ToListAsync());
+                        break;
                     case "isbn_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Isbn)
                             .ToListAsync());
+                        break;
                     case "description_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Description)
                             .ToListAsync());
+                        break;
                     case "quantity_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Quantity)
                             .ToListAsync());
+                        break;
                     case "paperback_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Paperback)
                             .ToListAsync());
+                        break;
                     case "publishdate_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.PublishDate)
                             .ToListAsync());
+                        break;
                     case "createddate_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.CreatedDate)
                             .ToListAsync());
+                        break;
                     case "modifieddate_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.ModifiedDate)
                             .ToListAsync());
+                        break;
                     case "title_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Title)
                             .ToListAsync());
+                        break;
                     case "publisher_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Publisher)
                             .ToListAsync());
+                        break;
                     case "language_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Language)
                             .ToListAsync());
+                        break;
                     case "isbn_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Isbn)
                             .ToListAsync());
+                        break;
                     case "description_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Description)
                             .ToListAsync());
+                        break;
                     case "quantity_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Quantity)
                             .ToListAsync());
+                        break;
                     case "paperback_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Paperback)
                             .ToListAsync());
+                        break;
                     case "publishdate_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.PublishDate)
                             .ToListAsync());
+                        break;
                     case "createddate_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.CreatedDate)
                             .ToListAsync());
+                        break;
                     case "modifieddate_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.ModifiedDate)
                             .ToListAsync());
+                        break;
                     default:
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .ToListAsync());
+                        break;
                 }
             else
                 switch (orderBy.ToLower())
                 {
                     case "title_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
+                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Title)
                             .ToListAsync());
+                        break;
                     case "publisher_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Publisher)
                             .ToListAsync());
+                        break;
                     case "language_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Language)
                             .ToListAsync());
+                        break;
                     case "isbn_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Isbn)
                             .ToListAsync());
+                        break;
                     case "description_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Description)
                             .ToListAsync());
+                        break;
                     case "quantity_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Quantity)
                             .ToListAsync());
+                        break;
                     case "paperback_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Paperback)
                             .ToListAsync());
+                        break;
                     case "publishdate_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.PublishDate)
                             .ToListAsync());
+                        break;
                     case "createddate_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.CreatedDate)
                             .ToListAsync());
+                        break;
                     case "modifieddate_asc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.ModifiedDate)
                             .ToListAsync());
+                        break;
                     case "title_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Title)
                             .ToListAsync());
+                        break;
                     case "publisher_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Publisher)
                             .ToListAsync());
+                        break;
                     case "language_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Language)
                             .ToListAsync());
+                        break;
                     case "isbn_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Isbn)
                             .ToListAsync());
+                        break;
                     case "description_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Description)
                             .ToListAsync());
+                        break;
                     case "quantity_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Quantity)
                             .ToListAsync());
+                        break;
                     case "paperback_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Paperback)
                             .ToListAsync());
+                        break;
                     case "publishdate_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.PublishDate)
                             .ToListAsync());
+                        break;
                     case "createddate_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.CreatedDate)
                             .ToListAsync());
+                        break;
                     case "modifieddate_desc":
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.ModifiedDate)
                             .ToListAsync());
+                        break;
                     default:
-                        return _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
+                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
+                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Isbn.ToLower().Contains(searchString.ToLower()) ||
+                                                                                                            x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .ToListAsync());
+                        break;
                 }
+            return new ListResponse<Book>(list, totalCount);
 
         }
 
         public async Task<Book> UpdateBook(Book model)
         {
             var book = await _context.Book.FirstAsync(x => (x.Key.ToString().ToLower().Equals(model.Key.ToLower())));
+
             if (book == null)
                 throw new BusinessException(ErrorCode.BookDoesNotExist);
 
@@ -546,18 +608,11 @@ namespace ClawLibrary.Data.DataServices
             if (category == null)
                 throw new BusinessException(ErrorCode.CategoryDoesNotExist);
 
-            book.Title = model.Title;
-            book.Publisher = model.Publisher;
-            book.Language = model.Language;
-            book.Isbn = model.Isbn;
-            book.Description = model.Description;
-            book.Quantity = model.Quantity;
-            book.Paperback = model.Paperback;
-            book.PublishDate = model.PublishDate;
+            book = _mapper.Map<Book, ClawLibrary.Data.Models.Book>(model);
+            
             Status status;
             book.Status = Enum.TryParse(model.Status, true, out status) ? status.ToString() : throw new BusinessException(ErrorCode.WrongStatus);
             book.ModifiedDate = DateTimeOffset.Now;
-            book.ModifiedBy = model.ModifiedBy;
             book.Author = author;
             book.Category = category;
 

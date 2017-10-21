@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ClawLibrary.Core.Models;
 using ClawLibrary.Core.Models.Users;
 
 namespace ClawLibrary.Core.DataServices
@@ -25,7 +26,7 @@ namespace ClawLibrary.Core.DataServices
         /// <param name="orderBy">Order the result set of a query by the specified column</param>
         /// <param name="searchString">User first name or last name or email</param>
         /// <returns>List of users</returns>
-        Task<List<User>> GetUsers(string userKey, int? count, int? offset, string orderBy, string searchString);
+        Task<ListResponse<User>> GetUsers(string userKey, int? count, int? offset, string orderBy, string searchString);
 
         /// <summary>
         /// Updates authenticated user.

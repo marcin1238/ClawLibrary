@@ -31,7 +31,7 @@ namespace ClawLibrary.Core.DataServices
         /// <param name="orderBy">Order the result set of a query by the specified column</param>
         /// <param name="searchString">User first name or last name or email</param>
         /// <returns>List of books</returns>
-        Task<List<Book>> GetBooks(int? count, int? offset, string orderBy, string searchString);
+        Task<ListResponse<Book>> GetBooks(int? count, int? offset, string orderBy, string searchString);
 
         /// <summary>
         /// Updates the book with specified key (if one is present).

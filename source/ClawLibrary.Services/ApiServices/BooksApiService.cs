@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
@@ -61,16 +60,16 @@ namespace ClawLibrary.Services.ApiServices
             return _mapper.Map<Book, BookResponse>(book);
         }
 
-        public async Task<List<BookResponse>> GetBooks(QueryData query)
+        public async Task<ListResponse<BookResponse>> GetBooks(QueryData query)
         {
             _logger.LogInformation(
                 $"GetBooks input - query: {query}");
 
-            List<Book> books = await _dataService.GetBooks(query.Count, query.Offset, query.OrderBy, query.SearchString);
+            ListResponse<Book> books = await _dataService.GetBooks(query.Count, query.Offset, query.OrderBy, query.SearchString);
 
-            _logger.LogInformation($"GetBooks response - users: {books.Count}");
+            _logger.LogInformation($"GetBooks response - users: {books.TotalCount}");
 
-            return _mapper.Map<List<Book>, List<BookResponse>>(books);
+            return _mapper.Map<ListResponse<Book>, ListResponse<BookResponse>>(books);
         }
 
         public async Task<BookResponse> UpdateBook(string bookKey, BookUpdateRequest model)
