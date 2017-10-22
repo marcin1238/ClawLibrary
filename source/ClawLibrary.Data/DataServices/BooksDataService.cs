@@ -26,29 +26,35 @@ namespace ClawLibrary.Data.DataServices
 
         public async Task<Book> GetBookByKey(string bookKey)
         {
-            var book = await _context.Book
-                .FirstAsync(x => x.Key.ToString().ToLower().Equals(bookKey.ToLower()) 
-                && x.Status.ToLower().Equals(Status.Active.ToString().ToLower()));
+            if (!string.IsNullOrEmpty(bookKey))
+            {
+                var book = await _context.Book
+                    .FirstOrDefaultAsync(x => x.Key.ToString().ToLower().Equals(bookKey.ToLower())
+                                              && (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
+                    );
 
-            return _mapper.Map<ClawLibrary.Data.Models.Book, Book>(book);
+                return _mapper.Map<ClawLibrary.Data.Models.Book, Book>(book);
+            }
+            throw new BusinessException(ErrorCode.InvalidValue, "Book key is null or empty");
+
         }
 
         public async Task<Book> CreateBook(Book model)
         {
             var book = await _context.Book.FirstOrDefaultAsync(x => (x.Title.ToString().ToLower().Equals(model.Title.ToLower()) ||
-                                                           x.Isbn.ToString().ToLower().Equals(model.Isbn.ToLower())) &&
-                                                           x.Status.ToLower().Equals(Status.Active.ToString().ToLower()));
-
+                                                           x.Isbn.ToString().ToLower().Equals(model.Isbn.ToLower())) &&(
+                                                           !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
+                                                           );
             if (book == null)
             {
-                var author = await _context.Author.FirstAsync(
+                var author = await _context.Author.FirstOrDefaultAsync(
                     x => x.Key.ToString().ToLower().Equals(model.Author.Key.ToString().ToLower()) &&
                          x.Status.ToLower().Equals(Status.Active.ToString().ToLower()));
 
                 if (author == null)
                     throw new BusinessException(ErrorCode.AuthorDoesNotExist);
 
-                var category = await _context.Category.FirstAsync(
+                var category = await _context.Category.FirstOrDefaultAsync(
                     x => x.Key.ToString().ToLower().Equals(model.Category.Key.ToString().ToLower()) &&
                          x.Status.ToLower().Equals(Status.Active.ToString().ToLower()));
 
@@ -65,8 +71,9 @@ namespace ClawLibrary.Data.DataServices
                 var createdBook = await _context.Book.AddAsync(book);
                 await _context.SaveChangesAsync();
                 book = createdBook.Entity;
+                return _mapper.Map<ClawLibrary.Data.Models.Book, Book>(book);
             }
-            return _mapper.Map<ClawLibrary.Data.Models.Book, Book>(book);
+            throw new BusinessException(ErrorCode.AlreadyExist, $"Book with key {book.Key} already exist!");
         }
 
         public async Task<ListResponse<Book>> GetBooks(int? count, int? offset, string orderBy, string searchString)
@@ -589,19 +596,19 @@ namespace ClawLibrary.Data.DataServices
 
         public async Task<Book> UpdateBook(Book model)
         {
-            var book = await _context.Book.FirstAsync(x => (x.Key.ToString().ToLower().Equals(model.Key.ToLower())));
+            var book = await _context.Book.FirstOrDefaultAsync(x => (x.Key.ToString().ToLower().Equals(model.Key.ToLower())));
 
             if (book == null)
                 throw new BusinessException(ErrorCode.BookDoesNotExist);
 
-            var author = await _context.Author.FirstAsync(
+            var author = await _context.Author.FirstOrDefaultAsync(
                 x => x.Key.ToString().ToLower().Equals(model.Author.Key.ToString().ToLower()) &&
                      x.Status.ToLower().Equals(Status.Active.ToString().ToLower()));
 
             if (author == null)
                 throw new BusinessException(ErrorCode.AuthorDoesNotExist);
 
-            var category = await _context.Category.FirstAsync(
+            var category = await _context.Category.FirstOrDefaultAsync(
                 x => x.Key.ToString().ToLower().Equals(model.Category.Key.ToString().ToLower()) &&
                      x.Status.ToLower().Equals(Status.Active.ToString().ToLower()));
 
@@ -625,7 +632,7 @@ namespace ClawLibrary.Data.DataServices
         public async Task UpdatePicture(string fileName, string bookKey, string modifiedBy)
         {
             File file;
-            var book = await _context.Book.Include("ImageFile").FirstAsync(x => x.Key.ToString() == bookKey && x.Status == Status.Active.ToString());
+            var book = await _context.Book.Include("ImageFile").FirstOrDefaultAsync(x => x.Key.ToString() == bookKey && x.Status == Status.Active.ToString());
 
             if (book == null)
                 throw new BusinessException(ErrorCode.BookDoesNotExist);
@@ -657,7 +664,7 @@ namespace ClawLibrary.Data.DataServices
 
         public async Task<string> GetPicture(string bookKey)
         {
-            var user = await _context.Book.Include("ImageFile").FirstAsync(x => x.Key.ToString() == bookKey && x.Status == Status.Active.ToString());
+            var user = await _context.Book.Include("ImageFile").FirstOrDefaultAsync(x => x.Key.ToString() == bookKey && x.Status == Status.Active.ToString());
 
             if (user == null)
                 throw new BusinessException(ErrorCode.BookDoesNotExist);

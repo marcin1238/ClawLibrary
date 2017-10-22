@@ -30,7 +30,7 @@ namespace ClawLibrary.Data.Models
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("sysdatetimeoffset()");
+                entity.Property(e => e.CreatedDate);
 
                 entity.Property(e => e.FirstName)
                     .IsRequired()
@@ -42,7 +42,7 @@ namespace ClawLibrary.Data.Models
 
                 entity.Property(e => e.ModifiedBy).HasMaxLength(256);
 
-                entity.Property(e => e.ModifiedDate).HasDefaultValueSql("sysdatetimeoffset()");
+                entity.Property(e => e.ModifiedDate);
 
                 entity.Property(e => e.Status)
                     .IsRequired()
@@ -66,7 +66,7 @@ namespace ClawLibrary.Data.Models
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("sysdatetimeoffset()");
+                entity.Property(e => e.CreatedDate);
 
                 entity.Property(e => e.Isbn)
                     .IsRequired()
@@ -77,9 +77,9 @@ namespace ClawLibrary.Data.Models
 
                 entity.Property(e => e.ModifiedBy).HasMaxLength(256);
 
-                entity.Property(e => e.ModifiedDate).HasDefaultValueSql("sysdatetimeoffset()");
+                entity.Property(e => e.ModifiedDate);
 
-                entity.Property(e => e.PublishDate).HasColumnType("date");
+                entity.Property(e => e.PublishDate);
 
                 entity.Property(e => e.Publisher).HasMaxLength(256);
 
@@ -94,13 +94,11 @@ namespace ClawLibrary.Data.Models
                 entity.HasOne(d => d.Author)
                     .WithMany(p => p.Book)
                     .HasForeignKey(d => d.AuthorId)
-                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Book_Author");
 
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Book)
                     .HasForeignKey(d => d.CategoryId)
-                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Book_Category");
 
                 entity.HasOne(d => d.ImageFile)
@@ -117,11 +115,11 @@ namespace ClawLibrary.Data.Models
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("sysdatetimeoffset()");
+                entity.Property(e => e.CreatedDate);
 
                 entity.Property(e => e.ModifiedBy).HasMaxLength(256);
 
-                entity.Property(e => e.ModifiedDate).HasDefaultValueSql("sysdatetimeoffset()");
+                entity.Property(e => e.ModifiedDate);
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -140,7 +138,7 @@ namespace ClawLibrary.Data.Models
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("sysdatetimeoffset()");
+                entity.Property(e => e.CreatedDate);
 
                 entity.Property(e => e.FileName)
                     .IsRequired()
@@ -148,7 +146,7 @@ namespace ClawLibrary.Data.Models
 
                 entity.Property(e => e.ModifiedBy).HasMaxLength(256);
 
-                entity.Property(e => e.ModifiedDate).HasDefaultValueSql("sysdatetimeoffset()");
+                entity.Property(e => e.ModifiedDate);
 
                 entity.Property(e => e.Status)
                     .IsRequired()
@@ -159,11 +157,11 @@ namespace ClawLibrary.Data.Models
             {
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("sysdatetimeoffset()");
+                entity.Property(e => e.CreatedDate);
 
                 entity.Property(e => e.ModifiedBy).HasMaxLength(256);
 
-                entity.Property(e => e.ModifiedDate).HasDefaultValueSql("sysdatetimeoffset()");
+                entity.Property(e => e.ModifiedDate);
 
                 entity.Property(e => e.Status)
                     .IsRequired()
@@ -172,7 +170,6 @@ namespace ClawLibrary.Data.Models
                 entity.HasOne(d => d.Book)
                     .WithMany(p => p.Order)
                     .HasForeignKey(d => d.BookId)
-                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Order_Book");
             });
 
@@ -184,11 +181,11 @@ namespace ClawLibrary.Data.Models
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("sysdatetimeoffset()");
+                entity.Property(e => e.CreatedDate);
 
                 entity.Property(e => e.ModifiedBy).HasMaxLength(256);
 
-                entity.Property(e => e.ModifiedDate).HasDefaultValueSql("sysdatetimeoffset()");
+                entity.Property(e => e.ModifiedDate);
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -207,7 +204,7 @@ namespace ClawLibrary.Data.Models
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("sysdatetimeoffset()");
+                entity.Property(e => e.CreatedDate);
 
                 entity.Property(e => e.Email)
                     .IsRequired()
@@ -223,7 +220,7 @@ namespace ClawLibrary.Data.Models
 
                 entity.Property(e => e.ModifiedBy).HasMaxLength(256);
 
-                entity.Property(e => e.ModifiedDate).HasDefaultValueSql("sysdatetimeoffset()");
+                entity.Property(e => e.ModifiedDate);
 
                 entity.Property(e => e.PasswordResetKey).HasMaxLength(72);
 
@@ -247,11 +244,11 @@ namespace ClawLibrary.Data.Models
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("sysdatetimeoffset()");
+                entity.Property(e => e.CreatedDate);
 
                 entity.Property(e => e.ModifiedBy).HasMaxLength(256);
 
-                entity.Property(e => e.ModifiedDate).HasDefaultValueSql("sysdatetimeoffset()");
+                entity.Property(e => e.ModifiedDate);
 
                 entity.Property(e => e.Status)
                     .IsRequired()
@@ -260,13 +257,11 @@ namespace ClawLibrary.Data.Models
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.UserRole)
                     .HasForeignKey(d => d.RoleId)
-                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FKUserRole_RoleId");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserRole)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FKUserRole_UserId");
             });
         }

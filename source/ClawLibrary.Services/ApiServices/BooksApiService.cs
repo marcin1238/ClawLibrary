@@ -41,6 +41,9 @@ namespace ClawLibrary.Services.ApiServices
 
             Book book = await _dataService.GetBookByKey(bookKey);
 
+            if (book == null)
+                throw new BusinessException(ErrorCode.BookDoesNotExist, $"Book with key {bookKey} does not exists!");
+
             _logger.LogInformation($"GetBookByKey response - book: {book}");
 
             return _mapper.Map<Book, BookResponse>(book);
@@ -56,6 +59,10 @@ namespace ClawLibrary.Services.ApiServices
             dto.Category = new Category() { Key = model.CategoryKey };
             dto.CreatedBy = user;
             Book book = await _dataService.CreateBook(dto);
+
+            if (book == null)
+                throw new BusinessException(ErrorCode.InternalError, "Book has not been created!");
+
             _logger.LogInformation($"CreateBook response - book: {book}");
             return _mapper.Map<Book, BookResponse>(book);
         }

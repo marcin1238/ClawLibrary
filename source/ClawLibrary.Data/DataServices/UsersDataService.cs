@@ -28,7 +28,7 @@ namespace ClawLibrary.Data.DataServices
         public async Task<User> GetByKey(string userKey)
         {
             var user = await _context.User
-                .FirstAsync(x => x.Key.ToString() == userKey && x.Status.ToLower().Equals(Status.Active.ToString().ToLower()));
+                .FirstOrDefaultAsync(x => x.Key.ToString() == userKey && x.Status.ToLower().Equals(Status.Active.ToString().ToLower()));
 
             return _mapper.Map<ClawLibrary.Data.Models.User, User>(user);
         }
@@ -308,7 +308,7 @@ namespace ClawLibrary.Data.DataServices
 
         public async Task<User> Update(User model, string userKey)
         {
-            var user = await _context.User.FirstAsync(x => x.Key.ToString() == userKey && x.Status == Status.Active.ToString());
+            var user = await _context.User.FirstOrDefaultAsync(x => x.Key.ToString() == userKey && x.Status == Status.Active.ToString());
 
             if (user == null)
                 throw new BusinessException(ErrorCode.UserDoesNotExist);
@@ -327,7 +327,7 @@ namespace ClawLibrary.Data.DataServices
 
         public async Task<string> GetPicture(string userKey)
         {
-            var user = await _context.User.Include("ImageFile").FirstAsync(x => x.Key.ToString() == userKey && x.Status == Status.Active.ToString());
+            var user = await _context.User.Include("ImageFile").FirstOrDefaultAsync(x => x.Key.ToString() == userKey && x.Status == Status.Active.ToString());
 
             if (user == null)
                 throw new BusinessException(ErrorCode.UserDoesNotExist);
@@ -340,7 +340,7 @@ namespace ClawLibrary.Data.DataServices
         public async Task UpdatePicture(string fileName, string userKey)
         {
             File file;
-            var user = await _context.User.Include("ImageFile").FirstAsync(x => x.Key.ToString() == userKey && x.Status == Status.Active.ToString());
+            var user = await _context.User.Include("ImageFile").FirstOrDefaultAsync(x => x.Key.ToString() == userKey && x.Status == Status.Active.ToString());
 
             if (user == null)
                 throw new BusinessException(ErrorCode.UserDoesNotExist);
