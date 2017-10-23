@@ -78,7 +78,7 @@ namespace ClawLibrary.Data.DataServices
 
         public async Task<ListResponse<Book>> GetBooks(int? count, int? offset, string orderBy, string searchString)
         {
-            long totalCount = await _context.Book.CountAsync(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()));
+            long totalCount = await _context.Book.CountAsync(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()));
             List<Book> list;
             if (string.IsNullOrWhiteSpace(searchString))
                 switch (orderBy.ToLower())
@@ -89,7 +89,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Title)
@@ -101,7 +101,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Publisher)
@@ -112,7 +112,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Language)
@@ -123,7 +123,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Isbn)
@@ -134,7 +134,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Description)
@@ -145,7 +145,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Quantity)
@@ -156,7 +156,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Paperback)
@@ -167,7 +167,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.PublishDate)
@@ -178,7 +178,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.CreatedDate)
@@ -189,7 +189,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.ModifiedDate)
@@ -200,7 +200,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Title)
@@ -211,7 +211,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Publisher)
@@ -222,7 +222,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Language)
@@ -233,7 +233,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Isbn)
@@ -244,7 +244,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Description)
@@ -255,7 +255,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Quantity)
@@ -266,7 +266,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.Paperback)
@@ -277,7 +277,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.PublishDate)
@@ -288,7 +288,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.CreatedDate)
@@ -299,7 +299,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.ModifiedDate)
@@ -310,7 +310,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .ToListAsync());
@@ -324,7 +324,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => x.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderBy(x => x.Title)
@@ -335,7 +335,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                         x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                         x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -348,7 +348,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -361,7 +361,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -374,7 +374,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -387,7 +387,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -400,7 +400,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -413,7 +413,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -426,7 +426,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -439,7 +439,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -452,7 +452,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -465,7 +465,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -478,7 +478,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -491,7 +491,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -504,7 +504,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -517,7 +517,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -530,7 +530,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -543,7 +543,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -556,7 +556,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -569,7 +569,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -582,7 +582,7 @@ namespace ClawLibrary.Data.DataServices
                             .Book
                             .Include("Author")
                             .Include("Category")
-                            .Where(x => (x.Status.ToLower().Equals(Status.Active.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
+                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Isbn.ToLower().Contains(searchString.ToLower()) ||
                                                                                                             x.Publisher.ToLower().Contains(searchString.ToLower())))
                             .Skip(offset ?? 0)
@@ -603,14 +603,14 @@ namespace ClawLibrary.Data.DataServices
 
             var author = await _context.Author.FirstOrDefaultAsync(
                 x => x.Key.ToString().ToLower().Equals(model.Author.Key.ToString().ToLower()) &&
-                     x.Status.ToLower().Equals(Status.Active.ToString().ToLower()));
+                     !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()));
 
             if (author == null)
                 throw new BusinessException(ErrorCode.AuthorDoesNotExist);
 
             var category = await _context.Category.FirstOrDefaultAsync(
                 x => x.Key.ToString().ToLower().Equals(model.Category.Key.ToString().ToLower()) &&
-                     x.Status.ToLower().Equals(Status.Active.ToString().ToLower()));
+                     !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()));
 
             if (category == null)
                 throw new BusinessException(ErrorCode.CategoryDoesNotExist);
