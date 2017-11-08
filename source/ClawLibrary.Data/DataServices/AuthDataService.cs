@@ -24,12 +24,17 @@ namespace ClawLibrary.Data.DataServices
             _context = context;
         }
 
-        public async Task<User> GetUser(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
-            var user = await _context.User
-                .FirstOrDefaultAsync(x => x.Email.ToLower().Equals(email.ToLower()));
+            if (!string.IsNullOrWhiteSpace(email))
+            {
+                var user = await _context.User
+                    .FirstOrDefaultAsync(x => x.Email.ToLower().Equals(email.ToLower()) &&
+                                              (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())));
 
-            return _mapper.Map<ClawLibrary.Data.Models.User, User>(user);
+                return _mapper.Map<ClawLibrary.Data.Models.User, User>(user);
+            }
+            throw new BusinessException(ErrorCode.InvalidValue, "User email is null or empty");
         }
 
         public Task<List<string>> GetUserRoles(long userId)
@@ -43,51 +48,58 @@ namespace ClawLibrary.Data.DataServices
             return roles;
         }
 
-        public async Task<User> RegisterUser(RegisterUserRequest request, string hashedPassword, string salt)
+        public async Task<User> RegisterUser(User model, string hashedPassword, string salt)
         {
-            var userKey = Guid.NewGuid();
+            var user = await _context.User.FirstOrDefaultAsync(
+                x => (x.Email.ToString().ToLower().Equals(model.Email.ToLower()) ||
+                      x.PhoneNumber.ToString().ToLower().Equals(model.PhoneNumber.ToLower())) && (
+                         !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())));
 
-            var user = _mapper
-                .Map<RegisterUserRequest, Models.User>(request);
-
-            user.CreatedDate = DateTimeOffset.Now;
-            user.CreatedBy = user.Email;
-            user.PasswordHash = hashedPassword;
-            user.PasswordSalt = salt;
-            user.Key = userKey;
-            user.Status = Status.Pending.ToString();
-
-            var createdUser = await _context.User.AddAsync(user);
-
-            var roles = await _context.Role.Where(x => x.Status == Status.Active.ToString())
-                .ToListAsync();
-
-            foreach (var role in roles)
+            if (user == null)
             {
-                var userRole = new UserRole
+                user = _mapper.Map<User, Models.User>(model);
+
+                user.CreatedDate = DateTimeOffset.Now;
+                user.CreatedBy = user.Email;
+                user.PasswordHash = hashedPassword;
+                user.PasswordSalt = salt;
+                user.Key = Guid.NewGuid();
+                user.Status = Status.Pending.ToString();
+
+                var createdUser = await _context.User.AddAsync(user);
+
+                var roles = await _context.Role.Where(x => x.Status == Status.Active.ToString())
+                    .ToListAsync();
+
+                var lastId = await _context.UserRole.OrderByDescending(x => x.Id).Select(x => x.Id).FirstOrDefaultAsync();
+
+                foreach (var role in roles)
                 {
-                    Key = Guid.NewGuid(),
-                    User = createdUser.Entity,
-                    Role = role,
-                    CreatedBy = "System",
-                    CreatedDate = DateTimeOffset.Now,
-                    Status = role.Name == Core.Enums.Role.Regular.ToString()
-                        ? Status.Active.ToString()
-                        : Status.Inactive.ToString(),
-                };
+                    lastId++;
+                    var userRole = new UserRole
+                    {
+                        Id = lastId > 0 ? lastId + 1 : 1,
+                        Key = Guid.NewGuid(),
+                        User = createdUser.Entity,
+                        Role = role,
+                        CreatedBy = "System",
+                        CreatedDate = DateTimeOffset.Now,
+                        Status = role.Name == Core.Enums.Role.Regular.ToString()
+                            ? Status.Active.ToString()
+                            : Status.Inactive.ToString(),
+                    };
 
-                await _context.UserRole.AddAsync(userRole);
+                    await _context.UserRole.AddAsync(userRole);
+                }
+                await _context.SaveChangesAsync();
+                return _mapper.Map<ClawLibrary.Data.Models.User, User>(createdUser.Entity);
             }
-
-            await _context.SaveChangesAsync();
-
-
-            return _mapper.Map<ClawLibrary.Data.Models.User, User>(createdUser.Entity);
+            throw new BusinessException(ErrorCode.AlreadyExist, $"User with email {user.Email} already exist!");
         }
 
         public async Task VerifyUser(long userId)
         {
-            var user = await _context.User.FirstOrDefaultAsync(x => x.Id == userId);
+            var user = await _context.User.FirstOrDefaultAsync(x => x.Id == userId && (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())));
 
             if (user == null)
                 throw new BusinessException(ErrorCode.UserDoesNotExist);
@@ -104,7 +116,7 @@ namespace ClawLibrary.Data.DataServices
 
         public async Task ResetPassword(long userId, string hashedPassword, string salt)
         {
-            var user = await _context.User.FirstOrDefaultAsync(x => x.Id == userId && x.Status == Status.Active.ToString());
+            var user = await _context.User.FirstOrDefaultAsync(x => x.Id == userId && (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())));
 
             if (user == null)
                 throw new BusinessException(ErrorCode.UserDoesNotExist);
@@ -122,7 +134,7 @@ namespace ClawLibrary.Data.DataServices
 
         public async Task CreatePasswordResetKey(long userId, string passwordResetKey)
         {
-            var user = await _context.User.FirstOrDefaultAsync(x => x.Id == userId && x.Status == Status.Active.ToString());
+            var user = await _context.User.FirstOrDefaultAsync(x => x.Id == userId && (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())));
 
             if (user == null)
                 throw new BusinessException(ErrorCode.UserDoesNotExist);

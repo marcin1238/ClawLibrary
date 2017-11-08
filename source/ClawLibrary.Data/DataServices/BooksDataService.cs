@@ -607,82 +607,124 @@ namespace ClawLibrary.Data.DataServices
 
         public async Task<Book> UpdateBook(Book model)
         {
-            var book = await _context.Book.FirstOrDefaultAsync(x => (x.Key.ToString().ToLower().Equals(model.Key.ToLower())));
+            if (!string.IsNullOrEmpty(model.Key))
+            {
+                var book =
+                    await _context.Book.FirstOrDefaultAsync(
+                        x => (x.Key.ToString().ToLower().Equals(model.Key.ToLower())));
 
-            if (book == null)
-                throw new BusinessException(ErrorCode.BookDoesNotExist);
+                if (book == null)
+                    throw new BusinessException(ErrorCode.BookDoesNotExist);
 
-            var author = await _context.Author.FirstOrDefaultAsync(
-                x => x.Key.ToString().ToLower().Equals(model.Author.Key.ToString().ToLower()) &&
-                     !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()));
+                if (string.IsNullOrEmpty(model.Author?.Key))
+                    throw new BusinessException(ErrorCode.AuthorDoesNotExist);
 
-            if (author == null)
-                throw new BusinessException(ErrorCode.AuthorDoesNotExist);
+                var author = await _context.Author.FirstOrDefaultAsync(
+                    x => x.Key.ToString().ToLower().Equals(model.Author.Key.ToString().ToLower()) &&
+                         !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()));
 
-            var category = await _context.Category.FirstOrDefaultAsync(
-                x => x.Key.ToString().ToLower().Equals(model.Category.Key.ToString().ToLower()) &&
-                     !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()));
+                if (author == null)
+                    throw new BusinessException(ErrorCode.AuthorDoesNotExist);
 
-            if (category == null)
-                throw new BusinessException(ErrorCode.CategoryDoesNotExist);
+                if (string.IsNullOrEmpty(model.Category?.Key))
+                    throw new BusinessException(ErrorCode.CategoryDoesNotExist);
 
-            book = _mapper.Map<Book, ClawLibrary.Data.Models.Book>(model);
-            
-            Status status;
-            book.Status = Enum.TryParse(model.Status, true, out status) ? status.ToString() : throw new BusinessException(ErrorCode.WrongStatus);
-            book.ModifiedDate = DateTimeOffset.Now;
-            book.Author = author;
-            book.Category = category;
+                var category = await _context.Category.FirstOrDefaultAsync(
+                    x => x.Key.ToString().ToLower().Equals(model.Category.Key.ToString().ToLower()) &&
+                         !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()));
 
-            book = _context.Book.Update(book).Entity;
-            await _context.SaveChangesAsync();
+                if (category == null)
+                    throw new BusinessException(ErrorCode.CategoryDoesNotExist);
 
-            return _mapper.Map<ClawLibrary.Data.Models.Book, Book>(book);
+                Status status;
+                book.Title = model.Title;
+                book.Publisher = model.Publisher;
+                book.Language = model.Language;
+                book.Isbn = model.Isbn;
+                book.Description = model.Description;
+                book.Quantity = model.Quantity;
+                book.Paperback = model.Paperback;
+                book.PublishDate = model.PublishDate;
+                book.ModifiedBy = model.ModifiedBy;
+                book.Status = Enum.TryParse(model.Status, out status)
+                    ? status.ToString()
+                    : throw new BusinessException(ErrorCode.WrongStatus);
+                book.ModifiedDate = DateTimeOffset.Now;
+                book.Author = author;
+                book.Category = category;
+
+                book = _context.Book.Update(book).Entity;
+                await _context.SaveChangesAsync();
+
+                return _mapper.Map<ClawLibrary.Data.Models.Book, Book>(book);
+            }
+            throw new BusinessException(ErrorCode.InvalidValue, "Book key is null or empty");
         }
 
         public async Task UpdatePicture(string fileName, string bookKey, string modifiedBy)
         {
             File file;
-            var book = await _context.Book.Include("ImageFile").FirstOrDefaultAsync(x => x.Key.ToString() == bookKey && x.Status == Status.Active.ToString());
-
-            if (book == null)
-                throw new BusinessException(ErrorCode.BookDoesNotExist);
-
-            if (book.ImageFile == null)
+            if (!string.IsNullOrEmpty(bookKey))
             {
-                file = new File();
-                file.FileName = fileName;
-                file.Key = Guid.NewGuid();
-                file.CreatedBy = modifiedBy;
-                file.CreatedDate = DateTimeOffset.Now;
-                file.Status = Status.Active.ToString();
+                var book = await _context.Book.Include("ImageFile")
+                    .FirstOrDefaultAsync(x => x.Key.ToString().ToLower().Equals(bookKey.ToLower())
+                                && (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())));
+
+                if (book == null)
+                    throw new BusinessException(ErrorCode.BookDoesNotExist);
+
+                if (book.ImageFile == null)
+                {
+                    var lastId = await _context.File.OrderByDescending(x => x.Id).Select(x => x.Id).FirstOrDefaultAsync();
+                    file = new File();
+                    file.Id = lastId > 0 ? lastId + 1 : 1;
+                    file.FileName = fileName;
+                    file.Key = Guid.NewGuid();
+                    file.CreatedBy = modifiedBy;
+                    file.CreatedDate = DateTimeOffset.Now;
+                    file.Status = Status.Active.ToString();
+                    await _context.File.AddAsync(file);
+                }
+                else
+                {
+                    file = book.ImageFile;
+                    file.FileName = fileName;
+                    file.ModifiedBy = modifiedBy;
+                    file.ModifiedDate = DateTimeOffset.Now;
+                    _context.File.Update(file);
+                }
+
+                
+
+                book.ImageFile = file;
+                book.ModifiedBy = modifiedBy;
+                book.ModifiedDate = DateTimeOffset.Now;
+
+                _context.Book.Update(book);
+                await _context.SaveChangesAsync();
             }
             else
-            {
-                file = book.ImageFile;
-                file.FileName = fileName;
-                file.ModifiedBy = modifiedBy;
-                file.ModifiedDate = DateTimeOffset.Now;
-            }
-
-            book.ImageFile = file;
-            book.ModifiedBy = modifiedBy;
-            book.ModifiedDate = DateTimeOffset.Now;
-
-            _context.Book.Update(book);
-            await _context.SaveChangesAsync();
+                throw new BusinessException(ErrorCode.InvalidValue, "Book key is null or empty");
         }
 
-        public async Task<string> GetPicture(string bookKey)
+        public async Task<string> GetFileNameOfBookPicture(string bookKey)
         {
-            var user = await _context.Book.Include("ImageFile").FirstOrDefaultAsync(x => x.Key.ToString() == bookKey && x.Status == Status.Active.ToString());
+            if (!string.IsNullOrEmpty(bookKey))
+            {
+                var book = await _context.Book.Include("ImageFile")
+                    .FirstOrDefaultAsync(x => x.Key.ToString().ToLower().Equals(bookKey.ToLower())
+                                              && (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())));
 
-            if (user == null)
-                throw new BusinessException(ErrorCode.BookDoesNotExist);
+                if (book == null)
+                    throw new BusinessException(ErrorCode.BookDoesNotExist);
 
-            if (user.ImageFile == null)
-                return string.Empty;
-            return user.ImageFile.FileName;
+                if (book.ImageFile == null)
+                    return string.Empty;
+
+                return book.ImageFile.FileName;
+            }
+            else
+                throw new BusinessException(ErrorCode.InvalidValue, "Book key is null or empty");
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using ClawLibrary.Auth;
 using ClawLibrary.Core.Models.Auth;
+using ClawLibrary.Services.ApiServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClawLibrary.Web.Controllers
@@ -11,13 +11,13 @@ namespace ClawLibrary.Web.Controllers
     [Route("api/")]
     public class AuthorizationController : Controller
     {
-        private readonly IAuthService _authService;
+        private readonly IAuthApiService _authService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthorizationController"/> class.
         /// </summary>
         /// <param name="authService">Authorization service</param>
-        public AuthorizationController(IAuthService authService)
+        public AuthorizationController(IAuthApiService authService)
         {
             _authService = authService;
         }

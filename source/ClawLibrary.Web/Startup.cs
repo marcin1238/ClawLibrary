@@ -1,9 +1,8 @@
 ﻿using System.IO;
 using System.Text;
 using AutoMapper;
-using ClawLibrary.Auth;
-using ClawLibrary.Auth.Validations;
 using ClawLibrary.Core.DataServices;
+using ClawLibrary.Core.Extensions;
 using ClawLibrary.Core.MediaStorage;
 using ClawLibrary.Core.Middlewares;
 using ClawLibrary.Core.Models.Auth;
@@ -14,6 +13,7 @@ using ClawLibrary.Data.Models;
 using ClawLibrary.Services.ApiServices;
 using ClawLibrary.Services.Mapping;
 using ClawLibrary.Services.Validation.Books;
+using ClawLibrary.Services.Validation.Users;
 using ClawLibrary.Web.Filters;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNet.Identity;
@@ -93,7 +93,7 @@ namespace ClawLibrary.Web
             })));
 
             services.AddSingleton<IAuthDataService, AuthDataService>();
-            services.AddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<IAuthApiService, AuthApiService>();
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddSingleton<IUsersDataService, UsersDataService>();
             services.AddSingleton<IUsersApiService, UsersApiService>();

@@ -1,35 +1,37 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using Microsoft.AspNet.Identity;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using ClawLibrary.Core.DataServices;
 using ClawLibrary.Core.Enums;
 using ClawLibrary.Core.Exceptions;
-using ClawLibrary.Core.Models;
 using ClawLibrary.Core.Models.Auth;
 using ClawLibrary.Core.Models.Users;
+using Microsoft.AspNet.Identity;
 using Microsoft.Extensions.Logging;
 
-namespace ClawLibrary.Auth
+namespace ClawLibrary.Services.ApiServices
 {
-    public class AuthService : IAuthService
+    public class AuthApiService : IAuthApiService
     {
         private readonly AuthConfig _config;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IAuthDataService _dataService;
-       
+        private readonly IMapper _mapper;
         private readonly TokenProviderOptions _options;
         //private readonly IMailGenerator _mailGenerator;
         //private readonly IMailSender _mailSender;
-        private readonly ILogger<AuthService> _logger;
+        private readonly ILogger<AuthApiService> _logger;
 
-        public AuthService(AuthConfig config, IAuthDataService dataService, IPasswordHasher passwordHasher,
+        public AuthApiService(AuthConfig config, IAuthDataService dataService, IPasswordHasher passwordHasher,
             //IMailGenerator mailGenerator,
-            //IMailSender mailSender, 
-            TokenProviderOptions options, ILogger<AuthService> logger)
+            //IMailSender mailSender,
+            IMapper mapper,
+            TokenProviderOptions options, ILogger<AuthApiService> logger)
         {
             _config = config;
             _dataService = dataService;
@@ -38,6 +40,7 @@ namespace ClawLibrary.Auth
             //_mailGenerator = mailGenerator;
             //_mailSender = mailSender;
             _logger = logger;
+            _mapper = mapper;
         }
 
         public async Task<Token> Authorize(AuthorizeRequest user)
@@ -53,11 +56,12 @@ namespace ClawLibrary.Auth
         public async Task RegisterUser(RegisterUserRequest request)
         {
             _logger.LogInformation($"RegisterCustomer input - request: {request}");
-
+          
+            var dto = _mapper.Map<RegisterUserRequest, User>(request);
             Guid salt = Guid.NewGuid();
             string hashedPassword = _passwordHasher.HashPassword(request.Password + salt);
 
-            var user = await _dataService.RegisterUser(request, hashedPassword, salt.ToString());
+            var user = await _dataService.RegisterUser(dto, hashedPassword, salt.ToString());
 
             //var emailTask = _mailSender.SendAsync(_mailGenerator.PrepareEmail(new CustomerVerificationEmail()
             //{
@@ -85,7 +89,7 @@ namespace ClawLibrary.Auth
 
             if (!request.VerificationCode.ToLower().Equals(user.Key.ToLower()))
             {
-                throw new BusinessException(ErrorCode.InvalidVerificationCode,"Invalid verification code");
+                throw new BusinessException(ErrorCode.InvalidVerificationCode, "Invalid verification code");
             }
             if (!user.Status.ToString().ToLower().Equals(Status.Pending.ToString().ToLower()))
             {
@@ -150,7 +154,7 @@ namespace ClawLibrary.Auth
             //Get user
             var user = await GetAuthenticatedUser(request.Email, request.Password);
 
-            if(user.Status != Status.Active)
+            if (user.Status != Status.Active)
                 throw new UnauthorizedAccessException();
 
             //Get Identity
@@ -182,7 +186,7 @@ namespace ClawLibrary.Auth
             }
             return null;
         }
-        
+
         private async Task<ClaimsIdentity> GetIdentity(User user)
         {
             if (user != null)
@@ -208,7 +212,7 @@ namespace ClawLibrary.Auth
             {
                 return false;
             }
-           
+
             return true;
         }
 

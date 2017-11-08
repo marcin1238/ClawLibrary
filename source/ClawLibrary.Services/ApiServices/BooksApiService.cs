@@ -111,9 +111,9 @@ namespace ClawLibrary.Services.ApiServices
         {
            
             _logger.LogInformation(
-                $"GetPicture input - bookKey: {bookKey}");
+                $"GetFileNameOfBookPicture input - bookKey: {bookKey}");
 
-            string fileName = await _dataService.GetPicture(bookKey);
+            string fileName = await _dataService.GetFileNameOfBookPicture(bookKey);
             var content = _mediaStorageAppService.GetMedia(fileName);
 
             var media = new Media()
@@ -125,7 +125,7 @@ namespace ClawLibrary.Services.ApiServices
             };
 
             _logger.LogInformation(
-                $"GetPicture input - media: {media}, bookKey: {bookKey}");
+                $"GetFileNameOfBookPicture input - media: {media}, bookKey: {bookKey}");
 
             return media;
         }

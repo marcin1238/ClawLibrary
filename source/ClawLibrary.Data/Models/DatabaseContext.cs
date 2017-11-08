@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 
 namespace ClawLibrary.Data.Models
 {
@@ -32,6 +34,8 @@ namespace ClawLibrary.Data.Models
 
                 entity.Property(e => e.CreatedDate);
 
+                entity.Property(p => p.Id).HasValueGenerator<InMemoryIntegerValueGenerator<long>>();
+
                 entity.Property(e => e.FirstName)
                     .IsRequired()
                     .HasMaxLength(256);
@@ -63,6 +67,8 @@ namespace ClawLibrary.Data.Models
                 entity.HasIndex(e => e.Title)
                     .HasName("IX_Book_Title")
                     .IsUnique();
+
+                entity.Property(p => p.Id).HasValueGenerator<InMemoryIntegerValueGenerator<long>>();
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
@@ -113,6 +119,8 @@ namespace ClawLibrary.Data.Models
                     .HasName("IX_Book_Title")
                     .IsUnique();
 
+                entity.Property(p => p.Id).HasValueGenerator<InMemoryIntegerValueGenerator<long>>();
+
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
                 entity.Property(e => e.CreatedDate);
@@ -132,9 +140,12 @@ namespace ClawLibrary.Data.Models
 
             modelBuilder.Entity<File>(entity =>
             {
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.HasIndex(e => e.FileName)
                     .HasName("IX_File_Name")
                     .IsUnique();
+
+                entity.Property(p => p.Id).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
@@ -156,6 +167,8 @@ namespace ClawLibrary.Data.Models
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
+
+                entity.Property(p => p.Id).HasValueGenerator<InMemoryIntegerValueGenerator<long>>();
 
                 entity.Property(e => e.CreatedDate);
 
@@ -179,6 +192,8 @@ namespace ClawLibrary.Data.Models
                     .HasName("IX_Role_Name")
                     .IsUnique();
 
+                entity.Property(p => p.Id).HasValueGenerator<InMemoryIntegerValueGenerator<long>>();
+
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
                 entity.Property(e => e.CreatedDate);
@@ -201,6 +216,8 @@ namespace ClawLibrary.Data.Models
                 entity.HasIndex(e => e.Email)
                     .HasName("IX_User_Email")
                     .IsUnique();
+
+                entity.Property(p => p.Id).HasValueGenerator<InMemoryIntegerValueGenerator<long>>();
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
@@ -241,6 +258,8 @@ namespace ClawLibrary.Data.Models
                 entity.HasIndex(e => new { e.UserId, e.RoleId })
                     .HasName("IXUserRole_Name")
                     .IsUnique();
+
+                entity.Property(p => p.Id).HasValueGenerator<InMemoryIntegerValueGenerator<long>>();
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 

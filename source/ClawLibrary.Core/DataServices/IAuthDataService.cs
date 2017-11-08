@@ -13,7 +13,7 @@ namespace ClawLibrary.Core.DataServices
         /// </summary>
         /// <param name="email">User email</param>
         /// <returns>User</returns>
-        Task<User> GetUser(string email);
+        Task<User> GetUserByEmail(string email);
 
         /// <summary>
         /// Get active user roles for the given user.
@@ -29,7 +29,7 @@ namespace ClawLibrary.Core.DataServices
         /// <param name="hashedPassword">Hashed password</param>
         /// <param name="salt">Salt added to password</param>
         /// <returns>User details</returns>
-        Task<User> RegisterUser(RegisterUserRequest request, string hashedPassword, string salt);
+        Task<User> RegisterUser(User request, string hashedPassword, string salt);
 
         /// <summary>
         /// Verify new user.

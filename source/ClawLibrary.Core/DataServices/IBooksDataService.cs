@@ -50,10 +50,10 @@ namespace ClawLibrary.Core.DataServices
         Task UpdatePicture(string fileName, string bookKey, string modifiedBy);
 
         /// <summary>
-        /// Gets picture for book with specified key (if one is present)..
+        /// Gets file name of picture for book with specified key (if one is present)..
         /// </summary>
         /// <param name="bookKey">Key of the book</param>
-        /// <returns>Book picture</returns>
-        Task<string> GetPicture(string bookKey);
+        /// <returns>Book picture file name</returns>
+        Task<string> GetFileNameOfBookPicture(string bookKey);
     }
 }
