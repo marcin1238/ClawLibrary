@@ -37,7 +37,7 @@ namespace ClawLibrary.Services.ApiServices
             _logger.LogInformation(
                 $"GetUserById input - userKey: {userKey}");
 
-            User user = await _dataService.GetByKey(userKey);
+            User user = await _dataService.GetUserByKey(userKey);
 
             _logger.LogInformation($"GetUserById response - user: {user}");
 
@@ -49,7 +49,7 @@ namespace ClawLibrary.Services.ApiServices
             _logger.LogInformation(
                 $"GetUserById input - userKey: {userKey}");
 
-            User user = await _dataService.GetByKey(userKey);
+            User user = await _dataService.GetUserByKey(userKey);
 
             _logger.LogInformation($"GetUserById response - user: {user}");
 

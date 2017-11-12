@@ -15,7 +15,7 @@ namespace ClawLibrary.Core.DataServices
         /// </summary>
         /// <param name="userKey">Key of the current user</param>
         /// <returns>User details</returns>
-        Task<User> GetByKey(string userKey);
+        Task<User> GetUserByKey(string userKey);
 
         /// <summary>
         /// Get a list of the users.

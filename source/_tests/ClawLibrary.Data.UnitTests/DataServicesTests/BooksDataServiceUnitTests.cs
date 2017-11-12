@@ -8,7 +8,6 @@ using ClawLibrary.Core.Exceptions;
 using ClawLibrary.Data.DataServices;
 using ClawLibrary.Data.Mapping;
 using ClawLibrary.Data.Models;
-using ClawLibrary.Data.UnitTests.Helpers;
 using Moq;
 using NUnit.Framework;
 using Microsoft.EntityFrameworkCore;
@@ -1022,7 +1021,6 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
         {
             // arrange
             var booksDataService = new BooksDataService(_mapper, _context);
-            _context.ResetValueGenerators();
             var expectedBookKey = "6A0734F0-B3DE-44D6-93E3-F9E504A35A6E";
             var expectedFile = new File()
             {

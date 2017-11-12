@@ -244,7 +244,7 @@
   <ItemGroup>
     <Compile Include="DataServicesTests\AuthDataServiceUnitTests.cs" />
     <Compile Include="DataServicesTests\BooksDataServiceUnitTests.cs" />
-    <Compile Include="Helpers\DbContextExtensions.cs" />
+    <Compile Include="DataServicesTests\UsersDataServiceUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

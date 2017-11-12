@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using ClawLibrary.Core.Enums;
@@ -15,13 +14,13 @@ using NUnit.Framework;
 namespace ClawLibrary.Data.UnitTests.DataServicesTests
 {
     [TestFixture]
-    public class AuthDataServiceUnitTests
+    public class UsersDataServiceUnitTests
     {
         private DatabaseContext _context;
         private IMapper _mapper;
         private List<User> _data;
 
-        public AuthDataServiceUnitTests()
+        public UsersDataServiceUnitTests()
         {
             _mapper = new Mapper(new MapperConfiguration(cfg =>
             {
@@ -49,8 +48,8 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                     ImageFileId = 1,
                     CreatedDate = DateTimeOffset.Now,
                     CreatedBy = "System",
-                    ModifiedDate = null,
-                    ModifiedBy = null,
+                    ModifiedDate = new DateTimeOffset(new DateTime(2017,9,11)),
+                    ModifiedBy = "aSystem",
                     Status = Status.Active.ToString(),
                     ImageFile =
                         new File()
@@ -117,10 +116,10 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                     PasswordResetKey = "6968DB0F-6059-4B23-865A-317D70F46268",
                     PasswordResetKeyCreatedDate = DateTimeOffset.Now,
                     ImageFileId = null,
-                    CreatedDate = DateTimeOffset.Now,
-                    CreatedBy = "System",
-                    ModifiedDate = null,
-                    ModifiedBy = null,
+                    CreatedDate = new DateTimeOffset(new DateTime(2017,9,9)),
+                    CreatedBy = "aSystem",
+                    ModifiedBy = "aSystem",
+                    ModifiedDate = new DateTimeOffset(new DateTime(2017,9,10)),
                     Status = Status.Active.ToString(),
                     ImageFile = null,
                     UserRole = new List<UserRole>()
@@ -172,14 +171,14 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                     Email = "test3@test3.com",
                     PasswordSalt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                     PasswordHash = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
-                    FirstName = "Chris",
+                    FirstName = "Omarek",
                     LastName = "Hemsworth",
                     PhoneNumber = "123456789",
                     PasswordResetKey = null,
                     PasswordResetKeyCreatedDate = null,
                     ImageFileId = null,
-                    CreatedDate = DateTimeOffset.Now,
-                    CreatedBy = "System",
+                    CreatedDate = new DateTimeOffset(new DateTime(2017,9,11)),
+                    CreatedBy = "cSystem",
                     ModifiedDate = null,
                     ModifiedBy = null,
                     Status = Status.Active.ToString(),
@@ -241,8 +240,8 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                     ImageFileId = null,
                     CreatedDate = DateTimeOffset.Now,
                     CreatedBy = "System",
-                    ModifiedDate = null,
-                    ModifiedBy = null,
+                    ModifiedDate = new DateTimeOffset(new DateTime(2017,9,12)),
+                    ModifiedBy = "zSystem",
                     Status = Status.Active.ToString(),
                     ImageFile = null,
                     UserRole = new List<UserRole>()
@@ -351,7 +350,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 new User()
                 {
                     Id = 6,
-                    Key = new Guid("9CE78CDA-6366-43CC-B746-E9D0279C89DB"),
+                    Key = new Guid("8EFA1076-7905-45DB-A8CB-CDEB792C1442"),
                     Email = "test6@test6.com",
                     PasswordSalt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                     PasswordHash = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -424,8 +423,8 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                     ImageFileId = null,
                     CreatedDate = DateTimeOffset.Now,
                     CreatedBy = "System",
-                    ModifiedDate = null,
-                    ModifiedBy = null,
+                    ModifiedDate = new DateTimeOffset(new DateTime(2017,9,12)),
+                    ModifiedBy = "zSystem",
                     Status = Status.Deleted.ToString(),
                     ImageFile = null,
                     UserRole = new List<UserRole>()
@@ -486,434 +485,171 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
             _context = context;
         }
 
-        [TestCase("test@test.com", 1)]
-        [TestCase("test2@test2.com", 2)]
-        [TestCase("test3@test3.com", 3)]
-        [TestCase("test4@test4.com", 4)]
-        [TestCase("test5@test5.com", 5)]
-        [TestCase("test6@test6.com", 6)]
-        public async Task Should_Return_User_With_Specified_Email(string email, int expectedId)
+        [TestCase("9955C5CA-8BAA-4C69-8E9A-AA17AE51138E", 1)]
+        [TestCase("E9FCFA44-97D0-4D97-8339-62FD41930A3C", 2)]
+        [TestCase("9CE78CDA-6366-43CC-B746-E9D0279C89DB", 5)]
+        [TestCase("8EFA1076-7905-45DB-A8CB-CDEB792C1442", 6)]
+        public async Task Should_Return_User_With_Specified_Key(string userKey, int expectedId)
         {
             // arrange
-            var authDataService = new AuthDataService(_mapper,_context);
+            var usersDataService = new UsersDataService(_mapper, _context);
 
             // act
-            var user = await authDataService.GetUserByEmail(email);
+            var user = await usersDataService.GetUserByKey(userKey);
 
             // assert
             Assert.NotNull(user);
             Assert.AreEqual(expectedId, user.Id);
         }
 
-        [TestCase("")]
-        [TestCase(" ")]
+        [TestCase("wronguserKey")]
         [TestCase("    ")]
-        [TestCase(null)]
-        public void Should_Not_Return_User_When_Email_Is_Wrong(string email)
+        [TestCase("123123213")]
+        public async Task Should_Return_Null_When_User_Key_Is_Wrong(string userKey)
         {
             // arrange
-            var authDataService = new AuthDataService(_mapper, _context);
-
-            // act & assert
-            Assert.ThrowsAsync<BusinessException>(async () => await authDataService.GetUserByEmail(email));
-        }
-
-        [TestCase("test7@test7.com")]
-        [TestCase("test8@test8.com")]
-        [TestCase("test3")]
-        public async Task Should_Not_Return_User_When_User_With_Email_Does_Not_Exist(string email)
-        {
-            // arrange
-            var authDataService = new AuthDataService(_mapper, _context);
+            var usersDataService = new UsersDataService(_mapper, _context);
 
             // act
-            var user = await authDataService.GetUserByEmail(email);
+            var user = await usersDataService.GetUserByKey(userKey);
 
             // assert
             Assert.Null(user);
         }
 
-        [TestCase(1, "Admin", "Regular")]
-        [TestCase(2, null, "Regular")]
-        [TestCase(3, "Admin", null)]
-        [TestCase(4, null, null)]
-        [TestCase(5, "Admin", "Regular")]
-        [TestCase(6, "Admin", "Regular")]
-        public async Task Should_Return_User_Roles(long userId, string expectedRole1, string expectedRole2)
+        [Test]
+        public void Should_Throw_Exception_When_User_Key_Is_Null()
         {
             // arrange
-            var authDataService = new AuthDataService(_mapper, _context);
-            var expectedUserRoles = new List<string>();
+            var usersDataService = new UsersDataService(_mapper, _context);
 
-            if (!string.IsNullOrEmpty(expectedRole1))
-                expectedUserRoles.Add(expectedRole1);
-            if (!string.IsNullOrEmpty(expectedRole2))
-                expectedUserRoles.Add(expectedRole2);
-
-            // act
-            var userRoles = await authDataService.GetUserRoles(userId);
-
-            // assert
-            Assert.AreEqual(expectedUserRoles.Count, userRoles.Count);
-            foreach (var userRole in userRoles)
-            {
-                Assert.True(expectedUserRoles.Any(x=>x.Equals(userRole)));
-            }
+            // act & assert
+            Assert.ThrowsAsync<BusinessException>(async () => await usersDataService.GetUserByKey(null));
         }
 
         [Test]
-        public async Task Should_Create_New_User()
+        public async Task Should_Return_Null_When_User_Status_Is_Deleted()
         {
             // arrange
-            var authDataService = new AuthDataService(_mapper, _context);
-            var expectedUser = new Core.Models.Users.User()
-            {
-                Id = 8,
-                Email = "David.Schwimmer@test.com",
-                FirstName = "David",
-                LastName = "Schwimmer",
-                PhoneNumber = "789456123",
-                PasswordResetKey = null,
-                Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
-                Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
-                PasswordResetKeyCreatedDate = null,
-                CreatedDate = DateTimeOffset.Now,
-                ModifiedDate = null,
-                Status = Status.Pending,
-                
-            };
-            var expectedRolesCount = _context.Role.Count();
+            var usersDataService = new UsersDataService(_mapper, _context);
 
             // act
-            var actualUser = await authDataService.RegisterUser(expectedUser, expectedUser.Password,
-                expectedUser.Salt);
-            var userRoles = _context.UserRole.Include("Role").Where(x => x.UserId == actualUser.Id);
-            
+            var user = await usersDataService.GetUserByKey("8BEB61E6-50CA-417E-9784-690E32B905F6");
+
             // assert
-            Assert.NotNull(actualUser);
-            Assert.NotNull(userRoles);
-            Assert.AreEqual(expectedRolesCount, userRoles.Count());
-            Assert.True(userRoles.Any(x=>x.Role.Name.ToLower().Equals(Core.Enums.Role.Regular.ToString().ToLower()) && x.Status.ToLower().Equals(Status.Active.ToString().ToLower())));
-            Assert.True(userRoles.Any(x => x.Role.Name.ToLower().Equals(Core.Enums.Role.Admin.ToString().ToLower()) && x.Status.ToLower().Equals(Status.Inactive.ToString().ToLower())));
-            Assert.AreEqual(expectedUser.Id, actualUser.Id);
-            Assert.AreEqual(expectedUser.Email, actualUser.Email);
-            Assert.AreEqual(expectedUser.FirstName, actualUser.FirstName);
-            Assert.AreEqual(expectedUser.LastName, actualUser.LastName);
-            Assert.AreEqual(expectedUser.PhoneNumber, actualUser.PhoneNumber);
-            Assert.AreEqual(expectedUser.PasswordResetKey, actualUser.PasswordResetKeyCreatedDate);
-            Assert.AreEqual(expectedUser.CreatedDate.Date, actualUser.CreatedDate.Date);
-            Assert.AreEqual(expectedUser.ModifiedDate, actualUser.ModifiedDate);
-            Assert.AreEqual(expectedUser.Status.ToString(), actualUser.Status.ToString());
-            Assert.AreEqual(expectedUser.Salt, actualUser.Salt);
+            Assert.Null(user);
         }
 
         [Test]
-        public async Task Should_Create_New_User_When_User_With_Email_Exists_But_Has_Been_Deleted()
+        public void Should_Throw_Exception_When_User_Key_Is_Empty()
         {
             // arrange
-            var authDataService = new AuthDataService(_mapper, _context);
-
-            var expectedUser = new Core.Models.Users.User()
-            {
-                Id = 8,
-                Email = "test7@test7.com",
-                FirstName = "Riccardo",
-                LastName = "Scamarcio",
-                PhoneNumber = "1234567879",
-                PasswordResetKey = null,
-                Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
-                Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
-                PasswordResetKeyCreatedDate = null,
-                CreatedDate = DateTimeOffset.Now,
-                ModifiedDate = null,
-                Status = Status.Pending,
-
-            };
-            var expectedRolesCount = _context.Role.Count();
-
-            // act
-            var actualUser = await authDataService.RegisterUser(expectedUser, expectedUser.Password,
-                expectedUser.Salt);
-            var userRoles = _context.UserRole.Include("Role").Where(x => x.UserId == actualUser.Id);
-
-            // assert
-            Assert.NotNull(actualUser);
-            Assert.NotNull(userRoles);
-            Assert.AreEqual(expectedRolesCount, userRoles.Count());
-            Assert.True(userRoles.Any(x => x.Role.Name.ToLower().Equals(Core.Enums.Role.Regular.ToString().ToLower()) && x.Status.ToLower().Equals(Status.Active.ToString().ToLower())));
-            Assert.True(userRoles.Any(x => x.Role.Name.ToLower().Equals(Core.Enums.Role.Admin.ToString().ToLower()) && x.Status.ToLower().Equals(Status.Inactive.ToString().ToLower())));
-            Assert.AreEqual(expectedUser.Id, actualUser.Id);
-            Assert.AreEqual(expectedUser.Email, actualUser.Email);
-            Assert.AreEqual(expectedUser.FirstName, actualUser.FirstName);
-            Assert.AreEqual(expectedUser.LastName, actualUser.LastName);
-            Assert.AreEqual(expectedUser.PhoneNumber, actualUser.PhoneNumber);
-            Assert.AreEqual(expectedUser.PasswordResetKey, actualUser.PasswordResetKeyCreatedDate);
-            Assert.AreEqual(expectedUser.CreatedDate.Date, actualUser.CreatedDate.Date);
-            Assert.AreEqual(expectedUser.ModifiedDate, actualUser.ModifiedDate);
-            Assert.AreEqual(expectedUser.Status.ToString(), actualUser.Status.ToString());
-            Assert.AreEqual(expectedUser.Salt, actualUser.Salt);
-        }
-
-        [TestCase("test@test.com")]
-        [TestCase("test2@test2.com")]
-        [TestCase("test3@test3.com")]
-        [TestCase("test4@test4.com")]
-        [TestCase("test5@test5.com")]
-        [TestCase("test6@test6.com")]
-        public void Should_Not_Create_New_User_When_User_With_Email_Exists(string email)
-        {
-            // arrange
-            var authDataService = new AuthDataService(_mapper, _context);
-            var expectedUser = new Core.Models.Users.User()
-            {
-                Id = 8,
-                Email = email,
-                FirstName = "David",
-                LastName = "Schwimmer",
-                PhoneNumber = "789456123",
-                PasswordResetKey = null,
-                Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
-                Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
-                PasswordResetKeyCreatedDate = null,
-                CreatedDate = DateTimeOffset.Now,
-                ModifiedDate = null,
-                Status = Status.Pending,
-
-            };
+            var usersDataService = new UsersDataService(_mapper, _context);
 
             // act & assert
-            Assert.ThrowsAsync<BusinessException>(async () => await authDataService.RegisterUser(expectedUser, expectedUser.Password,
-                expectedUser.Salt));
-        }
-
-        [TestCase("123456789")]
-        public void Should_Not_Create_New_User_When_User_With_Phone_Exists(string phoneNumber)
-        {
-            // arrange
-            var authDataService = new AuthDataService(_mapper, _context);
-            var expectedUser = new Core.Models.Users.User()
-            {
-                Id = 8,
-                Email = "2test@test2.com",
-                FirstName = "David",
-                LastName = "Schwimmer",
-                PhoneNumber = phoneNumber,
-                PasswordResetKey = null,
-                Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
-                Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
-                PasswordResetKeyCreatedDate = null,
-                CreatedDate = DateTimeOffset.Now,
-                ModifiedDate = null,
-                Status = Status.Pending,
-
-            };
-
-            // act & assert
-            Assert.ThrowsAsync<BusinessException>(async () => await authDataService.RegisterUser(expectedUser, expectedUser.Password,
-                expectedUser.Salt));
-        }
-        
-        [Test]
-        public async Task Should_Change_User_Status_To_Active()
-        {
-            // arrange
-            var authDataService = new AuthDataService(_mapper, _context);
-            var expectedUser = _data.FirstOrDefault(x => x.Status.ToLower()
-                .Equals(Status.Pending.ToString().ToLower()));
-
-
-            // act
-            if (expectedUser != null)
-            {
-                await authDataService.VerifyUser(expectedUser.Id);
-                var actualUser = _context.User.FirstOrDefault(x => x.Id == expectedUser.Id);
-
-                // assert
-                Assert.NotNull(actualUser);
-                Assert.AreEqual(Status.Active.ToString().ToLower(), actualUser.Status.ToLower());
-                Assert.NotNull(actualUser.ModifiedDate);
-                Assert.NotNull(actualUser.ModifiedBy);
-                Assert.AreEqual(DateTimeOffset.Now.Date, actualUser.ModifiedDate?.Date);
-                Assert.AreEqual(expectedUser.Email.ToLower(), actualUser.ModifiedBy.ToLower());
-            }
-            else
-                throw new Exception("Missing correct mock data!");
-        }
-
-        [TestCase(0)]
-        [TestCase(-1)]
-        [TestCase(111122112)]
-        [TestCase(7)]
-        public void Should_Not_Change_User_Status_And_Should_Throw_Exception_When_User_Does_Not_Exist(long userId)
-        {
-            // arrange
-            var authDataService = new AuthDataService(_mapper, _context);
-
-            // act & assert
-            Assert.ThrowsAsync<BusinessException>(async () => await authDataService.VerifyUser(userId));
-        }
-
-        [TestCase(1)]
-        [TestCase(6)]
-        public void Should_Not_Change_User_Status_And_Should_Throw_Exception_When_User_Status_Is_Different_Than_Pending(long userId)
-        {
-            // arrange
-            var authDataService = new AuthDataService(_mapper, _context);
-
-            // act & assert
-            Assert.ThrowsAsync<BusinessException>(async () => await authDataService.VerifyUser(userId));
-        }
-
-        [TestCase(1)]
-        [TestCase(6)]
-        [TestCase(3)]
-        [TestCase(4)]
-        [TestCase(5)]
-        public async Task Should_Create_Password_Reset_Key(long userId)
-        {
-            // arrange
-            var authDataService = new AuthDataService(_mapper, _context);
-            var expectedPasswordResetKey = "7FB56B07-18E8-4F01-9FB8-5A474A59ADCC";
-
-            // act
-            await authDataService.CreatePasswordResetKey(userId, expectedPasswordResetKey);
-            var actualUser = _context.User.FirstOrDefault(x => x.Id == userId);
-
-            // assert
-            Assert.NotNull(actualUser);
-            Assert.AreEqual(expectedPasswordResetKey.ToLower(), actualUser.PasswordResetKey.ToLower());
-            Assert.NotNull(actualUser.PasswordResetKeyCreatedDate);
-            Assert.AreEqual(DateTimeOffset.Now.Date, actualUser.PasswordResetKeyCreatedDate.Value.Date);
-            Assert.NotNull(actualUser.ModifiedDate);
-            Assert.AreEqual(DateTimeOffset.Now.Date, actualUser.ModifiedDate.Value.Date);
-            Assert.NotNull(actualUser.ModifiedBy);
-            Assert.AreEqual(actualUser.Email, actualUser.ModifiedBy);
-        }
-
-        [TestCase(0)]
-        [TestCase(-1)]
-        [TestCase(111122112)]
-        [TestCase(7)]
-        public void Should_Not_Create_Password_Reset_Key_And_Should_Throw_Exception_When_User_Does_Not_Exist(long userId)
-        {
-            // arrange
-            var authDataService = new AuthDataService(_mapper, _context);
-
-            // act & assert
-            Assert.ThrowsAsync<BusinessException>(async () => await authDataService.CreatePasswordResetKey(userId, "7FB56B07-18E8-4F01-9FB8-5A474A59ADCC"));
-        }
-
-        [TestCase("")]
-        [TestCase(null)]
-        [TestCase(" ")]
-        [TestCase("    ")]
-        [TestCase("     ")]
-        [TestCase(" ")]
-        public void Should_Not_Create_Password_Reset_Key_And_Should_Throw_Exception_When_Password_Reset_Key_Is_Null_Or_Empty(string passwordResetKey)
-        {
-            // arrange
-            var authDataService = new AuthDataService(_mapper, _context);
-
-            // act & assert
-            Assert.ThrowsAsync<BusinessException>(async () => await authDataService.CreatePasswordResetKey(1, passwordResetKey));
+            Assert.ThrowsAsync<BusinessException>(async () => await usersDataService.GetUserByKey(string.Empty));
         }
 
         [Test]
-        public async Task Should_Reset_Password()
+        public async Task Should_Return_Users_With_Default_Order()
         {
             // arrange
-            var authDataService = new AuthDataService(_mapper, _context);
-            var expectedUser = new User()
-            {
-                Id = 2,
-                Key = new Guid("E9FCFA44-97D0-4D97-8339-62FD41930A3C"),
-                Email = "test2@test2.com",
-                PasswordSalt = "1b568a7c-61cf-415c-b293-dcf40362192c",
-                PasswordHash = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
-                FirstName = "Tom",
-                LastName = "Cruise",
-                PhoneNumber = "123456789",
-                PasswordResetKey = "6968DB0F-6059-4B23-865A-317D70F46268",
-                PasswordResetKeyCreatedDate = DateTimeOffset.Now,
-                ImageFileId = null,
-                CreatedDate = DateTimeOffset.Now,
-                CreatedBy = "System",
-                ModifiedDate = null,
-                ModifiedBy = null,
-                Status = Status.Active.ToString()
-            };
-
-            var expectedPasswordHash = "7FB56B07-18E8-4F01-9FB8-5A474A59ADCC";
-            var expectedPasswordSalt = "A63DAEB5-C6CB-4F63-9F36-46E1617CF6EA";
+            var dataService = new UsersDataService(_mapper, _context);
+            var expectedTotalCount = _data.Count(x => !x.Key.ToString().ToLower().Equals("9955C5CA-8BAA-4C69-8E9A-AA17AE51138E".ToLower()) &&
+                                                                  !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()));
+            var expectedFirstItemId = 2;
 
             // act
-            await authDataService.ResetPassword(expectedUser.Id, expectedPasswordHash, expectedPasswordSalt);
-            var actualUser = _context.User.FirstOrDefault(x => x.Id == expectedUser.Id);
+            var users = await dataService.GetUsers("9955C5CA-8BAA-4C69-8E9A-AA17AE51138E",null, null, String.Empty, String.Empty);
 
             // assert
-            Assert.NotNull(actualUser);
-            Assert.NotNull(expectedUser);
-            Assert.NotNull(expectedUser.PasswordResetKey);
-            Assert.NotNull(expectedUser.PasswordResetKeyCreatedDate);
-            Assert.AreNotEqual(expectedUser.PasswordHash.ToLower(), actualUser.PasswordHash.ToLower());
-            Assert.AreNotEqual(expectedUser.PasswordSalt.ToLower(), actualUser.PasswordSalt.ToLower());
-            Assert.AreEqual(expectedPasswordHash.ToLower(), actualUser.PasswordHash.ToLower());
-            Assert.AreEqual(expectedPasswordSalt.ToLower(), actualUser.PasswordSalt.ToLower());
-            Assert.Null(actualUser.PasswordResetKey);
-            Assert.Null(actualUser.PasswordResetKeyCreatedDate);
-            Assert.NotNull(actualUser.ModifiedDate);
-            Assert.AreEqual(DateTimeOffset.Now.Date, actualUser.ModifiedDate.Value.Date);
-            Assert.NotNull(actualUser.ModifiedBy);
-            Assert.AreEqual(actualUser.Email, actualUser.ModifiedBy);
+            Assert.NotNull(users.TotalCount);
+            Assert.NotNull(users.Items);
+            Assert.AreEqual(expectedTotalCount, users.TotalCount);
+            Assert.AreEqual(expectedTotalCount, users.Items.Length);
+            Assert.AreEqual(expectedFirstItemId, users.Items[0].Id);
         }
 
-        [TestCase("")]
-        [TestCase(null)]
-        [TestCase(" ")]
-        [TestCase("    ")]
-        [TestCase("     ")]
-        [TestCase(" ")]
-        public void Should_Not_Reset_Password_And_Should_Throw_Exception_When_Hashed_Password_Is_Null_Or_Empty(string hashedPassword)
+        [TestCase("email_asc", 2)]
+        [TestCase("firstname_asc", 4)]
+        [TestCase("lastname_asc", 4)]
+        [TestCase("phonenumber_asc", 2)]
+        [TestCase("createddate_asc", 2)]
+        [TestCase("modifieddate_asc", 3)]
+        [TestCase("email_desc", 6)]
+        [TestCase("firstname_desc", 2)]
+        [TestCase("lastname_desc", 5)]
+        [TestCase("phonenumber_desc", 2)]
+        [TestCase("createddate_desc", 4)]
+        [TestCase("modifieddate_desc", 4)]
+        public async Task Should_Return_Users_With_Specified_Order(string order, long expectedFirstItemId)
         {
             // arrange
-            var authDataService = new AuthDataService(_mapper, _context);
-            var expectedPasswordSalt = "A63DAEB5-C6CB-4F63-9F36-46E1617CF6EA";
-            var expectedUserId = 2;
+            var dataService = new UsersDataService(_mapper, _context);
 
-            // act & assert
-            Assert.ThrowsAsync<BusinessException>(async () => await authDataService.ResetPassword(expectedUserId, hashedPassword, expectedPasswordSalt));
+            // act
+            var users = await dataService.GetUsers("9955C5CA-8BAA-4C69-8E9A-AA17AE51138E", null, null, order, String.Empty);
+
+            // assert
+            Assert.NotNull(users.TotalCount);
+            Assert.NotNull(users.Items);
+            Assert.AreEqual(expectedFirstItemId, users.Items[0].Id);
         }
 
-        [TestCase("")]
-        [TestCase(null)]
-        [TestCase(" ")]
-        [TestCase("    ")]
-        [TestCase("     ")]
-        [TestCase(" ")]
-        public void Should_Not_Reset_Password_And_Should_Throw_Exception_When_Password_Salt_Is_Null_Or_Empty(string passwordSalt)
+        [TestCase("email_asc", 3)]
+        [TestCase("firstname_asc", 5)]
+        [TestCase("lastname_asc", 3)]
+        [TestCase("phonenumber_asc", 3)]
+        [TestCase("createddate_asc", 3)]
+        [TestCase("modifieddate_asc", 3)]
+        [TestCase("email_desc", 5)]
+        [TestCase("firstName_desc", 3)]
+        [TestCase("lastName_desc", 5)]
+        [TestCase("phonenumber_desc", 3)]
+        [TestCase("createddate_desc", 5)]
+        [TestCase("modifieddate_desc", 3)]
+        public async Task Should_Return_Users_With_Specified_Order_Which_Contains_Text(string order, long expectedFirstItemId)
         {
             // arrange
-            var authDataService = new AuthDataService(_mapper, _context);
-            var expectedPasswordHash = "A63DAEB5-C6CB-4F63-9F36-46E1617CF6EA";
-            var expectedUserId = 2;
+            var dataService = new UsersDataService(_mapper, _context);
+            var expectedTotalCount = 2;
+            var expectedItemsCount = 2;
+            var searchString = "Omar";
 
-            // act & assert
-            Assert.ThrowsAsync<BusinessException>(async () => await authDataService.ResetPassword(expectedUserId, expectedPasswordHash, passwordSalt));
+            // act
+            var User = await dataService.GetUsers("9955C5CA-8BAA-4C69-8E9A-AA17AE51138E", null, null, order, searchString);
+
+            // assert
+            Assert.NotNull(User.TotalCount);
+            Assert.NotNull(User.Items);
+            Assert.AreEqual(expectedTotalCount, User.TotalCount);
+            Assert.AreEqual(expectedItemsCount, User.Items.Length);
+            Assert.AreEqual(expectedFirstItemId, User.Items[0].Id);
         }
 
-        [TestCase(0)]
-        [TestCase(-1)]
-        [TestCase(111122112)]
-        [TestCase(7)]
-        public void Should_Not_Reset_Password_And_Should_Throw_Exception_When_User_Does_Not_Exist(long userId)
+        [TestCase(1, 0, 2)]
+        [TestCase(1, 1, 3)]
+        [TestCase(1, 2, 4)]
+        [TestCase(1, 3, 5)]
+        [TestCase(1, 4, 6)]
+        public async Task Should_Return_Users_With_Offset_And_Count(int count, int offset, int expectedFirstItemId)
         {
             // arrange
-            var authDataService = new AuthDataService(_mapper, _context);
-            var expectedPasswordHash = "7FB56B07-18E8-4F01-9FB8-5A474A59ADCC";
-            var expectedPasswordSalt = "A63DAEB5-C6CB-4F63-9F36-46E1617CF6EA";
+            var usersDataService = new UsersDataService(_mapper, _context);
+            var expectedTotalCount = 5;
+            var expectedItemsCount = 1;
 
-            // act & assert
-            Assert.ThrowsAsync<BusinessException>(async () => await authDataService.ResetPassword(userId, expectedPasswordHash, expectedPasswordSalt));
+            // act
+            var user = await usersDataService.GetUsers("9955C5CA-8BAA-4C69-8E9A-AA17AE51138E",count, offset, String.Empty, String.Empty);
+
+            // assert
+            Assert.NotNull(user.TotalCount);
+            Assert.NotNull(user.Items);
+            Assert.AreEqual(expectedTotalCount, user.TotalCount);
+            Assert.AreEqual(expectedItemsCount, user.Items.Length);
+            Assert.AreEqual(expectedFirstItemId, user.Items[0].Id);
         }
+
+
     }
 }

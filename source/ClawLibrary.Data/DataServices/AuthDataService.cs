@@ -121,6 +121,12 @@ namespace ClawLibrary.Data.DataServices
             if (user == null)
                 throw new BusinessException(ErrorCode.UserDoesNotExist);
 
+            if (string.IsNullOrWhiteSpace(hashedPassword))
+                throw new BusinessException(ErrorCode.CannotBeNullOrEmpty, "Wrong password hashed");
+
+            if (string.IsNullOrWhiteSpace(salt))
+                throw new BusinessException(ErrorCode.CannotBeNullOrEmpty, "Wrong password salt");
+
             user.PasswordHash = hashedPassword;
             user.PasswordSalt = salt;
             user.ModifiedDate = DateTimeOffset.Now;
@@ -138,6 +144,9 @@ namespace ClawLibrary.Data.DataServices
 
             if (user == null)
                 throw new BusinessException(ErrorCode.UserDoesNotExist);
+
+            if(string.IsNullOrWhiteSpace(passwordResetKey))
+                throw new BusinessException(ErrorCode.CannotBeNullOrEmpty, "Wrong password reset key");
 
             user.ModifiedDate = DateTimeOffset.Now;
             user.ModifiedBy = user.Email;
