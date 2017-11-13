@@ -39,7 +39,8 @@ namespace ClawLibrary.Data.DataServices
             throw new BusinessException(ErrorCode.InvalidValue, "User key is null or empty");
         }
 
-        public async Task<ListResponse<User>> GetUsers(string userKey, int? count, int? offset, string orderBy, string searchString)
+        public async Task<ListResponse<User>> GetUsers(string userKey, int? count, int? offset, string orderBy,
+            string searchString)
         {
             long totalCount = 0;
             List<User> list;
@@ -364,70 +365,107 @@ namespace ClawLibrary.Data.DataServices
             return new ListResponse<User>(list, totalCount);
         }
 
-        public async Task<User> Update(User model, string userKey)
+        public async Task<User> Update(User model, string modifiedByKey)
         {
-            var user = await _context.User.FirstOrDefaultAsync(x => x.Key.ToString() == userKey && x.Status == Status.Active.ToString());
+            if (!string.IsNullOrWhiteSpace(model.Key) && !string.IsNullOrWhiteSpace(modifiedByKey))
+            {
+                var modifiedBy =
+                    await _context.User.FirstOrDefaultAsync(
+                        x => x.Key.ToString().ToLower().Equals(modifiedByKey.ToLower()) &&
+                             !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()));
 
-            if (user == null)
-                throw new BusinessException(ErrorCode.UserDoesNotExist);
+                var user =
+                    await _context.User.FirstOrDefaultAsync(
+                        x => x.Key.ToString().ToLower().Equals(model.Key.ToLower()) &&
+                             !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()));
 
-            user.ModifiedDate = DateTimeOffset.Now;
-            user.ModifiedBy = user.Email;
-            user.FirstName = model.FirstName;
-            user.LastName = model.LastName;
-            user.PhoneNumber = model.PhoneNumber;
+                if (user == null)
+                    throw new BusinessException(ErrorCode.UserDoesNotExist);
 
-            var updateUser = _context.User.Update(user);
-            await _context.SaveChangesAsync();
+                if (modifiedBy == null)
+                    throw new BusinessException(ErrorCode.UserDoesNotExist);
 
-            return _mapper.Map<ClawLibrary.Data.Models.User, User>(updateUser.Entity);
+                user.ModifiedDate = DateTimeOffset.Now;
+                user.ModifiedBy = modifiedBy.Email;
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.PhoneNumber = model.PhoneNumber;
+
+                var updateUser = _context.User.Update(user);
+                await _context.SaveChangesAsync();
+
+                return _mapper.Map<ClawLibrary.Data.Models.User, User>(updateUser.Entity);
+
+
+            }
+            throw new BusinessException(ErrorCode.InvalidValue, "User key is null or empty");
         }
 
         public async Task<string> GetPicture(string userKey)
         {
-            var user = await _context.User.Include("ImageFile").FirstOrDefaultAsync(x => x.Key.ToString() == userKey && x.Status == Status.Active.ToString());
+            if (!string.IsNullOrEmpty(userKey))
+            {
+                var user = await _context.User.Include("ImageFile")
+                    .FirstOrDefaultAsync(x => x.Key.ToString().ToLower().Equals(userKey.ToLower()) &&
+                                              (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())));
 
-            if (user == null)
-                throw new BusinessException(ErrorCode.UserDoesNotExist);
+                if (user == null)
+                    throw new BusinessException(ErrorCode.UserDoesNotExist);
 
-            if (user.ImageFile == null)
-                return string.Empty;
-            return user.ImageFile.FileName;
+                if (user.ImageFile == null)
+                    return string.Empty;
+
+                return user.ImageFile.FileName;
+            }
+            throw new BusinessException(ErrorCode.InvalidValue, "User key is null or empty");
         }
 
         public async Task UpdatePicture(string fileName, string userKey)
         {
             File file;
-            var user = await _context.User.Include("ImageFile").FirstOrDefaultAsync(x => x.Key.ToString() == userKey && x.Status == Status.Active.ToString());
-
-            if (user == null)
-                throw new BusinessException(ErrorCode.UserDoesNotExist);
-
-            if (user.ImageFile == null)
+            if (!string.IsNullOrWhiteSpace(userKey))
             {
-                file = new File();
-                file.FileName = fileName;
-                file.Key = Guid.NewGuid();
-                file.CreatedBy = user.Email;
-                file.CreatedDate = DateTimeOffset.Now;
-                file.Status = Status.Active.ToString();
+                var user = await _context.User.Include("ImageFile")
+                    .FirstOrDefaultAsync(x => x.Key.ToString().ToLower().Equals(userKey.ToLower()) &&
+                                              (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())));
+
+                if (user == null)
+                    throw new BusinessException(ErrorCode.UserDoesNotExist);
+
+                if (user.ImageFile == null)
+                {
+                    var lastId = await _context.File.OrderByDescending(x => x.Id)
+                        .Select(x => x.Id)
+                        .FirstOrDefaultAsync();
+                    file = new File();
+                    file.Id = lastId > 0 ? lastId + 1 : 1;
+                    file.FileName = fileName;
+                    file.Key = Guid.NewGuid();
+                    file.CreatedBy = user.Email;
+                    file.CreatedDate = DateTimeOffset.Now;
+                    file.Status = Status.Active.ToString();
+                    await _context.File.AddAsync(file);
+                }
+                else
+                {
+                    file = user.ImageFile;
+                    file.FileName = fileName;
+                    file.ModifiedBy = user.Email;
+                    file.ModifiedDate = DateTimeOffset.Now;
+                    _context.File.Update(file);
+                }
+
+                user.ImageFile = file;
+                user.ModifiedBy = user.Email;
+                user.ModifiedDate = DateTimeOffset.Now;
+
+                _context.User.Update(user);
+                await _context.SaveChangesAsync();
             }
             else
-            {
-                file = user.ImageFile;
-                file.FileName = fileName;
-                file.ModifiedBy = user.Email;
-                file.ModifiedDate = DateTimeOffset.Now;
-            }
-
-            user.ImageFile = file;
-            user.ModifiedBy = user.Email;
-            user.ModifiedDate = DateTimeOffset.Now;
-
-            _context.User.Update(user);
-            await _context.SaveChangesAsync();
+                throw new BusinessException(ErrorCode.InvalidValue, "USer key is null or empty");
         }
-       
+
     }
 
 }

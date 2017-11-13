@@ -154,7 +154,7 @@ namespace ClawLibrary.Services.ApiServices
             //Get user
             var user = await GetAuthenticatedUser(request.Email, request.Password);
 
-            if (user.Status != Status.Active)
+            if (!user.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                 throw new UnauthorizedAccessException();
 
             //Get Identity

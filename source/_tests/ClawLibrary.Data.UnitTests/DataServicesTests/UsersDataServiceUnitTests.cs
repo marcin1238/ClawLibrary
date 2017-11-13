@@ -650,6 +650,264 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
             Assert.AreEqual(expectedFirstItemId, user.Items[0].Id);
         }
 
+        [Test]
+        public async Task Should_Update_User()
+        {
+            // arrange
+            var dataService = new UsersDataService(_mapper, _context);
+            var expectedModifiedByKey = "E9FCFA44-97D0-4D97-8339-62FD41930A3C";
+            var expectedModifiedBy = "test2@test2.com";
+            var expectedUser = new Core.Models.Users.User()
+            {
+                Id = 1,
+                Key = "9955C5CA-8BAA-4C69-8E9A-AA17AE51138E",
+                Email = "test@test.com",
+                FirstName = "Rowan",
+                LastName = "Atkinson",
+                PhoneNumber = "516851451",
+                PasswordResetKey = null,
+                Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
+                Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
+                PasswordResetKeyCreatedDate = null,
+                CreatedDate = DateTimeOffset.Now,
+                ModifiedDate = DateTimeOffset.Now,
+                Status = Status.Active.ToString(),
 
+            };
+           
+            // act
+            var actualUser = await dataService.Update(expectedUser, expectedModifiedByKey);
+
+            // assert
+            Assert.NotNull(actualUser);
+            Assert.AreEqual(expectedUser.Id, actualUser.Id);
+            Assert.AreEqual(expectedUser.Email, actualUser.Email);
+            Assert.AreEqual(expectedUser.FirstName, actualUser.FirstName);
+            Assert.AreEqual(expectedUser.LastName, actualUser.LastName);
+            Assert.AreEqual(expectedUser.PhoneNumber, actualUser.PhoneNumber);
+            Assert.AreEqual(expectedUser.CreatedDate.Date, actualUser.CreatedDate.Date);
+            Assert.NotNull(actualUser.ModifiedDate);
+            Assert.AreEqual(expectedUser.ModifiedDate?.Date, actualUser.ModifiedDate?.Date);
+            Assert.AreEqual(expectedUser.Status, actualUser.Status);
+            Assert.AreEqual(expectedModifiedBy, actualUser.ModifiedBy);
+            Assert.AreEqual(expectedUser.Salt, actualUser.Salt);
+        }
+
+        [TestCase("wrongUserKey")]
+        [TestCase("    ")]
+        [TestCase("123123213")]
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("8BEB61E6-50CA-417E-9784-690E32B905F6")]
+        public void Should_Not_Update_User_And_Should_Throw_Exception_When_User_Key_Is_Null(string userKey)
+        {
+            // arrange
+            var dataService = new UsersDataService(_mapper, _context);
+            var expectedModifiedByKey = "E9FCFA44-97D0-4D97-8339-62FD41930A3C";
+            var expectedUser = new Core.Models.Users.User()
+            {
+                Id = 1,
+                Key = userKey,
+                Email = "test@test.com",
+                FirstName = "Rowan",
+                LastName = "Atkinson",
+                PhoneNumber = "516851451",
+                PasswordResetKey = null,
+                Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
+                Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
+                PasswordResetKeyCreatedDate = null,
+                CreatedDate = DateTimeOffset.Now,
+                ModifiedDate = null,
+                Status = Status.Pending.ToString(),
+
+            };
+
+            // act & assert
+            Assert.ThrowsAsync<BusinessException>(async () => await dataService.Update(expectedUser, expectedModifiedByKey));
+        }
+
+        [TestCase("wrongUserKey")]
+        [TestCase("    ")]
+        [TestCase("123123213")]
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("8BEB61E6-50CA-417E-9784-690E32B905F6")]
+        public void Should_Not_Update_User_And_Should_Throw_Exception_When_Modifier_User_Key_Is_Null(string expectedModifiedByKey)
+        {
+            // arrange
+            var dataService = new UsersDataService(_mapper, _context);
+            var expectedUser = new Core.Models.Users.User()
+            {
+                Id = 1,
+                Key = "9955C5CA-8BAA-4C69-8E9A-AA17AE51138E",
+                Email = "test@test.com",
+                FirstName = "Rowan",
+                LastName = "Atkinson",
+                PhoneNumber = "516851451",
+                PasswordResetKey = null,
+                Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
+                Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
+                PasswordResetKeyCreatedDate = null,
+                CreatedDate = DateTimeOffset.Now,
+                ModifiedDate = null,
+                Status = Status.Pending.ToString(),
+
+            };
+
+            // act & assert
+            Assert.ThrowsAsync<BusinessException>(async () => await dataService.Update(expectedUser, expectedModifiedByKey));
+        }
+
+        [TestCase("wrongKey")]
+        [TestCase("    ")]
+        [TestCase("a123123213")]
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("8BEB61E6-50CA-417E-9784-690E32B905F6")]
+        public void Should_Not_Return_User_Picture_And_Should_Throw_Exception_When_User_Key_Is_Wrong(string expectedUserKey)
+        {
+            // arrange
+            var dataService = new UsersDataService(_mapper, _context);
+
+            // act & assert
+            Assert.ThrowsAsync<BusinessException>(async () => await dataService.GetPicture(expectedUserKey));
+        }
+
+        [Test]
+        public async Task Should_Return_File_Name_Of_User_Picture()
+        {
+            // arrange
+            var dataService = new UsersDataService(_mapper, _context);
+            var expectedUserKey = "9955C5CA-8BAA-4C69-8E9A-AA17AE51138E";
+            var expectedFile = new File()
+            {
+                FileName = "testFileName",
+                Key = Guid.NewGuid(),
+                Id = 1,
+                CreatedBy = "System",
+                CreatedDate = DateTimeOffset.Now,
+                Status = Status.Active.ToString()
+            };
+
+            // act
+            var actualFileName = await dataService.GetPicture(expectedUserKey);
+
+            // assert
+            Assert.NotNull(actualFileName);
+            Assert.IsNotEmpty(actualFileName);
+            Assert.AreEqual(expectedFile.FileName, actualFileName);
+        }
+
+        [Test]
+        public async Task Should_Return_Empty_String_When_User_Picture_Does_Not_Exist()
+        {
+            // arrange
+            var dataService = new UsersDataService(_mapper, _context);
+            var expectedUserKey = "E9FCFA44-97D0-4D97-8339-62FD41930A3C";
+
+            // act
+            var actualFileName = await dataService.GetPicture(expectedUserKey);
+
+            // assert
+            Assert.AreEqual(String.Empty, actualFileName);
+        }
+
+        [Test]
+        public async Task Should_Create_New_User_Picture()
+        {
+            // arrange
+            var dataService = new UsersDataService(_mapper, _context);
+            var expectedUserKey = "2DBF6780-9500-427E-A9C5-F843611D0BBC";
+            var expectedFile = new File()
+            {
+                FileName = "test2FileName",
+                CreatedBy = "test3@test3.com",
+                CreatedDate = DateTimeOffset.Now,
+                Status = Status.Active.ToString()
+            };
+
+            // act
+            var isFileExisting =
+                await _context.File.AnyAsync(
+                    x => x.FileName.ToLower().Equals(expectedFile.FileName.ToLower()));
+
+            await dataService.UpdatePicture(expectedFile.FileName, expectedUserKey);
+
+            var actualFile = await _context.File.FirstOrDefaultAsync(x => x.FileName.ToLower().Equals(expectedFile.FileName.ToLower()));
+
+            var user =
+                await _context.User.Include("ImageFile").FirstOrDefaultAsync(
+                    x => x.Key.ToString().ToLower().Equals(expectedUserKey.ToLower()));
+
+            // assert
+            Assert.NotNull(actualFile);
+            Assert.False(isFileExisting);
+            Assert.NotNull(user.ImageFile);
+            Assert.AreEqual(expectedFile.FileName, actualFile.FileName);
+            Assert.AreEqual(expectedFile.CreatedBy, actualFile.CreatedBy);
+            Assert.AreEqual(expectedFile.CreatedDate.Date, actualFile.CreatedDate.Date);
+            Assert.AreEqual(expectedFile.Status, actualFile.Status);
+
+        }
+
+        [Test]
+        public async Task Should_Update_User_Picture()
+        {
+            // arrange
+            var dataService = new UsersDataService(_mapper, _context);
+            var expectedUserKey = "9955C5CA-8BAA-4C69-8E9A-AA17AE51138E";
+            var expectedFile = new File()
+            {
+                FileName = "test2FileName",
+                ModifiedBy = "test@test.com",
+                ModifiedDate = DateTimeOffset.Now,
+                Status = Status.Active.ToString()
+            };
+
+
+            // act
+            var isFileExisting =
+                await _context.File.AnyAsync(
+                    x => x.FileName.ToLower().Equals(expectedFile.FileName.ToLower()));
+
+            var oldFileName = _context.User.Include("ImageFile").FirstOrDefault(
+                    x => x.Key.ToString().ToLower().Equals(expectedUserKey.ToLower()))
+                ?.ImageFile.FileName;
+
+
+            await dataService.UpdatePicture(expectedFile.FileName, expectedUserKey);
+
+            var actualFile = await _context.File.FirstOrDefaultAsync(x => x.FileName.ToLower().Equals(expectedFile.FileName.ToLower()));
+
+            var user =
+                await _context.User.Include("ImageFile").FirstOrDefaultAsync(
+                    x => x.Key.ToString().ToLower().Equals(expectedUserKey.ToLower()));
+
+            // assert
+            Assert.NotNull(actualFile);
+            Assert.False(String.IsNullOrEmpty(oldFileName));
+            Assert.AreNotEqual(oldFileName, actualFile.FileName);
+            Assert.False(isFileExisting);
+            Assert.NotNull(user.ImageFile);
+            Assert.AreEqual(expectedFile.FileName, actualFile.FileName);
+            Assert.AreEqual(expectedFile.ModifiedBy, actualFile.ModifiedBy);
+            Assert.AreEqual(expectedFile.ModifiedDate?.Date, actualFile.ModifiedDate?.Date);
+            Assert.AreEqual(expectedFile.Status, actualFile.Status);
+        }
+
+        [TestCase("wrongKey")]
+        [TestCase("    ")]
+        [TestCase("a123123213")]
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("2E6C91BE-A96F-4F72-9644-90D0EEC7DEE3")]
+        public void Should_Not_Update_User_Picture_And_Should_Throw_Exception_When_User_Key_Is_Wrong(string expectedUserKey)
+        {
+            // arrange
+            var dataService = new UsersDataService(_mapper, _context);
+
+            // act & assert
+                Assert.ThrowsAsync<BusinessException>(async () => await dataService.UpdatePicture(String.Empty, expectedUserKey));
+        }
     }
 }

@@ -33,5 +33,12 @@ namespace ClawLibrary.Core.Models.Books
         public Author Author { get; set; }
         public Category Category { get; set; }
 
+        public override string ToString()
+        {
+            return $"Key: {Key}, Title: {Title}, Publisher: {Publisher}, Language: {Language}," +
+                   $" Status: {Status}, CreatedDate: {CreatedDate}, ModifiedDate: {ModifiedDate}" +
+                   $"Isbn: {Isbn}, Description: {Description}, Quantity: {Quantity}, Paperback: {Paperback}," +
+                   $"PublishDate: {PublishDate}, Author: {Author}, Category: {Category}";
+        }
     }
 }

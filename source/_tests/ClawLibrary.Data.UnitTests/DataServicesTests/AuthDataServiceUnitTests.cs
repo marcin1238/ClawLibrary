@@ -579,7 +579,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 PasswordResetKeyCreatedDate = null,
                 CreatedDate = DateTimeOffset.Now,
                 ModifiedDate = null,
-                Status = Status.Pending,
+                Status = Status.Pending.ToString()
                 
             };
             var expectedRolesCount = _context.Role.Count();
@@ -626,7 +626,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 PasswordResetKeyCreatedDate = null,
                 CreatedDate = DateTimeOffset.Now,
                 ModifiedDate = null,
-                Status = Status.Pending,
+                Status = Status.Pending.ToString(),
 
             };
             var expectedRolesCount = _context.Role.Count();
@@ -677,7 +677,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 PasswordResetKeyCreatedDate = null,
                 CreatedDate = DateTimeOffset.Now,
                 ModifiedDate = null,
-                Status = Status.Pending,
+                Status = Status.Pending.ToString(),
 
             };
 
@@ -704,7 +704,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 PasswordResetKeyCreatedDate = null,
                 CreatedDate = DateTimeOffset.Now,
                 ModifiedDate = null,
-                Status = Status.Pending,
+                Status = Status.Pending.ToString(),
 
             };
 

@@ -1055,7 +1055,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
         }
 
         [Test]
-        public async Task Should_Create_Update_Book_Picture()
+        public async Task Should_Update_Book_Picture()
         {
             // arrange
             var booksDataService = new BooksDataService(_mapper, _context);

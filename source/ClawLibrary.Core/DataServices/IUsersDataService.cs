@@ -32,9 +32,9 @@ namespace ClawLibrary.Core.DataServices
         /// Updates authenticated user.
         /// </summary>
         /// <param name="model">User model</param>
-        /// <param name="userKey">Key of the current user</param>
+        /// <param name="modifiedByKey">Key of the current user</param>
         /// <returns>User details</returns>
-        Task<User> Update(User model, string userKey);
+        Task<User> Update(User model, string modifiedByKey);
 
         /// <summary>
         /// Gets the picture for user.
