@@ -401,6 +401,41 @@ namespace ClawLibrary.Data.DataServices
             throw new BusinessException(ErrorCode.InvalidValue, "User key is null or empty");
         }
 
+        public async Task<User> UpdateStatus(string userKey, Status status, string modifiedByKey)
+        {
+            if (!string.IsNullOrWhiteSpace(userKey) && !string.IsNullOrWhiteSpace(modifiedByKey))
+            {
+                var modifiedBy =
+                    await _context.User.FirstOrDefaultAsync(
+                        x => x.Key.ToString().ToLower().Equals(modifiedByKey.ToLower()) &&
+                             !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()));
+
+                var user =
+                    await _context.User.FirstOrDefaultAsync(
+                        x => x.Key.ToString().ToLower().Equals(userKey.ToLower()) &&
+                             !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()));
+
+                if (user == null)
+                    throw new BusinessException(ErrorCode.UserDoesNotExist);
+
+                if (modifiedBy == null)
+                    throw new BusinessException(ErrorCode.UserDoesNotExist);
+
+                user.ModifiedDate = DateTimeOffset.Now;
+                user.ModifiedBy = modifiedBy.Email;
+                user.Status = status.ToString();
+
+                var updateUser = _context.User.Update(user);
+                await _context.SaveChangesAsync();
+
+                return _mapper.Map<ClawLibrary.Data.Models.User, User>(updateUser.Entity);
+
+
+            }
+            throw new BusinessException(ErrorCode.InvalidValue, "User key is null or empty");
+        }
+
+
         public async Task<string> GetPicture(string userKey)
         {
             if (!string.IsNullOrEmpty(userKey))

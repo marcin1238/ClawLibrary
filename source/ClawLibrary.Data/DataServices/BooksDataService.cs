@@ -609,9 +609,10 @@ namespace ClawLibrary.Data.DataServices
         {
             if (!string.IsNullOrEmpty(model.Key))
             {
-                var book =
-                    await _context.Book.FirstOrDefaultAsync(
-                        x => (x.Key.ToString().ToLower().Equals(model.Key.ToLower())));
+                var book = await _context.Book
+                    .FirstOrDefaultAsync(x => x.Key.ToString().ToLower().Equals(model.Key.ToLower())
+                                              && (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
+                    );
 
                 if (book == null)
                     throw new BusinessException(ErrorCode.BookDoesNotExist);
@@ -636,7 +637,6 @@ namespace ClawLibrary.Data.DataServices
                 if (category == null)
                     throw new BusinessException(ErrorCode.CategoryDoesNotExist);
 
-                Status status;
                 book.Title = model.Title;
                 book.Publisher = model.Publisher;
                 book.Language = model.Language;
@@ -646,12 +646,33 @@ namespace ClawLibrary.Data.DataServices
                 book.Paperback = model.Paperback;
                 book.PublishDate = model.PublishDate;
                 book.ModifiedBy = model.ModifiedBy;
-                book.Status = Enum.TryParse(model.Status, out status)
-                    ? status.ToString()
-                    : throw new BusinessException(ErrorCode.WrongStatus);
                 book.ModifiedDate = DateTimeOffset.Now;
                 book.Author = author;
                 book.Category = category;
+
+                book = _context.Book.Update(book).Entity;
+                await _context.SaveChangesAsync();
+
+                return _mapper.Map<ClawLibrary.Data.Models.Book, Book>(book);
+            }
+            throw new BusinessException(ErrorCode.InvalidValue, "Book key is null or empty");
+        }
+
+        public async Task<Book> UpdateBookStatus(string bookKey, Status status, string modifiedBy)
+        {
+            if (!string.IsNullOrWhiteSpace(bookKey))
+            {
+                var book = await _context.Book
+                    .FirstOrDefaultAsync(x => x.Key.ToString().ToLower().Equals(bookKey.ToLower())
+                                              && (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
+                    );
+
+                if (book == null)
+                    throw new BusinessException(ErrorCode.BookDoesNotExist);
+
+                book.Status = status.ToString();
+                book.ModifiedDate = DateTimeOffset.Now;
+                book.ModifiedBy = modifiedBy;
 
                 book = _context.Book.Update(book).Entity;
                 await _context.SaveChangesAsync();

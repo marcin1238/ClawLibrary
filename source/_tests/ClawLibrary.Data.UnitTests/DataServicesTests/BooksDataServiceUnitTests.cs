@@ -25,10 +25,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
 
         public BooksDataServiceUnitTests()
         {
-            _mapper = new Mapper(new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile(new DataMappingProfile());
-            }));
+            _mapper = new Mapper(new MapperConfiguration(cfg => { cfg.AddProfile(new DataMappingProfile()); }));
         }
 
         [SetUp]
@@ -36,7 +33,57 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
         {
             _data = new List<Book>()
             {
-                new Book() { Id  = 1, Key  = new Guid("6A0734F0-B3DE-44D6-93E3-F9E504A35A6E"), Title  = "Licensed Tasty Wooden Bike 78", Publisher  = "Fay Group", Language  = "PL", Isbn  = "40446591",Description  = "Quam voluptates modi labore atem voluptas quis iste quibusdam maiores laudantium dolorem provident amet deleniti quisquam distinctio omnis.", Quantity  = 97, Paperback  = 409, PublishDate  = new DateTime(1929,12,22), AuthorId  = 2,ImageFileId  = null, CategoryId  = 23, CreatedDate  = new DateTimeOffset(new DateTime(2017,9,11)), CreatedBy  = "System",ModifiedDate  = new DateTimeOffset(new DateTime(2017,9,12)), ModifiedBy  = null, Status  = "Active", Order  = new List<Order>(),Author  = new Author() { Id = 2, Key = new Guid("66C50043-BD59-4B74-B8C3-00EF22712324"), FirstName = "Floy", LastName = "Stroman",Description = "Sunt optioatione accusantium consequaturui atque adipisci est ipsum est vitae reiciendis consectetur dolores deleniti sapiente.", ImageFileId = null, CreatedDate  = new DateTimeOffset(new DateTime(2017,9,11)), CreatedBy = "System",ModifiedDate = null, ModifiedBy = null, Status = "Active"},Category = new Category{Id = 23, Key = new Guid("4D8C4A98-8B78-417B-BDCE-84799C2D875B"), Name = "Cookbooks", CreatedDate  = new DateTimeOffset(new DateTime(2017,9,11)),CreatedBy = "System", ModifiedDate = null, ModifiedBy = null, Status = "Active"}, ImageFile = null},
+                new Book()
+                {
+                    Id = 1,
+                    Key = new Guid("6A0734F0-B3DE-44D6-93E3-F9E504A35A6E"),
+                    Title = "Licensed Tasty Wooden Bike 78",
+                    Publisher = "Fay Group",
+                    Language = "PL",
+                    Isbn = "40446591",
+                    Description =
+                        "Quam voluptates modi labore atem voluptas quis iste quibusdam maiores laudantium dolorem provident amet deleniti quisquam distinctio omnis.",
+                    Quantity = 97,
+                    Paperback = 409,
+                    PublishDate = new DateTime(1929, 12, 22),
+                    AuthorId = 2,
+                    ImageFileId = null,
+                    CategoryId = 23,
+                    CreatedDate = new DateTimeOffset(new DateTime(2017, 9, 11)),
+                    CreatedBy = "System",
+                    ModifiedDate = new DateTimeOffset(new DateTime(2017, 9, 12)),
+                    ModifiedBy = null,
+                    Status = "Active",
+                    Order = new List<Order>(),
+                    Author =
+                        new Author()
+                        {
+                            Id = 2,
+                            Key = new Guid("66C50043-BD59-4B74-B8C3-00EF22712324"),
+                            FirstName = "Floy",
+                            LastName = "Stroman",
+                            Description =
+                                "Sunt optioatione accusantium consequaturui atque adipisci est ipsum est vitae reiciendis consectetur dolores deleniti sapiente.",
+                            ImageFileId = null,
+                            CreatedDate = new DateTimeOffset(new DateTime(2017, 9, 11)),
+                            CreatedBy = "System",
+                            ModifiedDate = null,
+                            ModifiedBy = null,
+                            Status = "Active"
+                        },
+                    Category = new Category
+                    {
+                        Id = 23,
+                        Key = new Guid("4D8C4A98-8B78-417B-BDCE-84799C2D875B"),
+                        Name = "Cookbooks",
+                        CreatedDate = new DateTimeOffset(new DateTime(2017, 9, 11)),
+                        CreatedBy = "System",
+                        ModifiedDate = null,
+                        ModifiedBy = null,
+                        Status = "Active"
+                    },
+                    ImageFile = null
+                },
                 new Book() { Id  = 2, Key  = new Guid("7FB56B07-18E8-4F01-9FB8-5A474A59ADCC"), Title  = "Generic Incredible Frozen Table 136", Publisher  = "Boyle Inc", Language  = "PL", Isbn  = "13486737",Description  = "Rem sed inventore aut v nemo nihil similique et autem tenetur illum fugiat et iste ipsum provident sint sed quis voluptas labore et consequuntur facere eum eveniet nam beatae qui.", Quantity  = 96, Paperback  = 557, PublishDate  = new DateTime(1993,11,1), AuthorId  = 2,ImageFileId  = null, CategoryId  = 2, CreatedDate  = new DateTimeOffset(new DateTime(2017,9,10)), CreatedBy  = "System",ModifiedDate  = null, ModifiedBy  = null, Status  = "Active", Order  = new List<Order>(),Author  = new Author() { Id = 2, Key = new Guid("66C50043-BD59-4B74-B8C3-00EF22712324"), FirstName = "Floy", LastName = "Stroman",Description = "Sunt lis ratione accusantium conseqlat qui atque adipisci est ipsum est vitae reiciendis consectetur dolores deleniti sapiente.", ImageFileId = null, CreatedDate  = new DateTimeOffset(new DateTime(2017,9,11)), CreatedBy = "System",ModifiedDate = null, ModifiedBy = null, Status = "Active"},Category = new Category{Id = 2, Key = new Guid("4D4393B4-A6F6-40AB-A18D-96703462496E"), Name = "Satire", CreatedDate  = new DateTimeOffset(new DateTime(2017,9,11)),CreatedBy = "System", ModifiedDate = null, ModifiedBy = null, Status = "Active"}, ImageFile = null},
                 new Book() { Id  = 3, Key  = new Guid("8BEB61E6-50CA-417E-9784-690E32B905F6"), Title  = "Small Practical Soft Bacon 479", Publisher  = "Schmidt, Hills and Brown", Language  = "DE", Isbn  = "08178053",Description  = "Numquam molliiat error pariatur molestiae neque omnis officia qui iste incidunt non.", Quantity  = 82, Paperback  = 857, PublishDate  = new DateTime(1938,11,25), AuthorId  = 2,ImageFileId  = null, CategoryId  = 28, CreatedDate  = new DateTimeOffset(new DateTime(2017,10,12)), CreatedBy  = "System",ModifiedDate  = new DateTimeOffset(new DateTime(2017,10,12)), ModifiedBy  = null, Status  = "Active", Order  = new List<Order>(),Author  = new Author() { Id = 2, Key = new Guid("66C50043-BD59-4B74-B8C3-00EF22712324"), FirstName = "Floy", LastName = "Stroman",Description = "Sunt optio unde expedita omnis qui et sunt modiumenda saepe deleniti accusamu reiciendis consectetur dolores deleniti sapiente.", ImageFileId = null, CreatedDate  = new DateTimeOffset(new DateTime(2017,9,11)), CreatedBy = "System",ModifiedDate = null, ModifiedBy = null, Status = "Active"},Category = new Category{Id = 28, Key = new Guid("4EA06D28-07FE-4E72-BFF4-BA2FBFB390C7"), Name = "Trilogy", CreatedDate  = new DateTimeOffset(new DateTime(2017,9,11)),CreatedBy = "System", ModifiedDate = null, ModifiedBy = null, Status = "Active"}, ImageFile = null},
                 new Book() { Id  = 4, Key  = new Guid("433470CD-6E7D-4D2D-9FE7-C0FA483E93FF"), Title  = "Rustic Incredible Soft Bike 949", Publisher  = "Quigley - Bartell", Language  = "PL", Isbn  = "14533162",Description  = "Ut consequatur quaesdam.", Quantity  = 30, Paperback  = 315, PublishDate  = new DateTime(1927,11,26), AuthorId  = 3,ImageFileId  = null, CategoryId  = 9, CreatedDate  = new DateTimeOffset(new DateTime(2017,9,11)), CreatedBy  = "System",ModifiedDate  = null, ModifiedBy  = null, Status  = "Active", Order  = new List<Order>(),Author  = new Author() { Id = 3, Key = new Guid("95977A1F-DDA4-4D2A-BE82-188626D48055"), FirstName = "Jerrell", LastName = "Farrell",Description = "Voluptates repellendus sapiente molestiae aut sunt aut amet vitae neque sint ipsa eum vero debitis doloremque eligendi dolores et quibusdam quam in accueum blanditiis earum architectt itaque.", ImageFileId = null, CreatedDate  = new DateTimeOffset(new DateTime(2017,9,11)), CreatedBy = "System",ModifiedDate = null, ModifiedBy = null, Status = "Active"},Category = new Category{Id = 9, Key = new Guid("45C914D1-4FAB-4650-B5C3-30CAC39BA7C9"), Name = "Health", CreatedDate  = new DateTimeOffset(new DateTime(2017,9,11)),CreatedBy = "System", ModifiedDate = null, ModifiedBy = null, Status = "Active"}, ImageFile = null},
@@ -807,7 +854,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 CreatedBy = "System",
                 ModifiedDate = null,
                 ModifiedBy = "Test",
-                Status = "Inactive",
+                Status = "Active",
                 Author = new ClawLibrary.Core.Models.Authors.Author()
                     {
                         Key = "E9862AF8-0017-4C36-B424-68E2D39D10DF", FirstName = "Arvel", LastName = "Greenfelder"
@@ -845,7 +892,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
         [TestCase("123123213")]
         [TestCase("")]
         [TestCase(null)]
-        public void Should_Not_Update_Book_And_Should_Throw_Exception_When_Book_Key_Is_Null(string bookKey)
+        public void Should_Not_Update_Book_And_Should_Throw_Exception_When_Book_Key_Is_Wrong(string bookKey)
         {
             // arrange
             var booksDataService = new BooksDataService(_mapper, _context);
@@ -972,50 +1019,6 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
             Assert.ThrowsAsync<BusinessException>(async () => await booksDataService.UpdateBook(expectedBook));
         }
 
-        [TestCase("wrongStatus")]
-        [TestCase("    ")]
-        [TestCase("a123123213")]
-        [TestCase("")]
-        [TestCase(null)]
-        public void Should_Not_Update_Book_And_Should_Throw_Exception_When_Status_Is_Wrong(string status)
-        {
-            // arrange
-            var booksDataService = new BooksDataService(_mapper, _context);
-            var expectedBook = new Core.Models.Books.Book()
-            {
-                Id = 15,
-                Key = "6A0734F0-B3DE-44D6-93E3-F9E504A35A6E",
-                Title = "Small Unbranded Cotton Tuna 258",
-                Publisher = "Ward and Sons",
-                Language = "DE",
-                Isbn = "96333500",
-                Description =
-                    "Deleniti qui quos nihil molestiae ea nulla voluptatibus aperiam soluta est voluptatem praesentium nemo illum est delectus corrupti quos sequi et dolore animi enim aliquam in quasi et minima hic ut vel doloribus minus quia iure occaecati et animi sint aliquid aliquid eligendi voluptate veniam aut suscipit aliquid dolores distinctio voluptate nemo animi sapiente et ut voluptatibus modi ducimus pariatur nostrum animi cumque vitae quo fugiat enim est amet molestiae quia quisquam rerum sunt aut ducimus iste adipisci doloribus sequi et porro placeat dolorum perspiciatis distinctio numquam doloremque odit necessitatibus ea exercitationem autem facere et placeat est est optio ducimus eum est dolorem quasi qui nobis quam doloremque nesciunt sit cum temporibus incidunt exercitationem id sunt at vitae ut ab dolorum et dolorum exercitationem voluptatem voluptates molestiae dolores earum illo quibusdam rerum dolores perspiciatis quia harum omnis cum dolorem vero et sit accusamus molestiae non et et et ratione inventore saepe similique quasi facilis eum qui doloribus accusamus quae perspiciatis possimus veniam sunt aut eum minus nostrum est aut aut sit quia sint soluta aut iusto quis eligendi dicta voluptate voluptas molestiae doloribus aut nesciunt incidunt officiis pariatur porro id rerum soluta harum fuga aut a explicabo assumenda ut deleniti voluptas autem non ipsum eaque porro est reprehenderit voluptas reprehenderit non exercitationem dolor rerum cumque sit exercitationem quia earum sequi vero odio aut ut sit suscipit perspiciatis exercitationem culpa pariatur nisi id sequi est beatae totam ut illum nulla odio culpa atque aut quia cupiditate ut ut asperiores et assumenda nam necessitatibus dolorem iure dolorum rerum.",
-                Quantity = 52,
-                Paperback = 620,
-                PublishDate = new DateTime(1959, 2, 17),
-                CreatedDate = new DateTimeOffset(new DateTime(2017, 9, 11)),
-                CreatedBy = "System",
-                ModifiedDate = null,
-                ModifiedBy = "Test",
-                Status = status,
-                Author = new ClawLibrary.Core.Models.Authors.Author()
-                {
-                    Key = "E9862AF8-0017-4C36-B424-68E2D39D10DF",
-                    FirstName = "Arvel",
-                    LastName = "Greenfelder"
-                },
-                Category = new ClawLibrary.Core.Models.Categories.Category
-                {
-                    Key = "E7F716C2-FA5E-433C-A3C3-478F1B94E44B",
-                    Name = "Guide"
-                }
-            };
-
-            // act & assert
-            Assert.ThrowsAsync<BusinessException>(async () => await booksDataService.UpdateBook(expectedBook));
-        }
-
         [Test]
         public async Task Should_Create_New_Book_Picture()
         {
@@ -1114,7 +1117,6 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
             Assert.ThrowsAsync<BusinessException>(async () => await booksDataService.UpdatePicture(String.Empty, expectedBookKey, String.Empty));
         }
 
-
         [TestCase("wrongKey")]
         [TestCase("    ")]
         [TestCase("a123123213")]
@@ -1167,6 +1169,114 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
 
             // assert
             Assert.AreEqual(String.Empty, actualFileName);
+        }
+
+        [TestCase(Status.Active)]
+        [TestCase(Status.Deleted)]
+        [TestCase(Status.Active)]
+        [TestCase(Status.Pending)]
+        public async Task Should_Update_Book_Status(Status status)
+        {
+            // arrange
+            var booksDataService = new BooksDataService(_mapper, _context);
+            var expectedBook = new Core.Models.Books.Book()
+            {
+                Key = "6A0734F0-B3DE-44D6-93E3-F9E504A35A6E",
+                Title = "Licensed Tasty Wooden Bike 78",
+                Publisher = "Fay Group",
+                Language = "PL",
+                Isbn = "40446591",
+                Description = "Quam voluptates modi labore atem voluptas quis iste quibusdam maiores laudantium dolorem provident amet deleniti quisquam distinctio omnis.",
+                Quantity = 97,
+                Paperback = 409,
+                PublishDate = new DateTime(1929, 12, 22),
+                CreatedDate = new DateTimeOffset(new DateTime(2017, 9, 11)),
+                CreatedBy = "System",
+                ModifiedDate = DateTimeOffset.Now,
+                ModifiedBy = "Test",
+                Status = status.ToString(),
+                Author = new ClawLibrary.Core.Models.Authors.Author()
+                {
+                    Key = "E9862AF8-0017-4C36-B424-68E2D39D10DF",
+                    FirstName = "Floy",
+                    LastName = "Stroman",
+                    Description =
+                        "Sunt optioatione accusantium consequaturui atque adipisci est ipsum est vitae reiciendis consectetur dolores deleniti sapiente.",
+                },
+                Category = new ClawLibrary.Core.Models.Categories.Category
+                {
+                    Key = "E7F716C2-FA5E-433C-A3C3-478F1B94E44B",
+                    Name = "Cookbooks"
+                }
+            };
+
+            // act
+            var actualBook = await booksDataService.UpdateBookStatus(expectedBook.Key, status, expectedBook.ModifiedBy);
+
+            // assert
+            Assert.NotNull(actualBook);
+            Assert.AreEqual(expectedBook.Title, actualBook.Title);
+            Assert.AreEqual(expectedBook.Publisher, actualBook.Publisher);
+            Assert.AreEqual(expectedBook.Language, actualBook.Language);
+            Assert.AreEqual(expectedBook.Isbn, actualBook.Isbn);
+            Assert.AreEqual(expectedBook.Description, actualBook.Description);
+            Assert.AreEqual(expectedBook.Quantity, actualBook.Quantity);
+            Assert.AreEqual(expectedBook.Paperback, actualBook.Paperback);
+            Assert.AreEqual(expectedBook.PublishDate, actualBook.PublishDate);
+            Assert.NotNull(actualBook.ModifiedDate);
+            Assert.AreEqual(DateTimeOffset.Now.Date, actualBook.ModifiedDate.Value.Date);
+            Assert.AreEqual(expectedBook.ModifiedBy, actualBook.ModifiedBy);
+            Assert.AreEqual(expectedBook.Status, actualBook.Status);
+            Assert.AreEqual(expectedBook.Author.FirstName, actualBook.Author.FirstName);
+            Assert.AreEqual(expectedBook.Author.LastName, actualBook.Author.LastName);
+            Assert.AreEqual(expectedBook.Category.Name, actualBook.Category.Name);
+        }
+
+        [TestCase("wrongBookKey")]
+        [TestCase("    ")]
+        [TestCase("123123213")]
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("2E6C91BE-A96F-4F72-9644-90D0EEC7DEE3")]
+        public void Should_Not_Update_Book_Status_And_Should_Throw_Exception_When_Book_Key_Is_Wrong(string bookKey)
+        {
+            // arrange
+            var booksDataService = new BooksDataService(_mapper, _context);
+            Status expectedStatus = Status.Active;
+            var expectedBook = new Core.Models.Books.Book()
+            {
+                Id = 15,
+                Key = bookKey,
+                Title = "Licensed Tasty Wooden Bike 78",
+                Publisher = "Fay Group",
+                Language = "PL",
+                Isbn = "40446591",
+                Description = "Quam voluptates modi labore atem voluptas quis iste quibusdam maiores laudantium dolorem provident amet deleniti quisquam distinctio omnis.",
+                Quantity = 97,
+                Paperback = 409,
+                PublishDate = new DateTime(1929, 12, 22),
+                CreatedDate = new DateTimeOffset(new DateTime(2017, 9, 11)),
+                CreatedBy = "System",
+                ModifiedDate = null,
+                ModifiedBy = expectedStatus.ToString(),
+                Status = "Inactive",
+                Author = new ClawLibrary.Core.Models.Authors.Author()
+                {
+                    Key = "E9862AF8-0017-4C36-B424-68E2D39D10DF",
+                    FirstName = "Floy",
+                    LastName = "Stroman",
+                    Description =
+                        "Sunt optioatione accusantium consequaturui atque adipisci est ipsum est vitae reiciendis consectetur dolores deleniti sapiente.",
+                },
+                Category = new ClawLibrary.Core.Models.Categories.Category
+                {
+                    Key = "E7F716C2-FA5E-433C-A3C3-478F1B94E44B",
+                    Name = "Guide"
+                }
+            };
+
+            // act & assert
+            Assert.ThrowsAsync<BusinessException>(async () => await booksDataService.UpdateBookStatus(expectedBook.Key, expectedStatus, expectedBook.ModifiedBy));
         }
 
     }

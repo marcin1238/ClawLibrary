@@ -909,5 +909,85 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
             // act & assert
                 Assert.ThrowsAsync<BusinessException>(async () => await dataService.UpdatePicture(String.Empty, expectedUserKey));
         }
+
+        [TestCase(Status.Active)]
+        [TestCase(Status.Deleted)]
+        [TestCase(Status.Active)]
+        [TestCase(Status.Pending)]
+        public async Task Should_Update_User_Status(Status status)
+        {
+            // arrange
+            var dataService = new UsersDataService(_mapper, _context);
+            var expectedModifiedByKey = "E9FCFA44-97D0-4D97-8339-62FD41930A3C";
+            var expectedModifiedBy = "test2@test2.com";
+            var expectedUser = new Core.Models.Users.User()
+            {
+                Id = 1,
+                Key = "9955C5CA-8BAA-4C69-8E9A-AA17AE51138E",
+                Email = "test@test.com",
+                FirstName = "Jon",
+                LastName = "Snow",
+                PhoneNumber = "123456789",
+                PasswordResetKey = null,
+                Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
+                Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
+                PasswordResetKeyCreatedDate = null,
+                CreatedDate = DateTimeOffset.Now,
+                ModifiedDate = DateTimeOffset.Now,
+                Status = status.ToString(),
+
+            };
+
+            // act
+            var actualUser = await dataService.UpdateStatus(expectedUser.Key, status, expectedModifiedByKey);
+
+            // assert
+            Assert.NotNull(actualUser);
+            Assert.AreEqual(expectedUser.Id, actualUser.Id);
+            Assert.AreEqual(expectedUser.Email, actualUser.Email);
+            Assert.AreEqual(expectedUser.FirstName, actualUser.FirstName);
+            Assert.AreEqual(expectedUser.LastName, actualUser.LastName);
+            Assert.AreEqual(expectedUser.PhoneNumber, actualUser.PhoneNumber);
+            Assert.AreEqual(expectedUser.CreatedDate.Date, actualUser.CreatedDate.Date);
+            Assert.NotNull(actualUser.ModifiedDate);
+            Assert.AreEqual(expectedUser.ModifiedDate?.Date, actualUser.ModifiedDate?.Date);
+            Assert.AreEqual(expectedUser.Status, actualUser.Status);
+            Assert.AreEqual(expectedModifiedBy, actualUser.ModifiedBy);
+            Assert.AreEqual(expectedUser.Salt, actualUser.Salt);
+        }
+
+        [TestCase("wrongUserKey")]
+        [TestCase("    ")]
+        [TestCase("123123213")]
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("8BEB61E6-50CA-417E-9784-690E32B905F6")]
+        public void Should_Not_Update_User_Status_And_Should_Throw_Exception_When_User_Key_Is_Null(string userKey)
+        {
+            // arrange
+            var dataService = new UsersDataService(_mapper, _context);
+            var expectedModifiedByKey = "E9FCFA44-97D0-4D97-8339-62FD41930A3C";
+            Status expectedStatus = Status.Active;
+            var expectedUser = new Core.Models.Users.User()
+            {
+                Id = 1,
+                Key = userKey,
+                Email = "test@test.com",
+                FirstName = "Jon",
+                LastName = "Snow",
+                PhoneNumber = "123456789",
+                PasswordResetKey = null,
+                Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
+                Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
+                PasswordResetKeyCreatedDate = null,
+                CreatedDate = DateTimeOffset.Now,
+                ModifiedDate = DateTimeOffset.Now,
+                Status = Status.Active.ToString(),
+
+            };
+
+            // act & assert
+            Assert.ThrowsAsync<BusinessException>(async () => await dataService.UpdateStatus(expectedUser.Key, expectedStatus, expectedModifiedByKey));
+        }
     }
 }

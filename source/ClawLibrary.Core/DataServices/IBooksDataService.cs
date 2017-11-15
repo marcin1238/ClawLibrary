@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ClawLibrary.Core.Enums;
 using ClawLibrary.Core.Models;
 using ClawLibrary.Core.Models.Books;
 
@@ -13,6 +14,7 @@ namespace ClawLibrary.Core.DataServices
         /// <summary>
         /// Gets the book with specified key (if one is present).
         /// </summary>
+        /// <param name="bookKey">Key of the book</param>
         /// <returns>Book details</returns>
         Task<Book> GetBookByKey(string bookKey);
 
@@ -41,11 +43,20 @@ namespace ClawLibrary.Core.DataServices
         Task<Book> UpdateBook(Book model);
 
         /// <summary>
+        /// Updates the book status with specified key (if one is present).
+        /// </summary>
+        /// <param name="bookKey">Key of the book</param>
+        /// <param name="status">New book status</param>
+        /// <param name="modifiedBy">User email</param>
+        /// <returns>Book details</returns>
+        Task<Book> UpdateBookStatus(string bookKey, Status status, string modifiedBy);
+
+        /// <summary>
         /// Updates the book picture.
         /// </summary>
         /// <param name="fileName">Picture file name</param>
         /// <param name="bookKey">Key of the book</param>
-        /// <param name="modifiedBy"></param>
+        /// <param name="modifiedBy">User email</param>
         /// <returns>Book picture</returns>
         Task UpdatePicture(string fileName, string bookKey, string modifiedBy);
 
