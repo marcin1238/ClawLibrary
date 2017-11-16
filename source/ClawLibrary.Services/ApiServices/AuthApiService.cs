@@ -55,13 +55,15 @@ namespace ClawLibrary.Services.ApiServices
 
         public async Task RegisterUser(RegisterUserRequest request)
         {
-            _logger.LogInformation($"RegisterCustomer input - request: {request}");
+            _logger.LogInformation($"Register user input - request: {request}");
           
             var dto = _mapper.Map<RegisterUserRequest, User>(request);
             Guid salt = Guid.NewGuid();
             string hashedPassword = _passwordHasher.HashPassword(request.Password + salt);
 
             var user = await _dataService.RegisterUser(dto, hashedPassword, salt.ToString());
+
+            _logger.LogInformation($"Register user - created user: {user}");
 
             //var emailTask = _mailSender.SendAsync(_mailGenerator.PrepareEmail(new CustomerVerificationEmail()
             //{
@@ -153,8 +155,8 @@ namespace ClawLibrary.Services.ApiServices
         {
             //Get user
             var user = await GetAuthenticatedUser(request.Email, request.Password);
-
-            if (!user.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
+            
+            if (user == null || !user.Status.ToLower().Equals(Status.Active.ToString().ToLower()))
                 throw new UnauthorizedAccessException();
 
             //Get Identity
@@ -208,12 +210,10 @@ namespace ClawLibrary.Services.ApiServices
 
         private bool IsIdentityValid(ClaimsIdentity identity)
         {
-            if (identity == null)
-            {
-                return false;
-            }
-
-            return true;
+            if (identity != null && identity.Claims.Any(claim =>
+                claim.Type == ClaimTypes.Role && claim.Value.ToLower().Equals(Role.Admin.ToString().ToLower())))
+                return true;
+            return false;
         }
 
         private List<Claim> MergeClaims(string email, DateTime expirationDate, ClaimsIdentity identity)

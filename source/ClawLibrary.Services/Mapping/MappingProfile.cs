@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClawLibrary.Core.Models;
+using ClawLibrary.Core.Models.Auth;
 using ClawLibrary.Core.Models.Authors;
 using ClawLibrary.Core.Models.Books;
 using ClawLibrary.Core.Models.Categories;
@@ -27,6 +28,7 @@ namespace ClawLibrary.Services.Mapping
             CreateMap<User, UserResponse>().ReverseMap();
             CreateMap<ListResponse<User>, ListResponse<UserResponse>>().ReverseMap();
             CreateMap<User, UserRequest>().ReverseMap();
+            CreateMap<RegisterUserRequest, User>().ReverseMap();
         }
 
         private void CreateMapBook()
