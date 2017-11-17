@@ -434,8 +434,7 @@ namespace ClawLibrary.Data.DataServices
             }
             throw new BusinessException(ErrorCode.InvalidValue, "User key is null or empty");
         }
-
-
+        
         public async Task<string> GetPicture(string userKey)
         {
             if (!string.IsNullOrEmpty(userKey))

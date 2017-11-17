@@ -79,6 +79,15 @@ namespace ClawLibrary.Services.ApiServices
             return _mapper.Map<ListResponse<Book>, ListResponse<BookResponse>>(books);
         }
 
+        public async Task<BookResponse> UpdateBookStatus(string bookKey, Status status)
+        {
+            var user = Session.UserEmail;
+            _logger.LogInformation($"UpdateBookStatus input - bookKey: {bookKey}, status: {status}");
+            Book book = await _dataService.UpdateBookStatus(bookKey, status, user);
+            _logger.LogInformation($"UpdateBookStatus response - book: {book}");
+            return _mapper.Map<Book, BookResponse>(book);
+        }
+
         public async Task<BookResponse> UpdateBook(string bookKey, BookUpdateRequest model)
         {
             var user = Session.UserEmail;
@@ -134,7 +143,7 @@ namespace ClawLibrary.Services.ApiServices
         {
             if (bytes.LongLength > 3000000)
             {
-                throw new BusinessException(ErrorCode.FileSizeIsToBig);
+                throw new BusinessException(ErrorCode.FileSizeIsTooBig);
             }
             try
             {

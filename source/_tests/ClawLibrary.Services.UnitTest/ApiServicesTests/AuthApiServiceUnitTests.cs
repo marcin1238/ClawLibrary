@@ -42,7 +42,6 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
             }));
             _options = new Mock<TokenProviderOptions>();
             _logger = new Mock<ILogger<AuthApiService>>();
-            //_logger.Setup(x => x.LogInformation(It.IsAny<string>()));
         }
 
         [Test]

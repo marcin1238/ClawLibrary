@@ -2,7 +2,7 @@ namespace ClawLibrary.Core.Enums
 {
     public enum ErrorCode
     {
-        FileSizeIsToBig = 10001,
+        FileSizeIsTooBig = 10001,
         IncorrectDate = 10002,
         TooLong = 10003,
         TooShort = 10004,

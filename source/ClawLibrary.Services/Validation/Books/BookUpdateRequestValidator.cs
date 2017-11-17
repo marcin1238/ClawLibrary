@@ -106,14 +106,6 @@ namespace ClawLibrary.Services.Validation.Books
                 .Must(BeAValidPublishDate)
                 .WithMessage(ErrorCode.IncorrectDate.ToString())
                 .WithName("PublishDate");
-
-            RuleFor(type => type.Status)
-                .NotEmpty()
-                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
-                .WithName("Status")
-                .IsInEnum()
-                .WithMessage(ErrorCode.InvalidValue.ToString())
-                .WithName("Status");
         }
 
         /// <summary>

@@ -51,7 +51,6 @@ namespace ClawLibrary.Services.Mapping
                 .ForMember(x => x.Description, opt => opt.MapFrom(x => x.Description))
                 .ForMember(x => x.Quantity, opt => opt.MapFrom(x => x.Quantity))
                 .ForMember(x => x.Paperback, opt => opt.MapFrom(x => x.Paperback))
-                .ForMember(x => x.Status, opt => opt.MapFrom(x => x.Status))
                 .ForMember(x => x.Language, opt => opt.MapFrom(x => x.Language));
 
             CreateMap<ClawLibrary.Services.Models.Books.BookResponse, ClawLibrary.Core.Models.Books.Book>().ReverseMap()

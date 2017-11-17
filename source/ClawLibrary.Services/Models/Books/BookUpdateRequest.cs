@@ -17,7 +17,6 @@ namespace ClawLibrary.Services.Models.Books
         public long Quantity { get; set; }
         public long Paperback { get; set; }
         public DateTime PublishDate { get; set; }
-        public Status Status { get; set;  }
         public string AuthorKey { get; set; }
         public string CategoryKey { get; set; }
 

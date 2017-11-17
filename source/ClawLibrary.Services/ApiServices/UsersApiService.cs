@@ -154,7 +154,7 @@ namespace ClawLibrary.Services.ApiServices
         {
             if (bytes.LongLength > 3000000)
             {
-                throw new BusinessException(ErrorCode.FileSizeIsToBig);
+                throw new BusinessException(ErrorCode.FileSizeIsTooBig);
             }
             try
             {
