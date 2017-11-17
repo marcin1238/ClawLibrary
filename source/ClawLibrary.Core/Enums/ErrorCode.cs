@@ -29,6 +29,7 @@ namespace ClawLibrary.Core.Enums
         WrongStatus = 10025,
         InvalidIsbnCode = 10026,
         InternalError = 10027,
-        AlreadyExist = 10028
+        AlreadyExist = 10028,
+        PasswordResetKeyExpired = 10029
     }
 }

@@ -81,6 +81,9 @@ namespace ClawLibrary.Services.ApiServices
 
             var user = await _dataService.GetUserByEmail(request.Email);
 
+            if (user == null)
+                throw new UnauthorizedAccessException();
+
             var saltedPassword = request.Password + user.Salt;
             var result = _passwordHasher.VerifyHashedPassword(user.Password, saltedPassword);
 
@@ -125,27 +128,25 @@ namespace ClawLibrary.Services.ApiServices
                 //    AppName = appName
                 //}));
             }
+            else
+                throw new BusinessException(ErrorCode.UserDoesNotExist, $"User with email: {request.Email} does not exist!");
         }
 
         public async Task SetPassword(SetUserPasswordRequest request)
         {
             var user = await _dataService.GetUserByEmail(request.Email);
+
             if (user == null)
-            {
-                throw new BusinessException("User not found");
-            }
+                throw new BusinessException(ErrorCode.UserDoesNotExist, $"User with email: {request.Email} does not exist!");
+
             if (user.PasswordResetKey != request.VerificationCode)
-            {
-                throw new UnauthorizedAccessException("Invalid verification code");
-            }
+                throw new BusinessException(ErrorCode.InvalidVerificationCode, "Invalid verification code");
 
             var timeSpan = DateTimeOffset.Now - user.PasswordResetKeyCreatedDate;
 
-            if (timeSpan == null || timeSpan.Value.Minutes > _config.PasswordResetKeyExpirationInMinutes)
-            {
-                throw new BusinessException("Password reset key expired");
-            }
-
+            if (timeSpan == null || timeSpan.Value.TotalMinutes > _config.PasswordResetKeyExpirationInMinutes)
+                throw new BusinessException(ErrorCode.PasswordResetKeyExpired, "Password reset key expired");
+            
             Guid salt = Guid.NewGuid();
             string hashedPassword = _passwordHasher.HashPassword(request.Password + salt);
             await _dataService.ResetPassword(user.Id, hashedPassword, salt.ToString());
@@ -163,10 +164,8 @@ namespace ClawLibrary.Services.ApiServices
             var identity = await GetIdentity(user);
 
             if (!IsIdentityValid(identity))
-            {
                 throw new UnauthorizedAccessException();
-            }
-
+            
             //Create token
             var expirationDate = DateTime.UtcNow.AddMinutes(_config.TokenExpirationInMinutes);
             var claims = MergeClaims(user.Email, expirationDate, identity);
