@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ClawLibrary.Core.Enums;
+﻿using ClawLibrary.Core.Enums;
 using ClawLibrary.Core.Models.Auth;
 using FluentValidation;
+using RegisterUserRequest = ClawLibrary.Services.Models.Users.RegisterUserRequest;
 
 namespace ClawLibrary.Services.Validation.Users
 {
@@ -14,46 +10,70 @@ namespace ClawLibrary.Services.Validation.Users
         public RegisterUserRequestValidator()
         {
             RuleFor(x => x.Email)
+                .NotNull()
+                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("Email")
                 .NotEmpty()
                 .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
-                .WithName("Email")
+                .OverridePropertyName("Email")
                 .EmailAddress()
                 .WithMessage(ErrorCode.ValidationEmailFormat.ToString())
                 .WithName("Email");
 
             RuleFor(x => x.Password)
+                .NotNull()
+                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("Password")
                 .NotEmpty()
                 .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
-                .WithName("Password")
+                .OverridePropertyName("Password")
                 .Length(8, 100)
                 .WithMessage(ErrorCode.ValidationPasswordLength.ToString())
                 .WithName("Password");
 
             RuleFor(x => x.ConfirmPassword)
+                .NotNull()
+                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("ConfirmPassword")
+                .NotEmpty()
+                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("ConfirmPassword")
                 .Equal(x => x.Password)
                 .WithMessage(ErrorCode.ValidationPasswordDoesNotMatch.ToString())
                 .WithName("ConfirmPassword");
 
-            RuleFor(x => x.FirstName)
+            RuleFor(x => x.FirstName.Trim())
+                .NotNull()
+                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("FirstName")
                 .NotEmpty()
                 .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
-                .WithName("FirstName")
-                .Length(2, 50)
-                .WithMessage(ErrorCode.ValidationStringLength.ToString())
-                .WithName("FirstName");
+                .OverridePropertyName("FirstName");
 
-            RuleFor(x => x.LastName)
+            RuleFor(x => x.FirstName.Trim().Length)
+                .GreaterThan(3)
+                .WithMessage(ErrorCode.TooShort.ToString())
+                .OverridePropertyName("FirstName")
+                .LessThan(50)
+                .WithMessage(ErrorCode.TooLong.ToString())
+                .OverridePropertyName("FirstName");
+
+            RuleFor(x => x.LastName.Trim())
+                .NotNull()
+                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("LastName")
                 .NotEmpty()
                 .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
-                .WithName("LastName")
-                .Length(2, 50)
-                .WithMessage(ErrorCode.ValidationStringLength.ToString())
-                .WithName("LastName");
+                .OverridePropertyName("LastName");
 
-            RuleFor(x => x.PhoneNumber.Trim())
-                .Length(8, 20)
-                .WithMessage(ErrorCode.ValidationStringLength.ToString())
-                .WithName("PhoneNumber");
+            RuleFor(x => x.LastName.Trim().Length)
+                .GreaterThan(3)
+                .WithMessage(ErrorCode.TooShort.ToString())
+                .OverridePropertyName("LastName")
+                .LessThan(50)
+                .WithMessage(ErrorCode.TooLong.ToString())
+                .OverridePropertyName("LastName");
+
         }
     }
 }

@@ -76,7 +76,7 @@ namespace ClawLibrary.Web.Controllers
             var item = await _apiService.CreateBook(model);
             if (item == null)
             {
-                return NotFound();
+                return BadRequest();
             }
             return new ObjectResult(item);
         }
@@ -91,12 +91,12 @@ namespace ClawLibrary.Web.Controllers
         /// <returns>Book details</returns>
         [HttpPut]
         [Route("book/{bookKey}")]
-        public async Task<IActionResult> Put(string bookKey, [FromBody] BookUpdateRequest model)
+        public async Task<IActionResult> Put(string bookKey, [FromBody] BookRequest model)
         {
             var item = await _apiService.UpdateBook(bookKey, model);
             if (item == null)
             {
-                return NotFound();
+                return BadRequest();
             }
             return new ObjectResult(item);
         }
@@ -110,12 +110,12 @@ namespace ClawLibrary.Web.Controllers
         /// <returns>Book picture</returns>
         [HttpPatch]
         [Route("book/{bookKey}/picture")]
-        public async Task<IActionResult> Picture(string bookKey, [FromBody] UpdatePictureRequest request)
+        public async Task<IActionResult> Patch(string bookKey, [FromBody] UpdatePictureRequest request)
         {
             Media media = await _apiService.UpdatePicture(request.PictureBase64, bookKey);
             if (media == null)
             {
-                return NotFound();
+                return BadRequest();
             }
             return File(media.Content, "image/jpeg");
         }

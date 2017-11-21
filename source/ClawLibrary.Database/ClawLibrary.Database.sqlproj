@@ -69,6 +69,7 @@
   <ItemGroup>
     <None Include="_setup\mock\mock.sql" />
     <None Include="_publish\local.publish.xml" />
+    <None Include="local.publish.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="_setup\seed\seed.sql" />
@@ -81,7 +82,6 @@
     <Build Include="Tables\Author.sql" />
     <Build Include="Tables\Book.sql" />
     <Build Include="Tables\Category.sql" />
-    <Build Include="Tables\Order.sql" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="pre.sql" />

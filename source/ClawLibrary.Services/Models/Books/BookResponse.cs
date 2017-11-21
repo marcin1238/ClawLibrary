@@ -13,7 +13,6 @@ namespace ClawLibrary.Services.Models.Books
         public string Language { get; set; }
         public string Isbn { get; set; }
         public string Description { get; set; }
-        public long Quantity { get; set; }
         public long Paperback { get; set; }
         public DateTime PublishDate { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
@@ -26,7 +25,7 @@ namespace ClawLibrary.Services.Models.Books
         public override string ToString()
         {
             return $"Key: {Key}, Title: {Title}, Publisher: {Publisher}" +
-                   $"Language {Language}, Isbn: {Isbn}, Description: {Description}, Quantity: {Quantity}, Paperback: {Paperback}" +
+                   $"Language {Language}, Isbn: {Isbn}, Description: {Description}, Paperback: {Paperback}" +
                    $"PublishDate {PublishDate}, CreatedDate: {CreatedDate}, ModifiedDate: {ModifiedDate}, Status: {Status}, Author: {Author}, Category: {Category}";
         }
     }

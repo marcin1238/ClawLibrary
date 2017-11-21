@@ -10,8 +10,7 @@ CREATE TABLE [dbo].[User]
 
 	[FirstName] NVARCHAR(50) NOT NULL,
 	[LastName] NVARCHAR(50) NOT NULL,
-	[PhoneNumber] NVARCHAR(20) NULL,
-
+	
 	[PasswordResetKey] NVARCHAR(72) NULL,
 	[PasswordResetKeyCreatedDate] DATETIMEOFFSET NULL,
 

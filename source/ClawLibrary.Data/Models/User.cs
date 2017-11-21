@@ -17,7 +17,6 @@ namespace ClawLibrary.Data.Models
         public string PasswordHash { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string PhoneNumber { get; set; }
         public string PasswordResetKey { get; set; }
         public DateTimeOffset? PasswordResetKeyCreatedDate { get; set; }
         public long? ImageFileId { get; set; }

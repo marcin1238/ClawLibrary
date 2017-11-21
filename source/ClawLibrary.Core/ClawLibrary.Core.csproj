@@ -154,13 +154,8 @@
     <Compile Include="Middlewares\SessionContextMiddleware.cs" />
     <Compile Include="Models\Authors\Author.cs" />
     <Compile Include="Models\Auth\AuthConfig.cs" />
-    <Compile Include="Models\Auth\AuthorizeRequest.cs" />
-    <Compile Include="Models\Auth\RegisterUserRequest.cs" />
-    <Compile Include="Models\Auth\ResetUserPasswordRequest.cs" />
-    <Compile Include="Models\Auth\SetUserPasswordRequest.cs" />
     <Compile Include="Models\Auth\Token.cs" />
     <Compile Include="Models\Auth\TokenProviderOptions.cs" />
-    <Compile Include="Models\Auth\UserVerificationRequest.cs" />
     <Compile Include="Models\Books\Book.cs" />
     <Compile Include="Models\Categories\Category.cs" />
     <Compile Include="Models\ListResponse.cs" />

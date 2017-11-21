@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using ClawLibrary.Core.DataServices;
@@ -13,12 +12,13 @@ using ClawLibrary.Core.Models.Auth;
 using ClawLibrary.Core.Models.Users;
 using ClawLibrary.Services.ApiServices;
 using ClawLibrary.Services.Mapping;
+using ClawLibrary.Services.Models.Users;
 using Microsoft.AspNet.Identity;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 
-namespace ClawLibrary.Services.UnitTest.ApiServicesTests
+namespace ClawLibrary.Services.UnitTests.ApiServicesTests
 {
     [TestFixture]
     public class AuthApiServiceUnitTests
@@ -55,7 +55,6 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -109,7 +108,6 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -163,7 +161,6 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -205,7 +202,6 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -247,7 +243,6 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -269,7 +264,6 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = expectedUser.Email,
                 Password = expectedUser.Password,
                 ConfirmPassword = expectedUser.Password,
-                PhoneNumber = expectedUser.PhoneNumber,
                 FirstName = expectedUser.FirstName,
                 LastName = expectedUser.LastName
             };
@@ -289,7 +283,6 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -311,7 +304,6 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = expectedUser.Email,
                 Password = expectedUser.Password,
                 ConfirmPassword = expectedUser.Password,
-                PhoneNumber = expectedUser.PhoneNumber,
                 FirstName = expectedUser.FirstName,
                 LastName = expectedUser.LastName
             };
@@ -331,7 +323,6 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -347,7 +338,6 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -406,7 +396,6 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -439,7 +428,6 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -482,7 +470,7 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
+                
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -525,7 +513,7 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
+                
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -568,7 +556,7 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
+                
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -613,7 +601,7 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
+                
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -656,7 +644,7 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
+                
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -706,7 +694,7 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
+                
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -741,7 +729,7 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
+                
                 PasswordResetKey = "9855C5CA-8BAA-4C69-8E9A-AA17AE51138E",
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -799,7 +787,7 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
+                
                 PasswordResetKey = "9855C5CA-8BAA-4C69-8E9A-AA17AE51138E",
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -836,7 +824,7 @@ namespace ClawLibrary.Services.UnitTest.ApiServicesTests
                 Email = "David.Schwimmer@test.com",
                 FirstName = "David",
                 LastName = "Schwimmer",
-                PhoneNumber = "789456123",
+                
                 PasswordResetKey = "9855C5CA-8BAA-4C69-8E9A-AA17AE51138E",
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",

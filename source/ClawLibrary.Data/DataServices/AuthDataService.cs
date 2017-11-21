@@ -51,8 +51,7 @@ namespace ClawLibrary.Data.DataServices
         public async Task<User> RegisterUser(User model, string hashedPassword, string salt)
         {
             var user = await _context.User.FirstOrDefaultAsync(
-                x => (x.Email.ToString().ToLower().Equals(model.Email.ToLower()) ||
-                      x.PhoneNumber.ToString().ToLower().Equals(model.PhoneNumber.ToLower())) && (
+                x => (x.Email.ToString().ToLower().Equals(model.Email.ToLower())) && (
                          !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())));
 
             if (user == null)

@@ -11,7 +11,6 @@ namespace ClawLibrary.Data.Models
         public virtual DbSet<Book> Book { get; set; }
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<File> File { get; set; }
-        public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserRole> UserRole { get; set; }
@@ -164,28 +163,6 @@ namespace ClawLibrary.Data.Models
                     .HasMaxLength(128);
             });
 
-            modelBuilder.Entity<Order>(entity =>
-            {
-                entity.Property(e => e.CreatedBy).HasMaxLength(256);
-
-                entity.Property(p => p.Id).HasValueGenerator<InMemoryIntegerValueGenerator<long>>();
-
-                entity.Property(e => e.CreatedDate);
-
-                entity.Property(e => e.ModifiedBy).HasMaxLength(256);
-
-                entity.Property(e => e.ModifiedDate);
-
-                entity.Property(e => e.Status)
-                    .IsRequired()
-                    .HasMaxLength(128);
-
-                entity.HasOne(d => d.Book)
-                    .WithMany(p => p.Order)
-                    .HasForeignKey(d => d.BookId)
-                    .HasConstraintName("FK_Order_Book");
-            });
-
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.HasIndex(e => e.Name)
@@ -240,8 +217,6 @@ namespace ClawLibrary.Data.Models
                 entity.Property(e => e.ModifiedDate);
 
                 entity.Property(e => e.PasswordResetKey).HasMaxLength(72);
-
-                entity.Property(e => e.PhoneNumber).HasMaxLength(20);
 
                 entity.Property(e => e.Status)
                     .IsRequired()

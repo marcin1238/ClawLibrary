@@ -13,6 +13,11 @@ using ClawLibrary.Core.Models.Auth;
 using ClawLibrary.Core.Models.Users;
 using Microsoft.AspNet.Identity;
 using Microsoft.Extensions.Logging;
+using AuthorizeRequest = ClawLibrary.Services.Models.Users.AuthorizeRequest;
+using RegisterUserRequest = ClawLibrary.Services.Models.Users.RegisterUserRequest;
+using ResetUserPasswordRequest = ClawLibrary.Services.Models.Users.ResetUserPasswordRequest;
+using SetUserPasswordRequest = ClawLibrary.Services.Models.Users.SetUserPasswordRequest;
+using UserVerificationRequest = ClawLibrary.Services.Models.Users.UserVerificationRequest;
 
 namespace ClawLibrary.Services.ApiServices
 {

@@ -81,16 +81,7 @@ namespace ClawLibrary.Data.DataServices
                             .OrderBy(x => x.LastName)
                             .ToListAsync());
                         break;
-                    case "phonenumber_asc":
-                        list = _mapper.Map<List<ClawLibrary.Data.Models.User>, List<User>>(await _context
-                            .User
-                            .Where(x => !x.Key.ToString().ToLower().Equals(userKey.ToLower()) &&
-                                        !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
-                            .Skip(offset ?? 0)
-                            .Take(count ?? 100)
-                            .OrderBy(x => x.PhoneNumber)
-                            .ToListAsync());
-                        break;
+                   
                     case "createddate_asc":
                         list = _mapper.Map<List<ClawLibrary.Data.Models.User>, List<User>>(await _context
                             .User
@@ -139,16 +130,6 @@ namespace ClawLibrary.Data.DataServices
                             .Skip(offset ?? 0)
                             .Take(count ?? 100)
                             .OrderByDescending(x => x.LastName)
-                            .ToListAsync());
-                        break;
-                    case "phonenumber_desc":
-                        list = _mapper.Map<List<ClawLibrary.Data.Models.User>, List<User>>(await _context
-                            .User
-                            .Where(x => !x.Key.ToString().ToLower().Equals(userKey.ToLower()) &&
-                                        !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
-                            .Skip(offset ?? 0)
-                            .Take(count ?? 100)
-                            .OrderByDescending(x => x.PhoneNumber)
                             .ToListAsync());
                         break;
                     case "createddate_desc":
@@ -231,19 +212,6 @@ namespace ClawLibrary.Data.DataServices
                             .OrderBy(x => x.LastName)
                             .ToListAsync());
                         break;
-                    case "phonenumber_asc":
-                        list = _mapper.Map<List<ClawLibrary.Data.Models.User>, List<User>>(await _context
-                            .User
-                            .Where(x => !x.Key.ToString().ToLower().Equals(userKey.ToLower()) &&
-                                        (x.Email.ToLower().Contains(searchString.ToLower()) ||
-                                         x.FirstName.ToLower().Contains(searchString.ToLower()) ||
-                                         x.LastName.ToLower().Contains(searchString.ToLower())) &&
-                                        !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
-                            .Skip(offset ?? 0)
-                            .Take(count ?? 100)
-                            .OrderBy(x => x.PhoneNumber)
-                            .ToListAsync());
-                        break;
                     case "createddate_asc":
                         list = _mapper.Map<List<ClawLibrary.Data.Models.User>, List<User>>(await _context
                             .User
@@ -309,20 +277,7 @@ namespace ClawLibrary.Data.DataServices
                             .OrderByDescending(x => x.LastName)
                             .ToListAsync());
                         break;
-                    case "phonenumber_desc":
-                        list = _mapper.Map<List<ClawLibrary.Data.Models.User>, List<User>>(await _context
-                            .User
-                            .Where(x => !x.Key.ToString().ToLower().Equals(userKey.ToLower()) &&
-                                        (x.Email.ToLower().Contains(searchString.ToLower()) ||
-                                         x.FirstName.ToLower().Contains(searchString.ToLower()) ||
-                                         x.LastName.ToLower().Contains(searchString.ToLower())) &&
-                                        !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
-                            .Skip(offset ?? 0)
-                            .Take(count ?? 100)
-                            .OrderByDescending(x => x.PhoneNumber)
-                            .ToListAsync());
-                        break;
-                    case "createddate_desc":
+                   case "createddate_desc":
                         list = _mapper.Map<List<ClawLibrary.Data.Models.User>, List<User>>(await _context
                             .User
                             .Where(x => !x.Key.ToString().ToLower().Equals(userKey.ToLower()) &&
@@ -389,8 +344,7 @@ namespace ClawLibrary.Data.DataServices
                 user.ModifiedBy = modifiedBy.Email;
                 user.FirstName = model.FirstName;
                 user.LastName = model.LastName;
-                user.PhoneNumber = model.PhoneNumber;
-
+                
                 var updateUser = _context.User.Update(user);
                 await _context.SaveChangesAsync();
 

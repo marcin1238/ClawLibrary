@@ -51,20 +51,24 @@ namespace ClawLibrary.Services.ApiServices
 
         public async Task<BookResponse> CreateBook(BookRequest model)
         {
-            var user = Session.UserEmail;
-            _logger.LogInformation(
-                $"CreateBook input - model: {model}");
-            var dto = _mapper.Map<BookRequest, Book>(model);
-            dto.Author = new Author() { Key = model.AuthorKey };
-            dto.Category = new Category() { Key = model.CategoryKey };
-            dto.CreatedBy = user;
-            Book book = await _dataService.CreateBook(dto);
+            if (Session != null && !string.IsNullOrWhiteSpace(Session.UserEmail))
+            {
+                var user = Session.UserEmail;
+                _logger.LogInformation(
+                    $"CreateBook input - model: {model}");
+                var dto = _mapper.Map<BookRequest, Book>(model);
+                dto.Author = new Author() {Key = model.AuthorKey};
+                dto.Category = new Category() {Key = model.CategoryKey};
+                dto.CreatedBy = user;
+                Book book = await _dataService.CreateBook(dto);
 
-            if (book == null)
-                throw new BusinessException(ErrorCode.InternalError, "Book has not been created!");
+                if (book == null)
+                    throw new BusinessException(ErrorCode.InternalError, "Book has not been created!");
 
-            _logger.LogInformation($"CreateBook response - book: {book}");
-            return _mapper.Map<Book, BookResponse>(book);
+                _logger.LogInformation($"CreateBook response - book: {book}");
+                return _mapper.Map<Book, BookResponse>(book);
+            }
+            throw new UnauthorizedAccessException();
         }
 
         public async Task<ListResponse<BookResponse>> GetBooks(QueryData query)
@@ -81,39 +85,51 @@ namespace ClawLibrary.Services.ApiServices
 
         public async Task<BookResponse> UpdateBookStatus(string bookKey, Status status)
         {
-            var user = Session.UserEmail;
-            _logger.LogInformation($"UpdateBookStatus input - bookKey: {bookKey}, status: {status}");
-            Book book = await _dataService.UpdateBookStatus(bookKey, status, user);
-            _logger.LogInformation($"UpdateBookStatus response - book: {book}");
-            return _mapper.Map<Book, BookResponse>(book);
+            if (Session != null && !string.IsNullOrWhiteSpace(Session.UserEmail))
+            {
+                var user = Session.UserEmail;
+                _logger.LogInformation($"UpdateBookStatus input - bookKey: {bookKey}, status: {status}");
+                Book book = await _dataService.UpdateBookStatus(bookKey, status, user);
+                _logger.LogInformation($"UpdateBookStatus response - book: {book}");
+                return _mapper.Map<Book, BookResponse>(book);
+            }
+            throw new UnauthorizedAccessException();
         }
 
-        public async Task<BookResponse> UpdateBook(string bookKey, BookUpdateRequest model)
+        public async Task<BookResponse> UpdateBook(string bookKey, BookRequest model)
         {
-            var user = Session.UserEmail;
-            _logger.LogInformation(
-                $"UpdateBook input - model: {model}");
-            var dto = _mapper.Map<BookUpdateRequest, Book>(model);
-            dto.Key = bookKey;
-            dto.Author = new Author() {Key = model.AuthorKey };
-            dto.Category = new Category() { Key = model.CategoryKey };
-            dto.ModifiedBy = user;
-            Book book = await _dataService.UpdateBook(dto);
-            _logger.LogInformation($"UpdateBook response - book: {book}");
-            return _mapper.Map<Book, BookResponse>(book);
+            if (Session != null && !string.IsNullOrWhiteSpace(Session.UserEmail))
+            {
+                var user = Session.UserEmail;
+                _logger.LogInformation(
+                    $"UpdateBook input - model: {model}");
+                var dto = _mapper.Map<BookRequest, Book>(model);
+                dto.Key = bookKey;
+                dto.Author = new Author() {Key = model.AuthorKey};
+                dto.Category = new Category() {Key = model.CategoryKey};
+                dto.ModifiedBy = user;
+                Book book = await _dataService.UpdateBook(dto);
+                _logger.LogInformation($"UpdateBook response - book: {book}");
+                return _mapper.Map<Book, BookResponse>(book);
+            }
+            throw new UnauthorizedAccessException();
         }
 
         public async Task<Media> UpdatePicture(string requestPictureBase64, string bookKey)
         {
-            var user = Session.UserEmail;
-            _logger.LogInformation(
-                $"UpdatePicture input - userKey: {bookKey}");
+            if (Session != null && !string.IsNullOrWhiteSpace(Session.UserEmail))
+            {
+                var user = Session.UserEmail;
+                _logger.LogInformation(
+                    $"UpdatePicture input - userKey: {bookKey}");
 
-            var bytes = Convert.FromBase64String(requestPictureBase64);
-            ValidatePhoto(bytes);
-            string fileName = _mediaStorageAppService.SaveMedia(bytes);
-            await _dataService.UpdatePicture(fileName, bookKey, user);
-            return await GetPicture(bookKey);
+                var bytes = Convert.FromBase64String(requestPictureBase64);
+                ValidatePhoto(bytes);
+                string fileName = _mediaStorageAppService.SaveMedia(bytes);
+                await _dataService.UpdatePicture(fileName, bookKey, user);
+                return await GetPicture(bookKey);
+            }
+            throw new UnauthorizedAccessException();
         }
 
         public async Task<Media> GetPicture(string bookKey)

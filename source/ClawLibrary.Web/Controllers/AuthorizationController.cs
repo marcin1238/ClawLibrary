@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using ClawLibrary.Core.Models.Auth;
 using ClawLibrary.Services.ApiServices;
+using ClawLibrary.Services.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClawLibrary.Web.Controllers
@@ -91,7 +91,7 @@ namespace ClawLibrary.Web.Controllers
         /// <param name="request">User data</param>
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register([FromBody]RegisterUserRequest request)
+        public async Task<IActionResult> Post([FromBody]RegisterUserRequest request)
         {
             await _authService.RegisterUser(request);
             return new NoContentResult();

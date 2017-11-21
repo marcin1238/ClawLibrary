@@ -141,18 +141,7 @@ namespace ClawLibrary.Data.DataServices
                             .OrderBy(x => x.Description)
                             .ToListAsync());
                         break;
-                    case "quantity_asc":
-                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
-                            .Book
-                            .Include("Author")
-                            .Include("Category")
-                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
-                            .Skip(offset ?? 0)
-                            .Take(count ?? 100)
-                            .OrderBy(x => x.Quantity)
-                            .ToListAsync());
-                        break;
-                    case "paperback_asc":
+                   case "paperback_asc":
                         list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
@@ -251,18 +240,7 @@ namespace ClawLibrary.Data.DataServices
                             .OrderByDescending(x => x.Description)
                             .ToListAsync());
                         break;
-                    case "quantity_desc":
-                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
-                            .Book
-                            .Include("Author")
-                            .Include("Category")
-                            .Where(x => !x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower()))
-                            .Skip(offset ?? 0)
-                            .Take(count ?? 100)
-                            .OrderByDescending(x => x.Quantity)
-                            .ToListAsync());
-                        break;
-                    case "paperback_desc":
+                   case "paperback_desc":
                         list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
@@ -391,20 +369,7 @@ namespace ClawLibrary.Data.DataServices
                             .OrderBy(x => x.Description)
                             .ToListAsync());
                         break;
-                    case "quantity_asc":
-                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
-                            .Book
-                            .Include("Author")
-                            .Include("Category")
-                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                                                                                              x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                                                                                              x.Publisher.ToLower().Contains(searchString.ToLower())))
-                            .Skip(offset ?? 0)
-                            .Take(count ?? 100)
-                            .OrderBy(x => x.Quantity)
-                            .ToListAsync());
-                        break;
-                    case "paperback_asc":
+                   case "paperback_asc":
                         list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
                             .Include("Author")
@@ -521,19 +486,6 @@ namespace ClawLibrary.Data.DataServices
                             .OrderByDescending(x => x.Description)
                             .ToListAsync());
                         break;
-                    case "quantity_desc":
-                        list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
-                            .Book
-                            .Include("Author")
-                            .Include("Category")
-                            .Where(x => (!x.Status.ToLower().Equals(Status.Deleted.ToString().ToLower())) && (x.Title.ToLower().Contains(searchString.ToLower()) ||
-                                                                                                              x.Isbn.ToLower().Contains(searchString.ToLower()) ||
-                                                                                                              x.Publisher.ToLower().Contains(searchString.ToLower())))
-                            .Skip(offset ?? 0)
-                            .Take(count ?? 100)
-                            .OrderByDescending(x => x.Quantity)
-                            .ToListAsync());
-                        break;
                     case "paperback_desc":
                         list = _mapper.Map<List<ClawLibrary.Data.Models.Book>, List<Book>>(await _context
                             .Book
@@ -642,7 +594,6 @@ namespace ClawLibrary.Data.DataServices
                 book.Language = model.Language;
                 book.Isbn = model.Isbn;
                 book.Description = model.Description;
-                book.Quantity = model.Quantity;
                 book.Paperback = model.Paperback;
                 book.PublishDate = model.PublishDate;
                 book.ModifiedBy = model.ModifiedBy;

@@ -9,6 +9,9 @@ namespace ClawLibrary.Services.Validation.Categories
         public CategoryRequestValidator()
         {
             RuleFor(x => x.Name.Trim())
+                .NotNull()
+                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("Name")
                 .NotEmpty()
                 .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
                 .OverridePropertyName("Name");
@@ -17,7 +20,7 @@ namespace ClawLibrary.Services.Validation.Categories
                 .GreaterThan(2)
                 .WithMessage(ErrorCode.TooShort.ToString())
                 .OverridePropertyName("Name")
-                .LessThan(256)
+                .LessThan(100)
                 .WithMessage(ErrorCode.TooLong.ToString())
                 .OverridePropertyName("Name");
         }

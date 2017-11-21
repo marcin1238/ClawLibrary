@@ -3,6 +3,7 @@ using ClawLibrary.Core.Models.Authors;
 using ClawLibrary.Core.Models.Books;
 using ClawLibrary.Core.Models.Categories;
 using ClawLibrary.Core.Models.Users;
+using ClawLibrary.Services.Models.Users;
 
 namespace ClawLibrary.Data.Mapping
 {
@@ -35,9 +36,8 @@ namespace ClawLibrary.Data.Mapping
                 .ForMember(x => x.CreatedDate, opt => opt.MapFrom(x => x.CreatedDate))
                 .ForMember(x => x.ModifiedDate, opt => opt.MapFrom(x => x.ModifiedDate));
 
-            CreateMap<ClawLibrary.Core.Models.Auth.RegisterUserRequest, ClawLibrary.Data.Models.User>()
+            CreateMap<RegisterUserRequest, ClawLibrary.Data.Models.User>()
                 .ForMember(x => x.Email, opt => opt.MapFrom(x => x.Email))
-                .ForMember(x => x.PhoneNumber, opt => opt.MapFrom(x => x.PhoneNumber))
                 .ForMember(x => x.FirstName, opt => opt.MapFrom(x => x.FirstName))
                 .ForMember(x => x.LastName, opt => opt.MapFrom(x => x.LastName));
         }
@@ -52,7 +52,6 @@ namespace ClawLibrary.Data.Mapping
                 .ForMember(x => x.Publisher, opt => opt.MapFrom(x => x.Publisher))
                 .ForMember(x => x.Language, opt => opt.MapFrom(x => x.Language))
                 .ForMember(x => x.Description, opt => opt.MapFrom(x => x.Description))
-                .ForMember(x => x.Quantity, opt => opt.MapFrom(x => x.Quantity))
                 .ForMember(x => x.Paperback, opt => opt.MapFrom(x => x.Paperback))
                 .ForMember(x => x.Language, opt => opt.MapFrom(x => x.Language))
                 .ForMember(x => x.Author, opt => opt.MapFrom(x => x.Author))

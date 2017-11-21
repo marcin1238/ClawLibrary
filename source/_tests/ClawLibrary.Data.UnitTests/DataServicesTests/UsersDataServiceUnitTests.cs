@@ -42,7 +42,6 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                     PasswordHash = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
                     FirstName = "Jon",
                     LastName = "Snow",
-                    PhoneNumber = "123456789",
                     PasswordResetKey = null,
                     PasswordResetKeyCreatedDate = null,
                     ImageFileId = 1,
@@ -112,7 +111,6 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                     PasswordHash = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
                     FirstName = "Tom",
                     LastName = "Cruise",
-                    PhoneNumber = "123456789",
                     PasswordResetKey = "6968DB0F-6059-4B23-865A-317D70F46268",
                     PasswordResetKeyCreatedDate = DateTimeOffset.Now,
                     ImageFileId = null,
@@ -173,7 +171,6 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                     PasswordHash = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
                     FirstName = "Omarek",
                     LastName = "Hemsworth",
-                    PhoneNumber = "123456789",
                     PasswordResetKey = null,
                     PasswordResetKeyCreatedDate = null,
                     ImageFileId = null,
@@ -234,7 +231,6 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                     PasswordHash = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
                     FirstName = "Bradley",
                     LastName = "Cooper",
-                    PhoneNumber = "123456789",
                     PasswordResetKey = null,
                     PasswordResetKeyCreatedDate = null,
                     ImageFileId = null,
@@ -295,7 +291,6 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                     PasswordHash = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
                     FirstName = "Omar",
                     LastName = "Sy",
-                    PhoneNumber = "123456789",
                     PasswordResetKey = null,
                     PasswordResetKeyCreatedDate = null,
                     ImageFileId = null,
@@ -356,7 +351,6 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                     PasswordHash = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
                     FirstName = "Sam",
                     LastName = "Keeley",
-                    PhoneNumber = "123456789",
                     PasswordResetKey = null,
                     PasswordResetKeyCreatedDate = null,
                     ImageFileId = null,
@@ -417,7 +411,6 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                     PasswordHash = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
                     FirstName = "Riccardo",
                     LastName = "Scamarcio",
-                    PhoneNumber = "123456789",
                     PasswordResetKey = null,
                     PasswordResetKeyCreatedDate = null,
                     ImageFileId = null,
@@ -573,13 +566,11 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
         [TestCase("email_asc", 2)]
         [TestCase("firstname_asc", 4)]
         [TestCase("lastname_asc", 4)]
-        [TestCase("phonenumber_asc", 2)]
         [TestCase("createddate_asc", 2)]
         [TestCase("modifieddate_asc", 3)]
         [TestCase("email_desc", 6)]
         [TestCase("firstname_desc", 2)]
         [TestCase("lastname_desc", 5)]
-        [TestCase("phonenumber_desc", 2)]
         [TestCase("createddate_desc", 4)]
         [TestCase("modifieddate_desc", 4)]
         public async Task Should_Return_Users_With_Specified_Order(string order, long expectedFirstItemId)
@@ -599,13 +590,11 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
         [TestCase("email_asc", 3)]
         [TestCase("firstname_asc", 5)]
         [TestCase("lastname_asc", 3)]
-        [TestCase("phonenumber_asc", 3)]
         [TestCase("createddate_asc", 3)]
         [TestCase("modifieddate_asc", 3)]
         [TestCase("email_desc", 5)]
         [TestCase("firstName_desc", 3)]
         [TestCase("lastName_desc", 5)]
-        [TestCase("phonenumber_desc", 3)]
         [TestCase("createddate_desc", 5)]
         [TestCase("modifieddate_desc", 3)]
         public async Task Should_Return_Users_With_Specified_Order_Which_Contains_Text(string order, long expectedFirstItemId)
@@ -664,7 +653,6 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 Email = "test@test.com",
                 FirstName = "Rowan",
                 LastName = "Atkinson",
-                PhoneNumber = "516851451",
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -684,7 +672,6 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
             Assert.AreEqual(expectedUser.Email, actualUser.Email);
             Assert.AreEqual(expectedUser.FirstName, actualUser.FirstName);
             Assert.AreEqual(expectedUser.LastName, actualUser.LastName);
-            Assert.AreEqual(expectedUser.PhoneNumber, actualUser.PhoneNumber);
             Assert.AreEqual(expectedUser.CreatedDate.Date, actualUser.CreatedDate.Date);
             Assert.NotNull(actualUser.ModifiedDate);
             Assert.AreEqual(expectedUser.ModifiedDate?.Date, actualUser.ModifiedDate?.Date);
@@ -711,7 +698,6 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 Email = "test@test.com",
                 FirstName = "Rowan",
                 LastName = "Atkinson",
-                PhoneNumber = "516851451",
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -743,7 +729,6 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 Email = "test@test.com",
                 FirstName = "Rowan",
                 LastName = "Atkinson",
-                PhoneNumber = "516851451",
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -927,7 +912,6 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 Email = "test@test.com",
                 FirstName = "Jon",
                 LastName = "Snow",
-                PhoneNumber = "123456789",
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
@@ -947,7 +931,6 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
             Assert.AreEqual(expectedUser.Email, actualUser.Email);
             Assert.AreEqual(expectedUser.FirstName, actualUser.FirstName);
             Assert.AreEqual(expectedUser.LastName, actualUser.LastName);
-            Assert.AreEqual(expectedUser.PhoneNumber, actualUser.PhoneNumber);
             Assert.AreEqual(expectedUser.CreatedDate.Date, actualUser.CreatedDate.Date);
             Assert.NotNull(actualUser.ModifiedDate);
             Assert.AreEqual(expectedUser.ModifiedDate?.Date, actualUser.ModifiedDate?.Date);
@@ -975,7 +958,6 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 Email = "test@test.com",
                 FirstName = "Jon",
                 LastName = "Snow",
-                PhoneNumber = "123456789",
                 PasswordResetKey = null,
                 Salt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                 Password = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",

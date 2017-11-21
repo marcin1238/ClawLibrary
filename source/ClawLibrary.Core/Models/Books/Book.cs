@@ -19,7 +19,6 @@ namespace ClawLibrary.Core.Models.Books
         public string Language { get; set; }
         public string Isbn { get; set; }
         public string Description { get; set; }
-        public long Quantity { get; set; }
         public long Paperback { get; set; }
 
         public DateTime PublishDate { get; set; }
@@ -37,7 +36,7 @@ namespace ClawLibrary.Core.Models.Books
         {
             return $"Key: {Key}, Title: {Title}, Publisher: {Publisher}, Language: {Language}," +
                    $" Status: {Status}, CreatedDate: {CreatedDate}, ModifiedDate: {ModifiedDate}" +
-                   $"Isbn: {Isbn}, Description: {Description}, Quantity: {Quantity}, Paperback: {Paperback}," +
+                   $"Isbn: {Isbn}, Description: {Description}, Paperback: {Paperback}," +
                    $"PublishDate: {PublishDate}, Author: {Author}, Category: {Category}";
         }
     }

@@ -14,6 +14,9 @@ namespace ClawLibrary.Services.Validation.Books
         public BookRequestValidator()
         {
             RuleFor(x => x.Title.Trim())
+                .NotNull()
+                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("Title")
                 .NotEmpty()
                 .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
                 .OverridePropertyName("Title");
@@ -26,12 +29,26 @@ namespace ClawLibrary.Services.Validation.Books
                 .WithMessage(ErrorCode.TooLong.ToString())
                 .OverridePropertyName("Title");
 
+            RuleFor(x => x.Publisher.Trim())
+                .NotNull()
+                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("Publisher")
+                .NotEmpty()
+                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("Publisher");
+
             RuleFor(x => x.Publisher.Trim().Length)
+                .GreaterThan(2)
+                .WithMessage(ErrorCode.TooShort.ToString())
+                .OverridePropertyName("Publisher")
                 .LessThan(256)
                 .WithMessage(ErrorCode.TooLong.ToString())
                 .OverridePropertyName("Publisher");
 
-            RuleFor(x => x.Title.Trim())
+            RuleFor(x => x.Language.Trim())
+                .NotNull()
+                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("Language")
                 .NotEmpty()
                 .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
                 .OverridePropertyName("Language");
@@ -44,15 +61,16 @@ namespace ClawLibrary.Services.Validation.Books
                 .WithMessage(ErrorCode.TooLong.ToString())
                 .OverridePropertyName("Language");
 
-            RuleFor(x => x.Title.Trim())
-               .NotEmpty()
-               .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
-               .OverridePropertyName("Isbn");
-
-            RuleFor(x => x.Isbn.Trim().Replace("-", "").Length)
+            RuleFor(x => x.Isbn.Trim())
+                .NotNull()
+                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("Isbn")
                 .NotEmpty()
                 .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
-                .GreaterThan(8)
+                .OverridePropertyName("Isbn");
+
+            RuleFor(x => x.Isbn.Trim().Replace("-", "").Length)
+                .GreaterThan(9)
                 .WithMessage(ErrorCode.TooShort.ToString())
                 .OverridePropertyName("Isbn")
                 .LessThan(14)
@@ -69,18 +87,13 @@ namespace ClawLibrary.Services.Validation.Books
                 .WithMessage(ErrorCode.TooLong.ToString())
                 .OverridePropertyName("Description");
 
-            RuleFor(x => x.Quantity)
+            RuleFor(x => x.Paperback)
+                .NotNull()
+                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("Paperback")
                 .NotEmpty()
                 .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
-                .GreaterThanOrEqualTo(0)
-                .WithMessage(ErrorCode.BelowMinimumValue.ToString())
-                .WithName("Quantity")
-                .LessThanOrEqualTo(1000000)
-                .WithMessage(ErrorCode.AboveMaximumValue.ToString())
-                .WithName("Quantity");
-
-            RuleFor(x => x.Paperback)
-                .NotEmpty()
+                .OverridePropertyName("Paperback")
                 .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
                 .GreaterThanOrEqualTo(0)
                 .WithMessage(ErrorCode.BelowMinimumValue.ToString())
@@ -90,15 +103,24 @@ namespace ClawLibrary.Services.Validation.Books
                 .WithName("Paperback");
 
             RuleFor(x => x.AuthorKey)
+                .NotNull()
+                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("AuthorKey")
                 .NotEmpty()
                 .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("AuthorKey")
                 .WithName("AuthorKey")
                 .Length(36, 36)
                 .OverridePropertyName("AuthorKey")
                 .WithMessage(ErrorCode.InvalidFormat.ToString());
 
             RuleFor(x => x.CategoryKey)
+                .NotNull()
+                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("CategoryKey")
                 .NotEmpty()
+                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("CategoryKey")
                 .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
                 .WithName("CategoryKey")
                 .Length(36, 36)
@@ -106,6 +128,12 @@ namespace ClawLibrary.Services.Validation.Books
                 .WithMessage(ErrorCode.InvalidFormat.ToString());
 
             RuleFor(x => x.PublishDate)
+                .NotNull()
+                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("PublishDate")
+                .NotEmpty()
+                .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
+                .OverridePropertyName("PublishDate")
                 .Must(BeAValidPublishDate)
                 .WithMessage(ErrorCode.IncorrectDate.ToString())
                 .WithName("PublishDate");
@@ -156,7 +184,7 @@ namespace ClawLibrary.Services.Validation.Books
                     // Check if the checkdigit is same as the last number of ISBN 10 code
                     return (remainder == int.Parse(isbn[9].ToString()));
                 }
-                else
+                else if (isbn.Trim().Replace("-", "").Length == 13)
                 {
                     long j;
                     if (isbn.Contains('-')) isbn = isbn.Replace("-", "");

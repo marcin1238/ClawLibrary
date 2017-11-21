@@ -4,6 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ClawLibrary.Core.Models.Auth;
+using AuthorizeRequest = ClawLibrary.Services.Models.Users.AuthorizeRequest;
+using RegisterUserRequest = ClawLibrary.Services.Models.Users.RegisterUserRequest;
+using ResetUserPasswordRequest = ClawLibrary.Services.Models.Users.ResetUserPasswordRequest;
+using SetUserPasswordRequest = ClawLibrary.Services.Models.Users.SetUserPasswordRequest;
+using UserVerificationRequest = ClawLibrary.Services.Models.Users.UserVerificationRequest;
 
 namespace ClawLibrary.Services.ApiServices
 {

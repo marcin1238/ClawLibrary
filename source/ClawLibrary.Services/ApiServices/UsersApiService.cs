@@ -33,15 +33,23 @@ namespace ClawLibrary.Services.ApiServices
 
         public async Task<UserResponse> GetAuthenticatedUser()
         {
-            var userKey = Session.UserId;
-            _logger.LogInformation(
-                $"GetUserById input - userKey: {userKey}");
+            if (Session != null && !string.IsNullOrWhiteSpace(Session.UserId))
+            {
+                var userKey = Session.UserId;
 
-            User user = await _dataService.GetUserByKey(userKey);
+                _logger.LogInformation(
+                    $"GetUserById input - userKey: {userKey}");
 
-            _logger.LogInformation($"GetUserById response - user: {user}");
+                User user = await _dataService.GetUserByKey(userKey);
 
-            return _mapper.Map<User, UserResponse>(user);
+                if (user == null)
+                    throw new BusinessException(ErrorCode.UserDoesNotExist, $"User with key {userKey} does not exists!");
+
+                _logger.LogInformation($"GetUserById response - user: {user}");
+
+                return _mapper.Map<User, UserResponse>(user);
+            }
+            throw new UnauthorizedAccessException();
         }
 
         public async Task<UserResponse> GetUserByKey(string userKey)
@@ -51,6 +59,9 @@ namespace ClawLibrary.Services.ApiServices
 
             User user = await _dataService.GetUserByKey(userKey);
 
+            if (user == null)
+                throw new BusinessException(ErrorCode.UserDoesNotExist, $"User with key {userKey} does not exists!");
+
             _logger.LogInformation($"GetUserById response - user: {user}");
 
             return _mapper.Map<User, UserResponse>(user);
@@ -58,62 +69,92 @@ namespace ClawLibrary.Services.ApiServices
 
         public async Task<ListResponse<UserResponse>> GetUsers(QueryData query)
         {
-            var userKey = Session.UserId;
-            _logger.LogInformation(
-                $"GetUsers input - query: {query}");
+            if (Session != null && !string.IsNullOrWhiteSpace(Session.UserId))
+            {
+                var userKey = Session.UserId;
+                _logger.LogInformation(
+                    $"GetUsers input - query: {query}");
 
-            ListResponse<User> users = await _dataService.GetUsers(userKey, query.Count, query.Offset, query.OrderBy, query.SearchString);
+                ListResponse<User> users = await _dataService.GetUsers(userKey, query.Count, query.Offset,
+                    query.OrderBy, query.SearchString);
 
-            _logger.LogInformation($"GetUsers response - users: {users.TotalCount}");
+                _logger.LogInformation($"GetUsers response - users: {users.TotalCount}");
 
-            return _mapper.Map<ListResponse<User>, ListResponse<UserResponse>>(users);
+                return _mapper.Map<ListResponse<User>, ListResponse<UserResponse>>(users);
+            }
+            throw new UnauthorizedAccessException();
         }
-        
+
         public async Task<UserResponse> UpdateUser(UserRequest model)
         {
-            var userId = Session.UserId;
-            _logger.LogInformation(
-                $"UpdateUser input - model: {model}, userId: {userId}");
-            var dto = _mapper.Map<UserRequest, User>(model);
-            User user = await _dataService.Update(dto, userId);
-            _logger.LogInformation($"GetUserById response - user: {user}");
-            return _mapper.Map<User, UserResponse>(user);
+            if (Session != null && !string.IsNullOrWhiteSpace(Session.UserId))
+            {
+                var userId = Session.UserId;
+                _logger.LogInformation(
+                    $"UpdateUser input - model: {model}, userId: {userId}");
+                var dto = _mapper.Map<UserRequest, User>(model);
+                User user = await _dataService.Update(dto, userId);
+                _logger.LogInformation($"GetUserById response - user: {user}");
+                return _mapper.Map<User, UserResponse>(user);
+            }
+            throw new UnauthorizedAccessException();
+        }
+
+        public async Task<UserResponse> UpdateUserStatus(string userKey, Status status)
+        {
+            if (Session != null && !string.IsNullOrWhiteSpace(Session.UserId))
+            {
+                var modifiedByKey = Session.UserId;
+                _logger.LogInformation($"UpdateUserStatus input - userKey: {userKey}, status: {status}, modifiedByKey: {modifiedByKey}");
+                User user = await _dataService.UpdateStatus(userKey, status, modifiedByKey);
+                _logger.LogInformation($"UpdateUserStatus response - user: {user}");
+                return _mapper.Map<User, UserResponse>(user);
+            }
+            throw new UnauthorizedAccessException();
         }
 
         public Task<Media> UpdatePicture(string requestPictureBase64)
         {
-            var userId = Session.UserId;
-            _logger.LogInformation(
-                $"UpdateOrgPicture input - userId: {userId}");
+            if (Session != null && !string.IsNullOrWhiteSpace(Session.UserId))
+            {
+                var userId = Session.UserId;
+                _logger.LogInformation(
+                    $"UpdateOrgPicture input - userId: {userId}");
 
-            var bytes = Convert.FromBase64String(requestPictureBase64);
-            ValidatePhoto(bytes);
-            string fileName = _mediaStorageAppService.SaveMedia(bytes);
-            _dataService.UpdatePicture(fileName, userId);
-            return GetPicture();
+                var bytes = Convert.FromBase64String(requestPictureBase64);
+                ValidatePhoto(bytes);
+                string fileName = _mediaStorageAppService.SaveMedia(bytes);
+                _dataService.UpdatePicture(fileName, userId);
+                return GetPicture();
+            }
+            throw new UnauthorizedAccessException();
         }
 
         public async Task<Media> GetPicture()
         {
-            var userId = Session.UserId;
-            _logger.LogInformation(
-                $"GetUserPicture input - userId: {userId}");
-
-            string fileName = await _dataService.GetPicture(userId);
-            var content = _mediaStorageAppService.GetMedia(fileName);
-
-            var media = new Media()
+            if (Session != null && !string.IsNullOrWhiteSpace(Session.UserId))
             {
-                Content = content,
-                FileName = fileName,
-                ContentSize = content.Length,
-                Id = fileName
-            };
+                var userId = Session.UserId;
+                _logger.LogInformation(
+                    $"GetUserPicture input - userId: {userId}");
 
-            _logger.LogInformation(
-                $"GetUserPicture input - media: {media}, userId: {userId}");
+                string fileName = await _dataService.GetPicture(userId);
+                var content = _mediaStorageAppService.GetMedia(fileName);
 
-            return media;
+                var media = new Media()
+                {
+                    Content = content,
+                    FileName = fileName,
+                    ContentSize = content.Length,
+                    Id = fileName
+                };
+
+                _logger.LogInformation(
+                    $"GetUserPicture input - media: {media}, userId: {userId}");
+
+                return media;
+            }
+            throw new UnauthorizedAccessException();
         }
 
         public Task<Media> UpdatePicture(string requestPictureBase64, string userKey)

@@ -79,23 +79,30 @@
     <Compile Include="Models\Authors\AuthorResponse.cs" />
     <Compile Include="Models\Books\BookRequest.cs" />
     <Compile Include="Models\Books\BookResponse.cs" />
-    <Compile Include="Models\Books\BookUpdateRequest.cs" />
     <Compile Include="Models\Categories\CategoryRequest.cs" />
     <Compile Include="Models\Categories\CategoryResponse.cs" />
     <Compile Include="ApiServices\IBooksApiService.cs" />
     <Compile Include="ApiServices\IUsersApiService.cs" />
     <Compile Include="Mapping\MappingProfile.cs" />
     <Compile Include="Models\UpdatePictureRequest.cs" />
+    <Compile Include="Models\Users\AuthorizeRequest.cs" />
+    <Compile Include="Models\Users\RegisterUserRequest.cs" />
+    <Compile Include="Models\Users\ResetUserPasswordRequest.cs" />
+    <Compile Include="Models\Users\SetUserPasswordRequest.cs" />
     <Compile Include="Models\Users\UserRequest.cs" />
     <Compile Include="Models\Users\UserResponse.cs" />
+    <Compile Include="Models\Users\UserVerificationRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ApiServices\UsersApiService.cs" />
     <Compile Include="Validation\Authors\AuthorRequestValidator.cs" />
     <Compile Include="Validation\Books\BookRequestValidator.cs" />
-    <Compile Include="Validation\Books\BookUpdateRequestValidator.cs" />
     <Compile Include="Validation\Categories\CategoryRequestValidator.cs" />
+    <Compile Include="Validation\Users\AuthorizeRequestValidator.cs" />
     <Compile Include="Validation\Users\RegisterUserRequestValidator.cs" />
+    <Compile Include="Validation\Users\ResetUserPasswordRequestValidator.cs" />
+    <Compile Include="Validation\Users\SetUserPasswordRequestValidator.cs" />
     <Compile Include="Validation\Users\UserRequestValidator.cs" />
+    <Compile Include="Validation\Users\UserVerificationRequestValidator.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -5,11 +5,6 @@ namespace ClawLibrary.Data.Models
 {
     public class Book
     {
-        public Book()
-        {
-            Order = new HashSet<Order>();
-        }
-
         public long Id { get; set; }
         public Guid Key { get; set; }
         public string Title { get; set; }
@@ -17,7 +12,6 @@ namespace ClawLibrary.Data.Models
         public string Language { get; set; }
         public string Isbn { get; set; }
         public string Description { get; set; }
-        public long Quantity { get; set; }
         public long Paperback { get; set; }
         public DateTime PublishDate { get; set; }
         public long AuthorId { get; set; }
@@ -28,8 +22,7 @@ namespace ClawLibrary.Data.Models
         public DateTimeOffset? ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
         public string Status { get; set; }
-
-        public virtual ICollection<Order> Order { get; set; }
+        
         public virtual Author Author { get; set; }
         public virtual Category Category { get; set; }
         public virtual File ImageFile { get; set; }

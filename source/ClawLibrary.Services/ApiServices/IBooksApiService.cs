@@ -36,7 +36,7 @@ namespace ClawLibrary.Services.ApiServices
         /// <param name="bookKey">Key of the book</param>
         /// <param name="model">Book model</param>
         /// <returns>User details response</returns>
-        Task<BookResponse> UpdateBook(string bookKey, BookUpdateRequest model);
+        Task<BookResponse> UpdateBook(string bookKey, BookRequest model);
 
         /// <summary>
         /// Updates the book picture.

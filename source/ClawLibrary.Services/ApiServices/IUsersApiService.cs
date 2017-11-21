@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using ClawLibrary.Core.Enums;
 using ClawLibrary.Core.Models;
 using ClawLibrary.Services.Models.Users;
 
@@ -36,6 +37,14 @@ namespace ClawLibrary.Services.ApiServices
         /// <returns>User details response</returns>
         Task<UserResponse> UpdateUser(UserRequest model);
 
+        /// <summary>
+        /// Updates the user status.
+        /// </summary>
+        /// <param name="userKey">Key of the user</param>
+        /// <param name="status">New user status</param>
+        /// <returns>User details</returns>
+        Task<UserResponse> UpdateUserStatus(string userKey, Status status);
+        
         /// <summary>
         /// Updates the user picture for authenticated user.
         /// </summary>

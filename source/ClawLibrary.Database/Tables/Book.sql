@@ -10,7 +10,6 @@ CREATE TABLE [dbo].[Book]
 
 	[ISBN] NVARCHAR(50) NOT NULL,
 	[Description] NVARCHAR(MAX) NULL,
-	[Quantity] BIGINT NOT NULL,
 	[Paperback] BIGINT NOT NULL,
 	[PublishDate] DATE NOT NULL,
 	[AuthorId] BIGINT NOT NULL,

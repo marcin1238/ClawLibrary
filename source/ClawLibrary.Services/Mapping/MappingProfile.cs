@@ -7,6 +7,7 @@ using ClawLibrary.Core.Models.Categories;
 using ClawLibrary.Core.Models.Users;
 using ClawLibrary.Services.Models.Books;
 using ClawLibrary.Services.Models.Users;
+using RegisterUserRequest = ClawLibrary.Services.Models.Users.RegisterUserRequest;
 
 namespace ClawLibrary.Services.Mapping
 {
@@ -39,17 +40,6 @@ namespace ClawLibrary.Services.Mapping
                 .ForMember(x => x.Publisher, opt => opt.MapFrom(x => x.Publisher))
                 .ForMember(x => x.Language, opt => opt.MapFrom(x => x.Language))
                 .ForMember(x => x.Description, opt => opt.MapFrom(x => x.Description))
-                .ForMember(x => x.Quantity, opt => opt.MapFrom(x => x.Quantity))
-                .ForMember(x => x.Paperback, opt => opt.MapFrom(x => x.Paperback))
-                .ForMember(x => x.Language, opt => opt.MapFrom(x => x.Language));
-
-            CreateMap<ClawLibrary.Services.Models.Books.BookUpdateRequest, ClawLibrary.Core.Models.Books.Book>().ReverseMap()
-                .ForMember(x => x.Title, opt => opt.MapFrom(x => x.Title))
-                .ForMember(x => x.Isbn, opt => opt.MapFrom(x => x.Isbn))
-                .ForMember(x => x.Publisher, opt => opt.MapFrom(x => x.Publisher))
-                .ForMember(x => x.Language, opt => opt.MapFrom(x => x.Language))
-                .ForMember(x => x.Description, opt => opt.MapFrom(x => x.Description))
-                .ForMember(x => x.Quantity, opt => opt.MapFrom(x => x.Quantity))
                 .ForMember(x => x.Paperback, opt => opt.MapFrom(x => x.Paperback))
                 .ForMember(x => x.Language, opt => opt.MapFrom(x => x.Language));
 
@@ -60,7 +50,6 @@ namespace ClawLibrary.Services.Mapping
                 .ForMember(x => x.Publisher, opt => opt.MapFrom(x => x.Publisher))
                 .ForMember(x => x.Language, opt => opt.MapFrom(x => x.Language))
                 .ForMember(x => x.Description, opt => opt.MapFrom(x => x.Description))
-                .ForMember(x => x.Quantity, opt => opt.MapFrom(x => x.Quantity))
                 .ForMember(x => x.Paperback, opt => opt.MapFrom(x => x.Paperback))
                 .ForMember(x => x.Language, opt => opt.MapFrom(x => x.Language))
                 .ForMember(x => x.Status, opt => opt.MapFrom(x => x.Status))

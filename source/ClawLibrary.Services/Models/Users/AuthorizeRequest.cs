@@ -1,4 +1,4 @@
-﻿namespace ClawLibrary.Core.Models.Auth
+﻿namespace ClawLibrary.Services.Models.Users
 {
     public class AuthorizeRequest
     {
