@@ -25,6 +25,7 @@ namespace ClawLibrary.Data.Models
         public DateTimeOffset? ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
         public string Status { get; set; }
+        public string Language { get; set; }
 
         public virtual ICollection<UserRole> UserRole { get; set; }
         public virtual File ImageFile { get; set; }

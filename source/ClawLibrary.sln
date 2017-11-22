@@ -25,6 +25,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClawLibrary.Services.UnitTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClawLibrary.Web.UnitTests", "ClawLibrary.Web.UnitTests\ClawLibrary.Web.UnitTests.csproj", "{E1F2DE5D-B6C4-4931-95A0-60056FAAE1D6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_emailTemplates", "_emailTemplates", "{FADFAFBF-615A-4661-BE26-2B8D9EF3E6DC}"
+	ProjectSection(SolutionItems) = preProject
+		_emailTemplates\AccountVerificationTemplate.html = _emailTemplates\AccountVerificationTemplate.html
+		_emailTemplates\ResetPasswordTemplate.html = _emailTemplates\ResetPasswordTemplate.html
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{E3BF14CD-501A-4C22-BF77-FFDA331A758A}"
+	ProjectSection(SolutionItems) = preProject
+		_emailTemplates\images\banner.jpg = _emailTemplates\images\banner.jpg
+		_emailTemplates\images\facebook.png = _emailTemplates\images\facebook.png
+		_emailTemplates\images\twitter.png = _emailTemplates\images\twitter.png
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClawLibrary.Mail", "ClawLibrary.Mail\ClawLibrary.Mail.csproj", "{2BED24DC-146F-4D89-A640-6703D99E9C9D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +80,10 @@ Global
 		{E1F2DE5D-B6C4-4931-95A0-60056FAAE1D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1F2DE5D-B6C4-4931-95A0-60056FAAE1D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1F2DE5D-B6C4-4931-95A0-60056FAAE1D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BED24DC-146F-4D89-A640-6703D99E9C9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BED24DC-146F-4D89-A640-6703D99E9C9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BED24DC-146F-4D89-A640-6703D99E9C9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BED24DC-146F-4D89-A640-6703D99E9C9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,6 +95,8 @@ Global
 		{C72408A4-3D53-4960-8BCA-1FC1824727C3} = {59BD5775-977B-4AEC-A7BC-D4CB815852B0}
 		{E4929B37-EA9E-4FEB-81DD-C13E78FAA305} = {59BD5775-977B-4AEC-A7BC-D4CB815852B0}
 		{E1F2DE5D-B6C4-4931-95A0-60056FAAE1D6} = {59BD5775-977B-4AEC-A7BC-D4CB815852B0}
+		{E3BF14CD-501A-4C22-BF77-FFDA331A758A} = {FADFAFBF-615A-4661-BE26-2B8D9EF3E6DC}
+		{2BED24DC-146F-4D89-A640-6703D99E9C9D} = {3E8A4D34-6C16-4CE8-9A92-ED41C0D3BF17}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2CE2AF21-1767-4F60-A13E-5E3B05D52142}

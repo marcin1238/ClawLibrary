@@ -141,6 +141,7 @@
   <ItemGroup>
     <Compile Include="DataServices\IAuthDataService.cs" />
     <Compile Include="DataServices\IBooksDataService.cs" />
+    <Compile Include="DataServices\IMailDataService.cs" />
     <Compile Include="DataServices\IUsersDataService.cs" />
     <Compile Include="Enums\ErrorCode.cs" />
     <Compile Include="Enums\Role.cs" />

@@ -26,7 +26,7 @@ namespace ClawLibrary.Services.Validation.Users
                 .NotEmpty()
                 .WithMessage(ErrorCode.CannotBeNullOrEmpty.ToString())
                 .OverridePropertyName("Password")
-                .Length(8, 100)
+                .Length(3, 100)
                 .WithMessage(ErrorCode.ValidationPasswordLength.ToString())
                 .WithName("Password");
         }

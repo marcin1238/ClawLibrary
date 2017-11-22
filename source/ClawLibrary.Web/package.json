@@ -14,5 +14,8 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-extend-config": "~0.9.5",
     "grunt-injector": "~1.1.0"
+  },
+  "dependencies": {
+    "angular-ui-router": "^0.2.18"
   }
 }

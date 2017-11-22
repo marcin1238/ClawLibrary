@@ -42,6 +42,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                     PasswordHash = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
                     FirstName = "Jon",
                     LastName = "Snow",
+                    Language = "PL",
                     PasswordResetKey = null,
                     PasswordResetKeyCreatedDate = null,
                     ImageFileId = 1,
@@ -107,6 +108,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                     Id = 2,
                     Key = new Guid("E9FCFA44-97D0-4D97-8339-62FD41930A3C"),
                     Email = "test2@test2.com",
+                    Language = "PL",
                     PasswordSalt = "1b568a7c-61cf-415c-b293-dcf40362192c",
                     PasswordHash = "AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==",
                     FirstName = "Tom",
@@ -165,6 +167,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 new User()
                 {
                     Id = 3,
+                    Language = "PL",
                     Key = new Guid("2DBF6780-9500-427E-A9C5-F843611D0BBC"),
                     Email = "test3@test3.com",
                     PasswordSalt = "1b568a7c-61cf-415c-b293-dcf40362192c",
@@ -225,6 +228,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 new User()
                 {
                     Id = 4,
+                    Language = "PL",
                     Key = new Guid("B1AC0434-9A0A-42EB-A769-8A2569027522"),
                     Email = "test4@test4.com",
                     PasswordSalt = "1b568a7c-61cf-415c-b293-dcf40362192c",
@@ -285,6 +289,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 new User()
                 {
                     Id = 5,
+                    Language = "PL",
                     Key = new Guid("9CE78CDA-6366-43CC-B746-E9D0279C89DB"),
                     Email = "test5@test5.com",
                     PasswordSalt = "1b568a7c-61cf-415c-b293-dcf40362192c",
@@ -345,6 +350,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 new User()
                 {
                     Id = 6,
+                    Language = "PL",
                     Key = new Guid("8EFA1076-7905-45DB-A8CB-CDEB792C1442"),
                     Email = "test6@test6.com",
                     PasswordSalt = "1b568a7c-61cf-415c-b293-dcf40362192c",
@@ -405,6 +411,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 new User()
                 {
                     Id = 7,
+                    Language = "PL",
                     Key = new Guid("8BEB61E6-50CA-417E-9784-690E32B905F6"),
                     Email = "test7@test7.com",
                     PasswordSalt = "1b568a7c-61cf-415c-b293-dcf40362192c",
@@ -651,6 +658,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 Id = 1,
                 Key = "9955C5CA-8BAA-4C69-8E9A-AA17AE51138E",
                 Email = "test@test.com",
+                Language = "EN",
                 FirstName = "Rowan",
                 LastName = "Atkinson",
                 PasswordResetKey = null,
@@ -669,6 +677,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
             // assert
             Assert.NotNull(actualUser);
             Assert.AreEqual(expectedUser.Id, actualUser.Id);
+            Assert.AreEqual(expectedUser.Language, actualUser.Language);
             Assert.AreEqual(expectedUser.Email, actualUser.Email);
             Assert.AreEqual(expectedUser.FirstName, actualUser.FirstName);
             Assert.AreEqual(expectedUser.LastName, actualUser.LastName);
@@ -696,6 +705,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 Id = 1,
                 Key = userKey,
                 Email = "test@test.com",
+                Language = "EN",
                 FirstName = "Rowan",
                 LastName = "Atkinson",
                 PasswordResetKey = null,
@@ -727,6 +737,7 @@ namespace ClawLibrary.Data.UnitTests.DataServicesTests
                 Id = 1,
                 Key = "9955C5CA-8BAA-4C69-8E9A-AA17AE51138E",
                 Email = "test@test.com",
+                Language = "EN",
                 FirstName = "Rowan",
                 LastName = "Atkinson",
                 PasswordResetKey = null,

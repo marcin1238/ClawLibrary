@@ -10,6 +10,7 @@ using ClawLibrary.Core.Services;
 using ClawLibrary.Data.DataServices;
 using ClawLibrary.Data.Mapping;
 using ClawLibrary.Data.Models;
+using ClawLibrary.Mail;
 using ClawLibrary.Services.ApiServices;
 using ClawLibrary.Services.Mapping;
 using ClawLibrary.Services.Validation.Books;
@@ -50,7 +51,7 @@ namespace ClawLibrary.Web
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+//                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
             env.ConfigureNLog("nlog.config");
@@ -112,6 +113,10 @@ namespace ClawLibrary.Web
             });
             services.AddSingleton(new AuthConfig());
             services.AddSingleton<ISessionContextProvider, PerRequestSessionContextProvider>();
+            services.AddSingleton(Configuration.GetSection("MailConfig").Get<MailConfig>());
+            services.AddSingleton<IMailDataService, MailDataService>();
+            services.AddSingleton<IMailGenerator, MailGenerator>();
+            services.AddSingleton<IMailSender, MailSender>();
 
             // Register the Swagger generator, defining one or more Swagger documents
             services.AddSwaggerGen(c =>

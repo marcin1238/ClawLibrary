@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -11,6 +12,8 @@ using ClawLibrary.Core.Enums;
 using ClawLibrary.Core.Exceptions;
 using ClawLibrary.Core.Models.Auth;
 using ClawLibrary.Core.Models.Users;
+using ClawLibrary.Mail;
+using ClawLibrary.Mail.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Extensions.Logging;
 using AuthorizeRequest = ClawLibrary.Services.Models.Users.AuthorizeRequest;
@@ -28,13 +31,13 @@ namespace ClawLibrary.Services.ApiServices
         private readonly IAuthDataService _dataService;
         private readonly IMapper _mapper;
         private readonly TokenProviderOptions _options;
-        //private readonly IMailGenerator _mailGenerator;
-        //private readonly IMailSender _mailSender;
+        private readonly IMailGenerator _mailGenerator;
+        private readonly IMailSender _mailSender;
         private readonly ILogger<AuthApiService> _logger;
 
         public AuthApiService(AuthConfig config, IAuthDataService dataService, IPasswordHasher passwordHasher,
-            //IMailGenerator mailGenerator,
-            //IMailSender mailSender,
+            IMailGenerator mailGenerator,
+            IMailSender mailSender,
             IMapper mapper,
             TokenProviderOptions options, ILogger<AuthApiService> logger)
         {
@@ -42,8 +45,8 @@ namespace ClawLibrary.Services.ApiServices
             _dataService = dataService;
             _passwordHasher = passwordHasher;
             _options = options;
-            //_mailGenerator = mailGenerator;
-            //_mailSender = mailSender;
+            _mailGenerator = mailGenerator;
+            _mailSender = mailSender;
             _logger = logger;
             _mapper = mapper;
         }
@@ -69,15 +72,13 @@ namespace ClawLibrary.Services.ApiServices
             var user = await _dataService.RegisterUser(dto, hashedPassword, salt.ToString());
 
             _logger.LogInformation($"Register user - created user: {user}");
-
-            //var emailTask = _mailSender.SendAsync(_mailGenerator.PrepareEmail(new CustomerVerificationEmail()
-            //{
-            //    ReceiverName = $"{user.FirstName} {user.LastName}",
-            //    ReceiverEmail = user.Username,
-            //    SenderName = organization,
-            //    CustomerKey = user.UserKey,
-            //    AppName = appName
-            //}));
+            
+            var emailTask = _mailSender.SendAsync(_mailGenerator.PrepareEmail(new VerificationEmail()
+            {
+                ReceiverName = $"{user.FirstName} {user.LastName}",
+                ReceiverEmail = user.Email,
+                CustomerKey = user.Key
+            }));
         }
 
         public async Task<Token> VerifyUser(UserVerificationRequest request)
@@ -123,15 +124,12 @@ namespace ClawLibrary.Services.ApiServices
                 var passwordResetKey = Guid.NewGuid().ToString() + Guid.NewGuid().ToString();
                 await _dataService.CreatePasswordResetKey(user.Id, passwordResetKey);
 
-                //var emailTask = _mailSender.SendAsync(_mailGenerator.PrepareEmail(new UserResetPasswordEmail()
-                //{
-                //    ReceiverName = $"{user.FirstName} {user.LastName}",
-                //    ReceiverEmail = user.Username,
-                //    SenderName = organization,
-                //    PasswordResetKey = passwordResetKey,
-                //    OrgName = organization,
-                //    AppName = appName
-                //}));
+                var emailTask = _mailSender.SendAsync(_mailGenerator.PrepareEmail(new UserResetPasswordEmail()
+                {
+                    ReceiverName = $"{user.FirstName} {user.LastName}",
+                    ReceiverEmail = user.Email,
+                    PasswordResetKey = passwordResetKey
+                }));
             }
             else
                 throw new BusinessException(ErrorCode.UserDoesNotExist, $"User with email: {request.Email} does not exist!");
@@ -175,7 +173,7 @@ namespace ClawLibrary.Services.ApiServices
             var expirationDate = DateTime.UtcNow.AddMinutes(_config.TokenExpirationInMinutes);
             var claims = MergeClaims(user.Email, expirationDate, identity);
 
-            return CreateToken(expirationDate, claims.ToArray());
+            return CreateToken(expirationDate, user.Language, claims.ToArray());
         }
 
         private async Task<User> GetAuthenticatedUser(string username, string password)
@@ -215,7 +213,8 @@ namespace ClawLibrary.Services.ApiServices
         private bool IsIdentityValid(ClaimsIdentity identity)
         {
             if (identity != null && identity.Claims.Any(claim =>
-                claim.Type == ClaimTypes.Role && claim.Value.ToLower().Equals(Role.Admin.ToString().ToLower())))
+                    claim.Type == ClaimTypes.Role && (claim.Value.ToLower().Equals(Role.Admin.ToString().ToLower()) ||
+                                                      claim.Value.ToLower().Equals(Role.Regular.ToString().ToLower()))))
                 return true;
             return false;
         }
@@ -228,7 +227,7 @@ namespace ClawLibrary.Services.ApiServices
             {
                 new Claim(JwtRegisteredClaimNames.Sub, email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, (expirationDate - DateTime.UtcNow).TotalSeconds.ToString(), ClaimValueTypes.Integer64),
+                new Claim(JwtRegisteredClaimNames.Iat, (expirationDate - DateTime.UtcNow).TotalSeconds.ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64),
             };
 
             foreach (var identityClaim in identity.Claims)
@@ -239,7 +238,7 @@ namespace ClawLibrary.Services.ApiServices
             return claims;
         }
 
-        private Token CreateToken(DateTime expirationDate, params Claim[] claims)
+        private Token CreateToken(DateTime expirationDate, string language, params Claim[] claims)
         {
             var jwt = new JwtSecurityToken(
                 issuer: _options.Issuer,
@@ -248,6 +247,9 @@ namespace ClawLibrary.Services.ApiServices
                 notBefore: DateTime.UtcNow,
                 expires: expirationDate,
                 signingCredentials: _options.SigningCredentials);
+
+            //Save user language preference into JWT
+            jwt.Payload["language"] = language;
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 

@@ -8,10 +8,11 @@
         public string PhoneNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Language { get; set; }
 
         public override string ToString()
         {
-            return $"Email: {Email}, PhoneNumber: {PhoneNumber}, FirstName: {FirstName}, LastName: {LastName}";
+            return $"Email: {Email}, PhoneNumber: {PhoneNumber}, FirstName: {FirstName}, LastName: {LastName}, Language: {Language}";
         }
     }
 }

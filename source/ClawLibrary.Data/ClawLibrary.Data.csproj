@@ -256,12 +256,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataServices\BooksDataService.cs" />
+    <Compile Include="DataServices\MailDataService.cs" />
     <Compile Include="Models\Author.cs" />
     <Compile Include="Models\Book.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\DatabaseContext.cs" />
     <Compile Include="DataServices\AuthDataService.cs" />
     <Compile Include="DataServices\UsersDataService.cs" />
+    <Compile Include="Models\EmailTemplate.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Mapping\DataMappingProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

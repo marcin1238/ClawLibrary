@@ -13,5 +13,9 @@
         /// Gets the user email.
         /// </summary>
         string UserEmail { get; }
+        /// <summary>
+        /// Language.
+        /// </summary>
+        string Language { get; }
     }
 }

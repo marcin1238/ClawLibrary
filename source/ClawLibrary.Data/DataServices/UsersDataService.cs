@@ -344,7 +344,8 @@ namespace ClawLibrary.Data.DataServices
                 user.ModifiedBy = modifiedBy.Email;
                 user.FirstName = model.FirstName;
                 user.LastName = model.LastName;
-                
+                user.Language = model.Language;
+
                 var updateUser = _context.User.Update(user);
                 await _context.SaveChangesAsync();
 

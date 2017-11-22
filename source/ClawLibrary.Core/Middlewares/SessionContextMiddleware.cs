@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ClawLibrary.Core.Services;
 using Microsoft.AspNetCore.Http;
@@ -22,7 +23,9 @@ namespace ClawLibrary.Core.Middlewares
                     new SessionContext
                     {
                         UserId = context.User.FindFirst(ClaimTypes.Sid)?.Value,
-                        UserEmail = context.User.FindFirst(ClaimTypes.Name)?.Value
+                        UserEmail = context.User.FindFirst(ClaimTypes.Name)?.Value,
+                        Language = context.User.Claims.FirstOrDefault(x=>x.Type.Equals("language"))?.Value
+                        
                     }
                 );
             }

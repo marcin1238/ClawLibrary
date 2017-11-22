@@ -14,6 +14,7 @@ namespace ClawLibrary.Data.Models
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserRole> UserRole { get; set; }
+        public virtual DbSet<EmailTemplate> EmailTemplate { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
@@ -32,9 +33,7 @@ namespace ClawLibrary.Data.Models
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
                 entity.Property(e => e.CreatedDate);
-
-                entity.Property(p => p.Id).HasValueGenerator<InMemoryIntegerValueGenerator<long>>();
-
+              
                 entity.Property(e => e.FirstName)
                     .IsRequired()
                     .HasMaxLength(256);
@@ -57,6 +56,13 @@ namespace ClawLibrary.Data.Models
                     .HasConstraintName("FK_Author_File");
             });
 
+            modelBuilder.Entity<EmailTemplate>(entity =>
+            {
+                entity.Property(e => e.Content).HasMaxLength(5000);
+
+                entity.Property(e => e.Content).HasMaxLength(255);
+            });
+
             modelBuilder.Entity<Book>(entity =>
             {
                 entity.HasIndex(e => e.Isbn)
@@ -66,9 +72,7 @@ namespace ClawLibrary.Data.Models
                 entity.HasIndex(e => e.Title)
                     .HasName("IX_Book_Title")
                     .IsUnique();
-
-                entity.Property(p => p.Id).HasValueGenerator<InMemoryIntegerValueGenerator<long>>();
-
+                
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
                 entity.Property(e => e.CreatedDate);
@@ -78,7 +82,7 @@ namespace ClawLibrary.Data.Models
                     .HasColumnName("ISBN")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Language).HasMaxLength(20);
+                entity.Property(e => e.Language).HasMaxLength(2);
 
                 entity.Property(e => e.ModifiedBy).HasMaxLength(256);
 
@@ -117,9 +121,7 @@ namespace ClawLibrary.Data.Models
                 entity.HasIndex(e => e.Name)
                     .HasName("IX_Book_Title")
                     .IsUnique();
-
-                entity.Property(p => p.Id).HasValueGenerator<InMemoryIntegerValueGenerator<long>>();
-
+                
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
                 entity.Property(e => e.CreatedDate);
@@ -143,9 +145,7 @@ namespace ClawLibrary.Data.Models
                 entity.HasIndex(e => e.FileName)
                     .HasName("IX_File_Name")
                     .IsUnique();
-
-                entity.Property(p => p.Id).ValueGeneratedOnAdd();
-
+                
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
                 entity.Property(e => e.CreatedDate);
@@ -168,9 +168,7 @@ namespace ClawLibrary.Data.Models
                 entity.HasIndex(e => e.Name)
                     .HasName("IX_Role_Name")
                     .IsUnique();
-
-                entity.Property(p => p.Id).HasValueGenerator<InMemoryIntegerValueGenerator<long>>();
-
+                
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
                 entity.Property(e => e.CreatedDate);
@@ -194,8 +192,8 @@ namespace ClawLibrary.Data.Models
                     .HasName("IX_User_Email")
                     .IsUnique();
 
-                entity.Property(p => p.Id).HasValueGenerator<InMemoryIntegerValueGenerator<long>>();
-
+                entity.Property(e => e.Language).HasMaxLength(2);
+                
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
                 entity.Property(e => e.CreatedDate);
@@ -233,9 +231,7 @@ namespace ClawLibrary.Data.Models
                 entity.HasIndex(e => new { e.UserId, e.RoleId })
                     .HasName("IXUserRole_Name")
                     .IsUnique();
-
-                entity.Property(p => p.Id).HasValueGenerator<InMemoryIntegerValueGenerator<long>>();
-
+                
                 entity.Property(e => e.CreatedBy).HasMaxLength(256);
 
                 entity.Property(e => e.CreatedDate);
