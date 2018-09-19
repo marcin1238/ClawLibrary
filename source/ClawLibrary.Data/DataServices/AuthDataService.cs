@@ -70,14 +70,14 @@ namespace ClawLibrary.Data.DataServices
                 var roles = await _context.Role.Where(x => x.Status == Status.Active.ToString())
                     .ToListAsync();
 
-                var lastId = await _context.UserRole.OrderByDescending(x => x.Id).Select(x => x.Id).FirstOrDefaultAsync();
+//                var lastId = await _context.UserRole.OrderByDescending(x => x.Id).Select(x => x.Id).FirstOrDefaultAsync();
 
                 foreach (var role in roles)
                 {
-                    lastId++;
+//                    lastId++;
                     var userRole = new UserRole
                     {
-                        Id = lastId > 0 ? lastId + 1 : 1,
+//                        Id = lastId > 0 ? lastId + 1 : 1,
                         Key = Guid.NewGuid(),
                         User = createdUser.Entity,
                         Role = role,

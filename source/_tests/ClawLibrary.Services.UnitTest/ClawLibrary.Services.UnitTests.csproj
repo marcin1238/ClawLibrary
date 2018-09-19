@@ -193,6 +193,10 @@
       <Project>{b0ec541f-6726-4aa9-8232-1c57a1ad92c7}</Project>
       <Name>ClawLibrary.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ClawLibrary.Mail\ClawLibrary.Mail.csproj">
+      <Project>{2BED24DC-146F-4D89-A640-6703D99E9C9D}</Project>
+      <Name>ClawLibrary.Mail</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ClawLibrary.Services\ClawLibrary.Services.csproj">
       <Project>{b17f49ec-b556-4e9a-8e05-57905c33b522}</Project>
       <Name>ClawLibrary.Services</Name>

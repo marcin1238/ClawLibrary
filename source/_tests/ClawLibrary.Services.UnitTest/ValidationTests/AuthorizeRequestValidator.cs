@@ -47,9 +47,6 @@ namespace ClawLibrary.Services.UnitTests.ValidationTests
         [TestCase("     ", ErrorCode.CannotBeNullOrEmpty)]
         [TestCase(" ", ErrorCode.CannotBeNullOrEmpty)]
         [TestCase("as", ErrorCode.ValidationPasswordLength)]
-        [TestCase("ast", ErrorCode.ValidationPasswordLength)]
-        [TestCase("testpl", ErrorCode.ValidationPasswordLength)]
-        [TestCase("atestpl", ErrorCode.ValidationPasswordLength)]
         public void Should_Have_Error_When_Password_Is_Wrong(string password, ErrorCode errorCode)
         {
             // arrange

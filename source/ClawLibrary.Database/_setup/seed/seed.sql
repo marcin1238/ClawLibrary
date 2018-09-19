@@ -1,5 +1,5 @@
 ﻿-- USERS -------------------------------------------------------------------------------------------------------------------
-INSERT INTO [dbo].[User] ([Key],[Language], [Email], [PasswordSalt],[PasswordHash],[FirstName],[LastName],[CreatedDate],[Status], [CreatedBy])VALUES(NEWID(),'PL','admin@test.com','1b568a7c-61cf-415c-b293-dcf40362192c','AM9FYjFIMAwUZ0n1xxt/nNFQilf4dI/OkwRTieH+Y0U2vgPYSMvqv5XfxGNQJksODQ==','Admin','Admin',SYSDATETIMEOFFSET(),'Active','System');
+INSERT INTO [dbo].[User] ([Key],[Language], [Email], [PasswordSalt],[PasswordHash],[FirstName],[LastName],[CreatedDate],[Status], [CreatedBy])VALUES(NEWID(),'PL','admin@test.com','a3bd585e-3eee-48d6-b0ba-69b6e52fe10f','ADBI46wYBjdxf+hG7QY0NSS7TGRIJE4rRcKXne0Q+jR7R/B5aoF6tax+fUJkF94blw==','Admin','Admin',SYSDATETIMEOFFSET(),'Active','System');
 
 -- ROLES -------------------------------------------------------------------------------------------------------------------
 INSERT INTO [dbo].[Role]([Key],[Name],[CreatedDate],[CreatedBy],[ModifiedDate],[ModifiedBy],[Status])VALUES(NEWID(),'Admin',SYSDATETIMEOFFSET(),'System',null,null,'Active');

@@ -51,7 +51,7 @@ namespace ClawLibrary.Web
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-//                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
             env.ConfigureNLog("nlog.config");
@@ -159,13 +159,13 @@ namespace ClawLibrary.Web
 
             app.Use(async (context, next) => {
                 await next();
-                if (context.Response.StatusCode == 404 &&
-                    !Path.HasExtension(context.Request.Path.Value) &&
-                    !context.Request.Path.Value.StartsWith("/api/"))
-                {
-                    context.Request.Path = "/index.html";
-                    await next();
-                }
+//                if (context.Response.StatusCode == 404 &&
+//                    !Path.HasExtension(context.Request.Path.Value) &&
+//                    !context.Request.Path.Value.StartsWith("/api/"))
+//                {
+//                    context.Request.Path = "/index.html";
+//                    await next();
+//                }
             });
 
             app.UseDefaultFiles();
@@ -186,6 +186,7 @@ namespace ClawLibrary.Web
             });
 
             app.UseMvcWithDefaultRoute();
+            
         }
     }
 }

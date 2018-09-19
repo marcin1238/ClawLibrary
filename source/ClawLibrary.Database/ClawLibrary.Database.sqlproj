@@ -69,7 +69,6 @@
   <ItemGroup>
     <None Include="_setup\mock\mock.sql" />
     <None Include="_publish\local.publish.xml" />
-    <None Include="local.publish.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="_setup\seed\seed.sql" />
